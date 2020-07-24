@@ -23,6 +23,7 @@ An app that:
 - Socket.io 
 - Electron
 - Tailwind
+- Express
 
 ## License
 MIT License
