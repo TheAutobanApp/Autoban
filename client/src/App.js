@@ -1,8 +1,7 @@
 import React from "react";
-import Form from "./components/Form";
 
 function App() {
-  return <Form />;
+  return <h1>Autoban</h1>;
 }
 
 export default App;
