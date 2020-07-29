@@ -13,8 +13,13 @@ An app that:
 - <a href="https://github.com/mmomin11">Mubin Momin</a>
 - <a href="https://github.com/tan-x">Tanner Griffin</a>
 
+## Documentation
 
+Components:
+![image info](./documentation/autoban-compLayout.jpg)
 
+Database:
+![image info](./documentation/autoban-schema.jpg)
 
 ## Tech Stack 
 - React 
