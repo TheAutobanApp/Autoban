@@ -8,6 +8,7 @@ var db = require('./models');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Serve up static assets (usually on heroku)
+// console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
