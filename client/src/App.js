@@ -46,6 +46,7 @@ function App() {
                 <CardComponent
                   title={item.title}
                   description={item.description}
+                  key={item.id}
                 />
               ),
           )}
@@ -57,6 +58,7 @@ function App() {
                 <CardComponent
                   title={item.title}
                   description={item.description}
+                  key={item.id}
                 />
               ),
           )}

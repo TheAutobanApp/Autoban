@@ -1,7 +1,8 @@
 :root {
-    --background-color1: rgba(250, 158, 158, 0.288);
-    --background-color2: rgba(51, 105, 255, 0.288);
-    --nav-color: rgba(39, 53, 250, 0.836);
+    --background-color1: rgba(45, 102, 236, 0.089);
+    --background-color2: rgba(73, 153, 219, 0.37);
+    --nav-color: rgb(73, 153, 219);
+    --nav-color2: rgb(55, 116, 165);
 }
 
 body {
@@ -14,7 +15,7 @@ body {
     display: flex;
     justify-content: space-between;
     height: 50px;
-    background-color: black;
+    background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     box-shadow: 0 0 10px gray;
     padding: 2px;
     color: white;
@@ -55,7 +56,7 @@ body {
 }
 
 .card-counter {
-    background-color: gray;
+    background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     border-radius: 20px;
     color: white;
     height: fit-content;
