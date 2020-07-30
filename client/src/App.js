@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import Column from './components/Column';
+import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
-import './styles/style.css'
+import Column from './components/Column';
 
 function App() {
+  const [drawer, setDrawer] = useState({
+    open: false,
+  });
+
   return (
-    <>
-      <Navbar />
+    <div>
+      <Navbar drawer={drawer} setdrawer={setDrawer} />;
+      <OptionsDrawer drawer={drawer} />
       <ProjectView>
         <Column title="Would Be Nice">
         </Column>
@@ -16,7 +21,7 @@ function App() {
         <Column title="In Progress">
         </Column>
       </ProjectView>
-    </>
+    </div>
   );
 }
 

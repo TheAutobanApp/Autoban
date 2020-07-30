@@ -33,6 +33,7 @@
     "if-env": "^1.0.4",
     "mysql2": "^1.6.5",
     "react-icons": "^3.10.0",
+    "react-reveal": "^1.2.2",
     "sequelize": "^5.8.9"
   }
 }
