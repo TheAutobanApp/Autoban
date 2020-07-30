@@ -7,7 +7,7 @@ function CardComponent(props) {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   return (
-    <Card style={{ width: '100%', borderRadius: '15px' }}>
+    <Card className="card">
       <Card.Body style={{ display: 'inline-block' }}>
         <Card.Title>{props.title}</Card.Title>
         <FaEllipsisV
@@ -21,15 +21,7 @@ function CardComponent(props) {
           size="sm"
           variant="outline-dark"
           ref={target}
-          style={{
-            height: '15px',
-            bottom: '10px',
-            left: '15px',
-            position: 'absolute',
-            borderRadius: '15px',
-            fontSize: '10px',
-            lineHeight: '0.25em',
-          }}
+          className="label"
           onClick={() => setShow(!show)}
         >
           Labels
