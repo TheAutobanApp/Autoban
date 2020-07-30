@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
 import Column from './components/Column';
+import CardComponent from './components/CardComponent';
 import './styles/style.css'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <OptionsDrawer drawer={drawer} />
       <ProjectView>
         <Column title="Would Be Nice">
+          <CardComponent/>
         </Column>
         <Column title="MVP">
         </Column>
