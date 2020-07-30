@@ -3,12 +3,7 @@ import Navbar from './components/Navbar';
 import Card from './components/CardComponent';
 
 function App() {
-  return (
-    <div>
-      <Navbar />
-      <Card />
-    </div>
-  );
+  return <Navbar />;
 }
 
 export default App;
