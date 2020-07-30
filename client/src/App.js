@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
 import Column from './components/Column';
+import './styles/style.css'
 
 function App() {
   const [drawer, setDrawer] = useState({
@@ -11,7 +12,7 @@ function App() {
 
   return (
     <div>
-      <Navbar drawer={drawer} setdrawer={setDrawer} />;
+      <Navbar drawer={drawer} setdrawer={setDrawer} />
       <OptionsDrawer drawer={drawer} />
       <ProjectView>
         <Column title="Would Be Nice">
