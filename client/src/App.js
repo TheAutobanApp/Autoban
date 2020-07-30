@@ -36,9 +36,8 @@ function App() {
   ];
 
   return (
-    <div>
+    <div style={{height: '100vh'}}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
-      <OptionsDrawer drawer={drawer} />
       <ProjectView>
         <Column title="Would Be Nice">
           {dummy.map(
@@ -63,6 +62,8 @@ function App() {
           )}
         </Column>
         <Column title="In Progress"></Column>
+
+      <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
   );
