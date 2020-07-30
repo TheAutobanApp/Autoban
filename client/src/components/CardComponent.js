@@ -3,34 +3,25 @@ import { Card, Button, Overlay, Tooltip } from 'react-bootstrap';
 import { IoIosArrowDropright } from 'react-icons/io';
 import { FaEllipsisV } from 'react-icons/fa';
 
-function CardComponent() {
+function CardComponent(props) {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   return (
-    <Card style={{ width: '18rem', borderRadius: '15px' }}>
+    <Card className="card">
       <Card.Body style={{ display: 'inline-block' }}>
-        <Card.Title>Task Title</Card.Title>
+        <Card.Title>{props.title}</Card.Title>
         <FaEllipsisV
           style={{ position: 'absolute', top: '20px', right: '10px' }}
         />
 
         <Card.Text>
-          What is the description of this task? What is your exit
-          criteria?
+          {props.description}
         </Card.Text>
         <Button
           size="sm"
           variant="outline-dark"
           ref={target}
-          style={{
-            height: '15px',
-            bottom: '10px',
-            left: '15px',
-            position: 'absolute',
-            borderRadius: '15px',
-            fontSize: '10px',
-            lineHeight: '0.25em',
-          }}
+          className="label"
           onClick={() => setShow(!show)}
         >
           Labels
