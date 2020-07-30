@@ -5,24 +5,21 @@ import { IoIosArrowDropright } from 'react-icons/io';
 function CardComponent() {
   return (
     <Card style={{ width: '18rem' }}>
-      <Card.Body>
+      <Card.Body style={{ display: 'inline-block' }}>
         <Card.Title>Task Title</Card.Title>
         <Card.Text>
           What is the description of this task? What is your exit
           criteria?
         </Card.Text>
-        <Button
+
+        <IoIosArrowDropright
+          fontSize="30px"
           style={{
-            height: '20px',
-            // width: '10px',
-            right: '10px',
             bottom: '10px',
+            right: '10px',
+            position: 'absolute',
           }}
-          className="openCard"
-          variant="primary"
-        >
-          <IoIosArrowDropright style={{ alignSelf: 'center' }} />
-        </Button>
+        />
       </Card.Body>
     </Card>
   );
