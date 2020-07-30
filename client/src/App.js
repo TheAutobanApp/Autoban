@@ -2,17 +2,19 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Column from './components/Column';
 import ProjectView from './components/ProjectView';
+import './styles/style.css'
 
 function App() {
   return (
     <>
       <Navbar />
       <ProjectView>
-        <Column title="MVP">
-          <div>test</div>
-          <div>test</div>
+        <Column title="Would Be Nice">
         </Column>
-        <Column title="In Progress"/>
+        <Column title="MVP">
+        </Column>
+        <Column title="In Progress">
+        </Column>
       </ProjectView>
     </>
   );
