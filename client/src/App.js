@@ -5,6 +5,7 @@ import ProjectView from './components/ProjectView';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import { AutoProvider } from './AutoContext';
+import AddColumn from './components/AddColumn';
 import './styles/style.css';
 
 function App() {
@@ -20,6 +21,34 @@ function App() {
       column: 0,
       description:
         'What is the description of this task? What is your exit criteria?',
+    },
+    {
+      title: 'Task Title 2',
+      id: 1,
+      column: 0,
+      description:
+        'What is the description of this task? What is your strategy?',
+    },
+    {
+      title: 'Task Title 2',
+      id: 1,
+      column: 0,
+      description:
+        'What is the description of this task? What is your strategy?',
+    },
+    {
+      title: 'Task Title 2',
+      id: 1,
+      column: 0,
+      description:
+        'What is the description of this task? What is your strategy?',
+    },
+    {
+      title: 'Task Title 2',
+      id: 1,
+      column: 0,
+      description:
+        'What is the description of this task? What is your strategy?',
     },
     {
       title: 'Task Title 2',
@@ -67,7 +96,7 @@ function App() {
             )}
           </Column>
           <Column title="In Progress"></Column>
-
+          <AddColumn />
           <OptionsDrawer />
         </ProjectView>
       </div>
