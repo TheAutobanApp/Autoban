@@ -22,7 +22,7 @@ Components:
 ![image info](./documentation/autoban-compLayout.jpg)
 
 Database:
-![image info](./documentation/autobaSchema.jpg)
+![image info](./documentation/autobanSchema.jpg)
 
 ## Tech Stack
 
