@@ -12,8 +12,8 @@ const Column = db.define(
     },
     id_project: { type: Sequelize.INTEGER, allowNull: false },
     id_place: { type: Sequelize.INTEGER, allowNull: false },
-    Column_name: { type: Sequelize.STRING(50), allowNull: false },
-    Column_description: Sequelize.STRING(200),
+    column_name: { type: Sequelize.STRING(50), allowNull: false },
+    column_description: Sequelize.STRING(200),
   },
   { freezeTableName: true },
 );
