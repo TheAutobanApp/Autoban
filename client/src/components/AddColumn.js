@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
-import { Input, Button } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 
 export default function AddColumn() {
   const [add, setAdd] = useState({ show: false, name: '' });
