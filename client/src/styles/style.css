@@ -29,19 +29,18 @@ body {
 }
 
 .race-font {
+    margin: 0;
     font-family: 'Racing Sans One', cursive !important;
 }
 
 .NavDropdown {
     background-color: rgba(255,255,255, 0.3);
     border: none;
-    margin-bottom: 10px;
 }
 
 .NavDropdown:hover, .NavDropdown:enabled{
     background-color: transparent;
     border: none;
-    margin-bottom: 10px;
 }
 
 .btn-outline-light:not(:disabled):not(.disabled).active, .btn-outline-light:not(:disabled):not(.disabled):active, .show>.btn-outline-light.dropdown-toggle {
@@ -82,7 +81,7 @@ body {
     padding: 5px;
     display: flex;
     justify-content: space-between;
-    align-items: center
+    align-items: center;
 }
 
 .card-counter {
@@ -103,7 +102,7 @@ body {
 .card-container {
     padding: 4px;
     max-height: 80vh;
-    overflow-y: scroll;
+    overflow-y: initial;
 }
 
 .card-container::-webkit-scrollbar {
@@ -118,11 +117,18 @@ body {
     margin: 6px 0;
 }
 
+.card-body {
+    padding: 14px;
+}
+
+.card-footer {
+    border-bottom-left-radius: 15px!important;
+    border-bottom-right-radius: 15px!important;
+    padding: 6px 10px;
+}
+
 .label {
     height: 15px;
-    bottom: 10px;
-    left: 15px;
-    position: absolute;
     border-radius: 15px;
     font-size: 10px;
     line-height: 0.25em;
