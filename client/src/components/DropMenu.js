@@ -1,6 +1,5 @@
 import React from 'react';
-import { Dropdown, Icon } from 'semantic-ui-react';
-import '../styles/dropdown.css';
+import { Dropdown } from 'semantic-ui-react';
 
 const DropMenu = (props) => (
   <>

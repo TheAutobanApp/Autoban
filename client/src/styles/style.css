@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css");
+
 :root {
     --background-color1: rgba(45, 102, 236, 0.089);
     --background-color2: rgba(73, 153, 219, 0.37);
