@@ -10,12 +10,12 @@ function OptionsDrawer(props) {
       <div
         style={{
           width: '250px',
-          height: '94.8vh',
+          height: '100%',
           backgroundColor: 'whitesmoke',
           boxShadow: '4px 8px 16px gray',
           position: 'absolute',
           right: 0,
-          top: 50,
+          top: 0,
           display: 'flex',
           flexDirection: 'column',
           zIndex: 999,

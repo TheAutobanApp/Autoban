@@ -36,9 +36,8 @@ function App() {
   ];
 
   return (
-    <div>
+    <div style={{height: '100vh'}}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
-      <OptionsDrawer drawer={drawer} />
       <ProjectView>
         <Column title="Would Be Nice">
           {dummy.map(
@@ -47,6 +46,7 @@ function App() {
                 <CardComponent
                   title={item.title}
                   description={item.description}
+                  key={item.id}
                 />
               ),
           )}
@@ -58,11 +58,14 @@ function App() {
                 <CardComponent
                   title={item.title}
                   description={item.description}
+                  key={item.id}
                 />
               ),
           )}
         </Column>
         <Column title="In Progress"></Column>
+
+      <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
   );

@@ -12,6 +12,7 @@ function CardComponent(props) {
         <Card.Title>{props.title}</Card.Title>
         <FaEllipsisV
           style={{ position: 'absolute', top: '20px', right: '10px' }}
+          className="clickable"
         />
 
         <Card.Text>
@@ -40,6 +41,7 @@ function CardComponent(props) {
         </Overlay>
         <IoIosArrowDropright
           fontSize="30px"
+          className="clickable"
           style={{
             bottom: '10px',
             right: '10px',

@@ -1,20 +1,46 @@
+:root {
+    --background-color1: rgba(45, 102, 236, 0.089);
+    --background-color2: rgba(73, 153, 219, 0.37);
+    --nav-color: rgb(73, 153, 219);
+    --nav-color2: rgb(55, 116, 165);
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    /* font-family: 'Source Sans Pro', sans-serif; */
+}
+
+/* format */
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+
 /* navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
     height: 50px;
-    background-color: black;
+    background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     box-shadow: 0 0 10px gray;
     padding: 2px;
     color: white;
+}
+
+.race-font {
+    font-family: 'Racing Sans One', cursive !important;
 }
 
 /* wrappers */
 .project-view {
     height: 100%;
     width: 100%;
+    padding: 5px;
     display: flex;
     position: relative;
+    background: radial-gradient(ellipse at top, var(--background-color1), transparent),
+    radial-gradient(ellipse at bottom, var(--background-color2), transparent);
 }
 
 /* column */
@@ -42,7 +68,7 @@
 }
 
 .card-counter {
-    background-color: gray;
+    background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     border-radius: 20px;
     color: white;
     height: fit-content;
