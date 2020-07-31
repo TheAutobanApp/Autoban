@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
+import { Input, Button } from 'semantic-ui-react';
 
 export default function AddColumn() {
-  const [add, setAdd] = useState({ show: false });
+  const [add, setAdd] = useState({ show: false, name: '' });
   const addColumn = () => {
-    setAdd({ ...add, show: !add.show });
+    setAdd({ ...add, show: !add.show, name: '' });
   };
+
   return (
     <>
+      {/* conditionally render the elements in the addcolumn div based on state
+        one view is just text and icon, the other is the form for the column creation */}
       {!add.show ? (
         <div
           className="flex-column column add-column addhover clickable"
@@ -18,11 +22,23 @@ export default function AddColumn() {
           <h5>Add Column</h5>
         </div>
       ) : (
-        <div className="flex-row column add-column addform" style={{justifyContent: "space-around"}}>
-          <input placeholder="Column Name" onChange={e => {setAdd({ ...add, name: e.target.value })}}></input>
-          <button onClick={addColumn}>Add</button>
-          <MdClose onClick={() => setAdd({ ...add, show: !add.show })}/>
-
+        <div
+          className="flex-row column add-column addform"
+          style={{ justifyContent: 'space-around' }}
+        >
+          <Input
+            action={{ icon: 'add', onClick: addColumn }}
+            placeholder="Column Name..."
+            onChange={(e) => {
+              setAdd({ ...add, name: e.target.value });
+            }}
+          />
+          <div
+            className="add-close"
+            onClick={() => setAdd({ ...add, show: !add.show })}
+          >
+            <MdClose size={20} />
+          </div>
         </div>
       )}
     </>
