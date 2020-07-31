@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "password",
-    "database": "autoban_test",
+    "password": "password123",
+    "database": "autoban_data",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
