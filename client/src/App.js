@@ -36,10 +36,6 @@ function App() {
     },
   ];
 
-  const addColumn = () => {
-    console.log('add column')
-  }
-
   return (
     <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
@@ -69,7 +65,7 @@ function App() {
           )}
         </Column>
         <Column title="In Progress"></Column>
-        <AddColumn onclick={addColumn}/>
+        <AddColumn />
         <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
