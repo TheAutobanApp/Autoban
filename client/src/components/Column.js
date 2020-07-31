@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPlus, FaEllipsisV } from "react-icons/fa";
+import Fade from 'react-reveal/Fade';
 
 export default function Column(props) {
   let numOfCards = React.Children.toArray(props.children).length;
@@ -13,7 +14,8 @@ export default function Column(props) {
   }
 
   return (
-    // column div
+    <Fade>
+    {/* column div */}
     <div className="column">
       {/* header div */}
       <div className="column-header">
@@ -33,5 +35,6 @@ export default function Column(props) {
       {/* cards div */}
       <div className="card-container">{props.children}</div>
     </div>
+    </Fade>
   );
 }
