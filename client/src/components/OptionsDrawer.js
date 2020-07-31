@@ -6,7 +6,7 @@ import { GrHistory } from 'react-icons/gr';
 
 function OptionsDrawer(props) {
   return (
-    <Fade right when={props.drawer.open} duration={400}>
+    <Fade right when={props.drawer.open} collapse duration={400}>
       <div
         style={{
           width: '250px',

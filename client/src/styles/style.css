@@ -19,6 +19,13 @@ body {
     align-items: center;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 /* navbar */
 .navbar {
     display: flex;
@@ -58,8 +65,18 @@ body {
     padding: 5px;
     display: flex;
     position: relative;
+    overflow-y: scroll;
     background: radial-gradient(ellipse at top, var(--background-color1), transparent),
     radial-gradient(ellipse at bottom, var(--background-color2), transparent);
+}
+
+.project-view::-webkit-scrollbar {
+    display: none;
+}
+
+.project-view::after {
+    content: '';
+    min-width: 5px
 }
 
 /* column */
@@ -109,6 +126,17 @@ body {
 
 .card-container::-webkit-scrollbar {
     display: none;
+}
+
+.add-column {
+    min-height: 60px;
+    padding: 10px;
+    background-color: rgba(245, 245, 245, 0.603);
+    box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.514);
+}
+
+.add-column > h5 {
+    margin-top: 10px;
 }
 
 /* cards */

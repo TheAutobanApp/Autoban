@@ -4,6 +4,7 @@ import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
+import AddColumn from './components/AddColumn';
 import './styles/style.css';
 
 function App() {
@@ -35,6 +36,10 @@ function App() {
     },
   ];
 
+  const addColumn = () => {
+    console.log('add column')
+  }
+
   return (
     <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
@@ -64,6 +69,7 @@ function App() {
           )}
         </Column>
         <Column title="In Progress"></Column>
+        <AddColumn onclick={addColumn}/>
         <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
