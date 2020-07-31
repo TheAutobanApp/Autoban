@@ -36,7 +36,7 @@ function App() {
   ];
 
   return (
-    <div style={{height: '100vh'}}>
+    <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
       <ProjectView>
         <Column title="Would Be Nice">
@@ -64,8 +64,7 @@ function App() {
           )}
         </Column>
         <Column title="In Progress"></Column>
-
-      <OptionsDrawer drawer={drawer} />
+        <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
   );
