@@ -32,6 +32,24 @@ body {
     font-family: 'Racing Sans One', cursive !important;
 }
 
+.NavDropdown {
+    background-color: rgba(255,255,255, 0.3);
+    border: none;
+    margin-bottom: 10px;
+}
+
+.NavDropdown:hover, .NavDropdown:enabled{
+    background-color: transparent;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.btn-outline-light:not(:disabled):not(.disabled).active, .btn-outline-light:not(:disabled):not(.disabled):active, .show>.btn-outline-light.dropdown-toggle {
+    color: white;
+    background-color: transparent;
+    border-color: none;
+}
+
 /* wrappers */
 .project-view {
     height: 100%;
