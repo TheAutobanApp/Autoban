@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Fade from 'react-reveal/Fade';
 import { MdClose } from 'react-icons/md';
-import { FaPlus, FaEllipsisV } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { GrHistory } from 'react-icons/gr';
 
 function OptionsDrawer(props) {
