@@ -10,6 +10,7 @@ import './styles/style.css';
 function App() {
   const [drawer, setDrawer] = useState({
     open: false,
+    type: 'settings',
   });
 
   const dummy = [
@@ -67,7 +68,7 @@ function App() {
           </Column>
           <Column title="In Progress"></Column>
 
-          <OptionsDrawer drawer={drawer} />
+          <OptionsDrawer drawer={drawer} setdrawer={setDrawer} />
         </ProjectView>
       </div>
     </AutoProvider>
