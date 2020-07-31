@@ -38,9 +38,9 @@ function App() {
   ];
 
   return (
-    <AutoProvider value={[]}>
+    <AutoProvider value={[drawer, setDrawer]}>
       <div style={{ height: '100vh' }}>
-        <Navbar drawer={drawer} setdrawer={setDrawer} />
+        <Navbar />
         <ProjectView>
           <Column title="Would Be Nice">
             {dummy.map(
@@ -68,7 +68,7 @@ function App() {
           </Column>
           <Column title="In Progress"></Column>
 
-          <OptionsDrawer drawer={drawer} setdrawer={setDrawer} />
+          <OptionsDrawer />
         </ProjectView>
       </div>
     </AutoProvider>
