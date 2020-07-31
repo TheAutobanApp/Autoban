@@ -35,6 +35,12 @@
     </style>
   </head>
   <body>
+    <script>
+      // disable react devtools in production
+      if (window.location.hostname != 'localhost') {
+          __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+      }
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
