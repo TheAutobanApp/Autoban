@@ -1,6 +1,9 @@
-# Autoban 
+# Autoban
+
 ## Value Add Proposal
-An app that: 
+
+An app that:
+
 - Allows users to create kanban boards for their projects
 - Allow users to collaborate in real-time with their project teams
 - Allow users to re-order and organize project tasks
@@ -19,16 +22,18 @@ Components:
 ![image info](./documentation/autoban-compLayout.jpg)
 
 Database:
-![image info](./documentation/autoban-schema.jpg)
+![image info](./documentation/autobaSchema.jpg)
 
-## Tech Stack 
-- React 
+## Tech Stack
+
+- React
 - Sequlize
 - MySQL
-- Socket.io 
+- Socket.io
 - Electron
 - Tailwind
 - Express
 
 ## License
+
 MIT License
