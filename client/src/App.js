@@ -4,6 +4,7 @@ import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
+import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
 function App() {
@@ -36,38 +37,40 @@ function App() {
   ];
 
   return (
-    <div style={{height: '100vh'}}>
-      <Navbar drawer={drawer} setdrawer={setDrawer} />
-      <ProjectView>
-        <Column title="Would Be Nice">
-          {dummy.map(
-            (item) =>
-              item.column === 0 && (
-                <CardComponent
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                />
-              ),
-          )}
-        </Column>
-        <Column title="MVP">
-          {dummy.map(
-            (item) =>
-              item.column === 1 && (
-                <CardComponent
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                />
-              ),
-          )}
-        </Column>
-        <Column title="In Progress"></Column>
+    <AutoProvider value={[]}>
+      <div style={{ height: '100vh' }}>
+        <Navbar drawer={drawer} setdrawer={setDrawer} />
+        <ProjectView>
+          <Column title="Would Be Nice">
+            {dummy.map(
+              (item) =>
+                item.column === 0 && (
+                  <CardComponent
+                    title={item.title}
+                    description={item.description}
+                    key={item.id}
+                  />
+                ),
+            )}
+          </Column>
+          <Column title="MVP">
+            {dummy.map(
+              (item) =>
+                item.column === 1 && (
+                  <CardComponent
+                    title={item.title}
+                    description={item.description}
+                    key={item.id}
+                  />
+                ),
+            )}
+          </Column>
+          <Column title="In Progress"></Column>
 
-      <OptionsDrawer drawer={drawer} />
-      </ProjectView>
-    </div>
+          <OptionsDrawer drawer={drawer} />
+        </ProjectView>
+      </div>
+    </AutoProvider>
   );
 }
 
