@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Card, Button, Overlay, Tooltip } from 'react-bootstrap';
 import { IoIosArrowDropright } from 'react-icons/io';
 import { FaEllipsisV } from 'react-icons/fa';
+import DropMenu from './DropMenu';
 
 function CardComponent(props) {
   const [show, setShow] = useState(false);
@@ -9,46 +10,42 @@ function CardComponent(props) {
   return (
     <Card className="card">
       <Card.Body style={{ display: 'inline-block' }}>
-        <Card.Title>{props.title}</Card.Title>
-        <FaEllipsisV
-          style={{ position: 'absolute', top: '20px', right: '10px' }}
-          className="clickable"
-        />
-
-        <Card.Text>
-          {props.description}
-        </Card.Text>
-        <Button
-          size="sm"
-          variant="outline-dark"
-          ref={target}
-          className="label"
-          onClick={() => setShow(!show)}
-        >
-          Labels
-        </Button>
-        <Overlay
-          target={target.current}
-          show={show}
-          placement="right"
-        >
-          {(props) => (
-            <Tooltip id="overlay-example" {...props}>
-              {' '}
-              P1,{' '}
-            </Tooltip>
-          )}
-        </Overlay>
-        <IoIosArrowDropright
-          fontSize="30px"
-          className="clickable"
+        <Card.Title
           style={{
-            bottom: '10px',
-            right: '10px',
-            position: 'absolute',
+            display: 'flex',
+            justifyContent: 'space-between',
+            position: 'relative',
           }}
-        />
+        >
+          {props.title}
+          <DropMenu option="card" />
+        </Card.Title>
+        <Card.Text>{props.description}</Card.Text>
+        
       </Card.Body>
+      <Card.Footer className="flex-row card-footer" style={{alignItems: 'center'}}>
+          <Button
+            size="sm"
+            variant="outline-dark"
+            ref={target}
+            className="label"
+            onClick={() => setShow(!show)}
+          >
+            Labels
+          </Button>
+          <Overlay
+            target={target.current}
+            show={show}
+            placement="right"
+          >
+            {(props) => (
+              <Tooltip id="overlay-example" {...props}>
+                {' '}
+                P1,{' '}
+              </Tooltip>
+            )}
+          </Overlay>
+        </Card.Footer>
     </Card>
   );
 }

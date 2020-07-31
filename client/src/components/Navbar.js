@@ -16,17 +16,14 @@ function Navbar(props) {
         <RiMenu4Line color="lightblue" style={{fontSize: '20px', margin: '1px'}}/>
         <h1 className="race-font">Autoban</h1>
       </div>
-
-      <FiSettings style={{margin: "5px"}}
-        onClick={() => {
+      <div onClick={() => {
           props.setdrawer({
             ...props.drawer,
             open: !props.drawer.open,
           });
-        }}
-      />
-
-      
+        }}>
+        <FiSettings size={20} style={{margin: "10px"}}/>
+      </div>
     </div>
   );
 }
