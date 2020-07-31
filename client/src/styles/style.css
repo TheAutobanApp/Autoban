@@ -65,7 +65,8 @@ body {
     padding: 5px;
     display: flex;
     position: relative;
-    overflow-y: scroll;
+    overflow: hidden;
+    overflow-x: scroll;
     background: radial-gradient(ellipse at top, var(--background-color1), transparent),
     radial-gradient(ellipse at bottom, var(--background-color2), transparent);
 }
@@ -121,7 +122,7 @@ body {
 .card-container {
     padding: 4px;
     max-height: 80vh;
-    overflow-y: initial;
+    overflow-y: scroll;
 }
 
 .card-container::-webkit-scrollbar {
