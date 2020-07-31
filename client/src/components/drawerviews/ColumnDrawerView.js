@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Fade from 'react-reveal/Fade';
 import { AutoContext } from '../../AutoContext';
+import { MdClose } from 'react-icons/md';
 
 export default function ColumnDrawerView(props) {
   const context = useContext(AutoContext);
@@ -20,7 +21,26 @@ export default function ColumnDrawerView(props) {
 
   return (
     <Fade right when={context[0].open} collapse duration={400}>
-      <div style={drawerStyle}>Column Edit</div>
+      <div style={drawerStyle}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: 5,
+            padding: 3,
+          }}
+        >
+          <p>Column Edit</p>
+          <MdClose
+            size="1.5em"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              context[1]({ ...context[0], open: false });
+            }}
+          />
+        </div>
+      </div>
     </Fade>
   );
 }

@@ -10,7 +10,7 @@ import './styles/style.css';
 function App() {
   const [drawer, setDrawer] = useState({
     open: false,
-    type: 'settings',
+    type: '',
   });
 
   const dummy = [

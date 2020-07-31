@@ -18,7 +18,7 @@ const DropMenu = (props) => {
               onClick={() => {
                 context[1]({
                   ...context[0],
-                  open: !context[0].open,
+                  open: true,
                   type: 'column',
                 });
               }}
@@ -43,7 +43,7 @@ const DropMenu = (props) => {
               onClick={() => {
                 context[1]({
                   ...context[0],
-                  open: !context[0].open,
+                  open: true,
                   type: 'card',
                 });
               }}
