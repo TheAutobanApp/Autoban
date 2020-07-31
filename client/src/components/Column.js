@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FaPlus, FaEllipsisV } from 'react-icons/fa';
 import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';

@@ -4,7 +4,7 @@ import { FiSettings } from 'react-icons/fi';
 import Teams from './TeamDropdown';
 import { AutoContext } from '../AutoContext';
 
-function Navbar(props) {
+function Navbar() {
   const context = useContext(AutoContext);
   return (
     <div className="navbar">
@@ -21,7 +21,11 @@ function Navbar(props) {
       </div>
       <div
         onClick={() => {
-          context[1]({ ...context[0], open: !context[0].open });
+          context[1]({
+            ...context[0],
+            open: !context[0].open,
+            type: 'settings',
+          });
         }}
       >
         <FiSettings size={20} style={{ margin: '10px' }} />
