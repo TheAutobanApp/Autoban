@@ -131,8 +131,13 @@ body {
 .add-column {
     min-height: 60px;
     padding: 10px;
-    background-color: rgba(245, 245, 245, 0.603);
-    box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.514);
+    background: rgba(245, 245, 245, 0.438);
+    box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.377);
+    transition: background .5s ease-in-out;
+}
+
+.addhover:hover, .addform {
+    background: whitesmoke;
 }
 
 .add-column > h5 {

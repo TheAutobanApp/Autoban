@@ -11,14 +11,14 @@ export default function AddColumn() {
     <>
       {!add.show ? (
         <div
-          className="flex-column column add-column clickable"
+          className="flex-column column add-column addhover clickable"
           onClick={() => setAdd({ ...add, show: !add.show })}
         >
           <FaPlus size={20} />
           <h5>Add Column</h5>
         </div>
       ) : (
-        <div className="flex-row column add-column clickable" style={{justifyContent: "space-around"}}>
+        <div className="flex-row column add-column addform" style={{justifyContent: "space-around"}}>
           <input placeholder="Column Name" onChange={e => {setAdd({ ...add, name: e.target.value })}}></input>
           <button onClick={addColumn}>Add</button>
           <MdClose onClick={() => setAdd({ ...add, show: !add.show })}/>
