@@ -12,10 +12,8 @@ const Project = db.define(
     },
     id_team: { type: Sequelize.INTEGER, allowNull: false },
     project_name: { type: Sequelize.STRING(100), allowNull: false },
-    project_description: {
-      type: Sequelize.STRING(200),
-      allowNull: false,
-    },
+    project_description: Sequelize.STRING(200),
+
     start_date: Sequelize.DATE,
     end_date: Sequelize.DATE,
     enabled: {
