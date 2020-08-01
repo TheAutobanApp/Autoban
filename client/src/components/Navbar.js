@@ -1,11 +1,13 @@
 import React from 'react';
 import {RiMenu4Line} from 'react-icons/ri'
 import {FiSettings} from 'react-icons/fi'
+import { MdTimeline } from 'react-icons/md'
+import { GoProject } from 'react-icons/go'
 import Teams from './TeamDropdown'
-
-
+import { Checkbox } from 'semantic-ui-react'
 
 function Navbar(props) {
+
   return (
     <div className="navbar">
       <div className="flex-row">
@@ -16,6 +18,14 @@ function Navbar(props) {
         <RiMenu4Line color="lightblue" style={{fontSize: '20px', margin: '1px'}}/>
         <h1 className="race-font">Autoban</h1>
       </div>
+      <div className="flex-row navoptions">
+      {props.drawer.timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
+      <Checkbox toggle onChange={() => {
+          props.setdrawer({
+            ...props.drawer,
+            timeline: !props.drawer.timeline,
+          });
+        }}/>
       <div onClick={() => {
           props.setdrawer({
             ...props.drawer,
@@ -23,6 +33,7 @@ function Navbar(props) {
           });
         }}>
         <FiSettings size={20} style={{margin: "10px"}}/>
+      </div>
       </div>
     </div>
   );

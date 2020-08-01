@@ -58,6 +58,40 @@ body {
     border-color: none;
 }
 
+.navoptions {
+    width: 150px;
+    justify-content: space-between;
+}
+
+label {
+    margin-top: 7px
+}
+
+.ui.toggle.checkbox label:before {
+    background-color: rgba(0,0,0,.15);
+}
+
+.ui.toggle.checkbox input:focus~.box:before, .ui.toggle.checkbox input:focus~label:before {
+    background-color: rgba(0,0,0,.15);
+    border: none;
+}
+
+.ui.toggle.checkbox input:focus:checked~label:before {
+    background-color: rgba(245, 245, 245, 0.39)!important;
+}
+
+.ui.toggle.checkbox input:checked~label:before {
+    background-color: rgba(245, 245, 245, 0.39)!important;
+}
+
+.ui.dropdown .menu {
+    cursor: auto;
+    position: absolute;
+    display: none;
+    outline: 0;
+    top: -50%;
+}
+
 /* wrappers */
 .project-view {
     height: 100%;
@@ -120,7 +154,7 @@ body {
 }
 
 .card-container {
-    padding: 4px;
+    padding: 8px 6px;
     max-height: 80vh;
     overflow-y: scroll;
 }
@@ -130,14 +164,16 @@ body {
 }
 
 .add-column {
+    color: rgba(46, 46, 46, 0.65);
     min-height: 60px;
     padding: 10px;
     background: rgba(245, 245, 245, 0.438);
     box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.377);
-    transition: background .5s ease-in-out;
+    transition: all .2s ease-in-out;
 }
 
 .addhover:hover, .addform {
+    color: rgb(0, 0, 0);
     background: whitesmoke;
 }
 

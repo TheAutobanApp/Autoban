@@ -10,6 +10,7 @@ import './styles/style.css';
 function App() {
   const [drawer, setDrawer] = useState({
     open: false,
+    timeline: false,
   });
 
   const dummy = [
@@ -68,6 +69,8 @@ function App() {
     <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
       <ProjectView>
+        {!drawer.timeline ?
+        <>
         <Column title="Would Be Nice">
           {dummy.map(
             (item) =>
@@ -93,7 +96,8 @@ function App() {
           )}
         </Column>
         <Column title="In Progress"></Column>
-        <AddColumn />
+        <AddColumn /> </> :
+        <p>Timeline View</p> }
         <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
