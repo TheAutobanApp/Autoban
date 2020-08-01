@@ -73,41 +73,41 @@ function App() {
         'What is the description of this task? What is your strategy?',
     },
   ];
-  
+
   return (
     <AutoProvider value={[drawer, setDrawer, columns, setColumns]}>
       <div style={{ height: '100vh' }}>
-      <Navbar drawer={drawer} setdrawer={setDrawer} />
-      <ProjectView>
-        {/* if toggle is set to project view */}
-        {!drawer.timeline ? (
-          <>
-            {/* map through columns array and render each column with the title */}
-            {columns.map((item, i) => {
-              return (
-                <Column title={item} key={i} id={i}>
-                  {/* inside each column, map through the cards and render each one that matches the column index */}
-                  {dummy.map(
-                    (card) =>
-                      card.column === i && (
-                        <CardComponent
-                          title={card.title}
-                          description={card.description}
-                          key={card.id}
-                        />
-                      ),
-                  )}
-                </Column>
-              );
-            })}
-            <AddColumn columns={columns} setcolumns={setColumns}/>
-          </>
-        ) : (
-          <Timeline/>
-        )}
-        <OptionsDrawer drawer={drawer} />
-      </ProjectView>
-    </div>
+        <Navbar />
+        <ProjectView>
+          {/* if toggle is set to project view */}
+          {!drawer.timeline ? (
+            <>
+              {/* map through columns array and render each column with the title */}
+              {columns.map((item, i) => {
+                return (
+                  <Column title={item} key={i} id={i}>
+                    {/* inside each column, map through the cards and render each one that matches the column index */}
+                    {dummy.map(
+                      (card) =>
+                        card.column === i && (
+                          <CardComponent
+                            title={card.title}
+                            description={card.description}
+                            key={card.id}
+                          />
+                        ),
+                    )}
+                  </Column>
+                );
+              })}
+              <AddColumn columns={columns} setcolumns={setColumns} />
+            </>
+          ) : (
+            <Timeline />
+          )}
+          <OptionsDrawer />
+        </ProjectView>
+      </div>
     </AutoProvider>
   );
 }
