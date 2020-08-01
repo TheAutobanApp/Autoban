@@ -5,6 +5,7 @@ import ProjectView from './components/ProjectView';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
+import Timeline from './components/Timeline';
 import './styles/style.css';
 
 function App() {
@@ -98,7 +99,7 @@ function App() {
             <AddColumn columns={columns} setcolumns={setColumns}/>
           </>
         ) : (
-          <p>Timeline View</p>
+          <Timeline/>
         )}
         <OptionsDrawer drawer={drawer} />
       </ProjectView>
