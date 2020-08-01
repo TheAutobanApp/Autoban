@@ -5,19 +5,23 @@ import { Input } from 'semantic-ui-react';
 
 export default function AddColumn(props) {
   const [add, setAdd] = useState({ show: false, name: '' });
+
+  // update columns state with new column title, using concat method
   const addColumn = () => {
     props.setcolumns(() => {
       const newColumns = props.columns.concat(add.name);
       return newColumns;
-    })
+    });
+    // reset local add state
     setAdd({ ...add, show: !add.show, name: '' });
   };
 
+  // if enter is pressed when there is a value in the new column input, run the addColumn function
   const handleKeyPress = (event) => {
-    if(event.key === 'Enter' && add.name !== '') {
+    if (event.key === 'Enter' && add.name !== '') {
       addColumn();
     }
-  }
+  };
 
   return (
     <>
