@@ -4,7 +4,7 @@ var db = require('../../models');
 router.get('/', function (req, res) {
   //do things here for other routes
   console.log('hey you got a column');
-  res.send("column")
+  res.send('column');
 });
 
 router.post('/', function (req, res) {
@@ -15,6 +15,6 @@ router.put('/', function (req, res) {
   //do things here for other routes
 });
 
-router.get('/', function (req, res) {
+router.delete('/', function (req, res) {
   //do things here for other routes
 });
