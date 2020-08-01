@@ -6,13 +6,16 @@ import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
+import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
 function App() {
   const [drawer, setDrawer] = useState({
     open: false,
     timeline: false,
+    type: 'settings',
   });
+  
   const [columns, setColumns] = useState([
     'Would Be Nice',
     'MVP',
@@ -70,9 +73,10 @@ function App() {
         'What is the description of this task? What is your strategy?',
     },
   ];
-
+console.log(columns);
   return (
-    <div style={{ height: '100vh' }}>
+    <AutoProvider value={[drawer, setDrawer, columns, setColumns]}>
+      <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
       <ProjectView>
         {/* if toggle is set to project view */}
@@ -81,7 +85,7 @@ function App() {
             {/* map through columns array and render each column with the title */}
             {columns.map((item, i) => {
               return (
-                <Column title={item}>
+                <Column title={item} key={i} id={i}>
                   {/* inside each column, map through the cards and render each one that matches the column index */}
                   {dummy.map(
                     (card) =>
@@ -104,6 +108,7 @@ function App() {
         <OptionsDrawer drawer={drawer} />
       </ProjectView>
     </div>
+    </AutoProvider>
   );
 }
 

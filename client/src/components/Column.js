@@ -28,7 +28,7 @@ export default function Column(props) {
           {/* add card and options */}
           <div className="flex-row">
             <FaPlus className="clickable" onClick={addCard} style={{margin: '0 5px'}}/>
-            <DropMenu option="column" />
+            <DropMenu option="column" id={props.id}/>
           </div>
         </div>
         {/* cards div */}
