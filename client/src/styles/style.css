@@ -19,6 +19,13 @@ body {
     align-items: center;
 }
 
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 /* navbar */
 .navbar {
     display: flex;
@@ -58,8 +65,19 @@ body {
     padding: 5px;
     display: flex;
     position: relative;
+    overflow: hidden;
+    overflow-x: scroll;
     background: radial-gradient(ellipse at top, var(--background-color1), transparent),
     radial-gradient(ellipse at bottom, var(--background-color2), transparent);
+}
+
+.project-view::-webkit-scrollbar {
+    display: none;
+}
+
+.project-view::after {
+    content: '';
+    min-width: 5px
 }
 
 /* column */
@@ -104,11 +122,35 @@ body {
 .card-container {
     padding: 4px;
     max-height: 80vh;
-    overflow-y: initial;
+    overflow-y: scroll;
 }
 
 .card-container::-webkit-scrollbar {
     display: none;
+}
+
+.add-column {
+    min-height: 60px;
+    padding: 10px;
+    background: rgba(245, 245, 245, 0.438);
+    box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.377);
+    transition: background .5s ease-in-out;
+}
+
+.addhover:hover, .addform {
+    background: whitesmoke;
+}
+
+.add-column > h5 {
+    margin-top: 10px;
+}
+
+.add-close {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* cards */
