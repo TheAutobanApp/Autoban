@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AutoContext } from '../../AutoContext';
+import { MdClose } from 'react-icons/md';
 
 export default function ColumnDrawerView(props) {
+  const context = useContext(AutoContext);
+
   return (
-    <Fade right when={context[0].open} collapse duration={400}>
-      <div>Column Edit</div>
-    </Fade>
+    <div
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: 5,
+        padding: 3,
+      }}
+    >
+      <p>Column Edit</p>
+      <MdClose
+        size="1.5em"
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          context[1]({ ...context[0], open: false });
+        }}
+      />
+    </div>
   );
 }

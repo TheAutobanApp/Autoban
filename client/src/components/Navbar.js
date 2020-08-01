@@ -7,7 +7,7 @@ import { Checkbox } from 'semantic-ui-react'
 import Teams from './TeamDropdown'
 import { AutoContext } from '../AutoContext';
 
-function Navbar(props) {
+function Navbar() {
   const context = useContext(AutoContext);
   return (
     <div className="navbar">
@@ -23,16 +23,20 @@ function Navbar(props) {
         <h1 className="race-font">Autoban</h1>
       </div>
       <div className="flex-row navoptions">
-      {props.drawer.timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
+      {context[0].timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
       <Checkbox toggle onChange={() => {
-          props.setdrawer({
-            ...props.drawer,
-            timeline: !props.drawer.timeline,
-          });
+        context[1]({
+          ...context[0],
+          timeline: !context[0].timeline,
+        });
         }}/>
       <div
         onClick={() => {
-          context[1]({ ...context[0], open: !context[0].open });
+          context[1]({
+            ...context[0],
+            open: !context[0].open,
+            type: 'settings',
+          });
         }}
       >
         <FiSettings size={20} style={{ margin: '10px' }} />
