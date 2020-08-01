@@ -15,7 +15,7 @@ function App() {
     timeline: false,
     type: 'settings',
   });
-  
+
   const [columns, setColumns] = useState([
     'Would Be Nice',
     'MVP',
@@ -73,7 +73,7 @@ function App() {
         'What is the description of this task? What is your strategy?',
     },
   ];
-console.log(columns);
+  
   return (
     <AutoProvider value={[drawer, setDrawer, columns, setColumns]}>
       <div style={{ height: '100vh' }}>
