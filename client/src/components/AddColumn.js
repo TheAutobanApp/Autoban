@@ -3,11 +3,21 @@ import { FaPlus } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { Input } from 'semantic-ui-react';
 
-export default function AddColumn() {
+export default function AddColumn(props) {
   const [add, setAdd] = useState({ show: false, name: '' });
   const addColumn = () => {
+    props.setcolumns(() => {
+      const newColumns = props.columns.concat(add.name);
+      return newColumns;
+    })
     setAdd({ ...add, show: !add.show, name: '' });
   };
+
+  const handleKeyPress = (event) => {
+    if(event.key === 'Enter' && add.name !== '') {
+      addColumn();
+    }
+  }
 
   return (
     <>
@@ -29,6 +39,7 @@ export default function AddColumn() {
           <Input
             action={{ icon: 'add', onClick: addColumn }}
             placeholder="Column Name..."
+            onKeyDown={handleKeyPress}
             onChange={(e) => {
               setAdd({ ...add, name: e.target.value });
             }}

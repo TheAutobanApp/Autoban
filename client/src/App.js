@@ -69,6 +69,7 @@ function App() {
         'What is the description of this task? What is your strategy?',
     },
   ];
+
   return (
     <div style={{ height: '100vh' }}>
       <Navbar drawer={drawer} setdrawer={setDrawer} />
@@ -94,7 +95,7 @@ function App() {
                 </Column>
               );
             })}
-            <AddColumn />
+            <AddColumn columns={columns} setcolumns={setColumns}/>
           </>
         ) : (
           <p>Timeline View</p>
