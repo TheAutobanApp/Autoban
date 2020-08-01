@@ -3,10 +3,24 @@ import { FaPlus } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { Input } from 'semantic-ui-react';
 
-export default function AddColumn() {
+export default function AddColumn(props) {
   const [add, setAdd] = useState({ show: false, name: '' });
+
+  // update columns state with new column title, using concat method
   const addColumn = () => {
+    props.setcolumns(() => {
+      const newColumns = props.columns.concat(add.name);
+      return newColumns;
+    });
+    // reset local add state
     setAdd({ ...add, show: !add.show, name: '' });
+  };
+
+  // if enter is pressed when there is a value in the new column input, run the addColumn function
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && add.name !== '') {
+      addColumn();
+    }
   };
 
   return (
@@ -29,6 +43,7 @@ export default function AddColumn() {
           <Input
             action={{ icon: 'add', onClick: addColumn }}
             placeholder="Column Name..."
+            onKeyDown={handleKeyPress}
             onChange={(e) => {
               setAdd({ ...add, name: e.target.value });
             }}

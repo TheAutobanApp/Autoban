@@ -1,20 +1,23 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import { Dropdown } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 
-const DropMenu = (props) => {
+function DropMenu(props) {
   const context = useContext(AutoContext);
+
+  const handleDeleteColumn = () => {
+    console.log(context[2])
+  }
   return (
     <>
       {props.option === 'column' ? (
         <Dropdown
           icon="ellipsis vertical"
-          floating
           direction="left"
           className="icon"
         >
-          <Dropdown.Menu>
-            <Dropdown.Item
+          <Dropdown.Menu className="dropdown-menu">
+          <Dropdown.Item
               onClick={() => {
                 context[1]({
                   ...context[0],
@@ -27,18 +30,17 @@ const DropMenu = (props) => {
             </Dropdown.Item>
             <Dropdown.Item>Archive Cards</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Delete Column</Dropdown.Item>
+            <Dropdown.Item onClick={handleDeleteColumn}>Delete Column</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Dropdown
           icon="ellipsis vertical"
-          floating
           direction="left"
           className="icon"
           style={{ fontSize: '15px' }}
         >
-          <Dropdown.Menu>
+          <Dropdown.Menu className="dropdown-menu">
             <Dropdown.Item
               onClick={() => {
                 context[1]({

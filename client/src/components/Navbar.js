@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
-import { RiMenu4Line } from 'react-icons/ri';
-import { FiSettings } from 'react-icons/fi';
-import Teams from './TeamDropdown';
+import {RiMenu4Line} from 'react-icons/ri'
+import {FiSettings} from 'react-icons/fi'
+import { MdTimeline } from 'react-icons/md'
+import { GoProject } from 'react-icons/go'
+import { Checkbox } from 'semantic-ui-react'
+import Teams from './TeamDropdown'
 import { AutoContext } from '../AutoContext';
 
 function Navbar() {
@@ -19,6 +22,14 @@ function Navbar() {
         />
         <h1 className="race-font">Autoban</h1>
       </div>
+      <div className="flex-row navoptions">
+      {context[0].timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
+      <Checkbox toggle onChange={() => {
+        context[1]({
+          ...context[0],
+          timeline: !context[0].timeline,
+        });
+        }}/>
       <div
         onClick={() => {
           context[1]({
@@ -29,6 +40,7 @@ function Navbar() {
         }}
       >
         <FiSettings size={20} style={{ margin: '10px' }} />
+      </div>
       </div>
     </div>
   );
