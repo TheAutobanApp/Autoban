@@ -18,3 +18,5 @@ router.put('/', function (req, res) {
 router.delete('/', function (req, res) {
   //do things here for other routes
 });
+
+module.exports = router;
