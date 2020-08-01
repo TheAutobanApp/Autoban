@@ -1,21 +1,18 @@
-const Sequelize = require('sequelize');
-const db = require('./index');
-
-const Label = db.define(
-  'Label',
-  {
-    id_label: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+module.exports = function (sequelize, DataTypes) {
+  var Label = sequelize.define(
+    'Label',
+    {
+      id_label: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      id_project: { type: DataTypes.INTEGER, allowNull: false },
+      color: { type: DataTypes.STRING(50), allowNull: false },
+      label_name: { type: DataTypes.STRING(50), allowNull: false },
     },
-    id_project: { type: Sequelize.INTEGER, allowNull: false },
-    id_user: { type: Sequelize.INTEGER, allowNull: false },
-    color: { type: Sequelize.STRING(50), allowNull: false },
-    label_name: { type: Sequelize.STRING(50), allowNull: false },
-  },
-  { freezeTableName: true },
-);
-
-module.exports = Label;
+    { freezeTableName: true },
+  );
+  return Label;
+};

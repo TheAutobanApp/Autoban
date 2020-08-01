@@ -1,26 +1,23 @@
-const Sequelize = require('sequelize');
-const db = require('./index');
-
-const Team = db.define(
-  'Team',
-  {
-    id_team: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+module.exports = function (sequelize, DataTypes) {
+  const Team = sequelize.define(
+    'Team',
+    {
+      id_team: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      team_name: { type: DataTypes.STRING(50), allowNull: false },
+      team_description: {
+        type: DataTypes.STRING(200),
+      },
+      enabled: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
-    team_name: { type: Sequelize.STRING(50), allowNull: false },
-    team_description: {
-      type: Sequelize.STRING(200),
-      allowNull: false,
-    },
-    enabled: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-    },
-  },
-  { freezeTableName: true },
-);
-
-module.exports = Team;
+    { freezeTableName: true },
+  );
+  return Team;
+};

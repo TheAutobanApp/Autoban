@@ -1,21 +1,19 @@
-const Sequelize = require('sequelize');
-const db = require('./index');
-
-const Column = db.define(
-  'Column',
-  {
-    id_column: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+module.exports = function (sequelize, DataTypes) {
+  var Column = sequelize.define(
+    'Column',
+    {
+      id_column: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      id_project: { type: DataTypes.INTEGER, allowNull: false },
+      id_place: { type: DataTypes.INTEGER, allowNull: false },
+      column_name: { type: DataTypes.STRING(50), allowNull: false },
+      column_description: DataTypes.STRING(200),
     },
-    id_project: { type: Sequelize.INTEGER, allowNull: false },
-    id_place: { type: Sequelize.INTEGER, allowNull: false },
-    column_name: { type: Sequelize.STRING(50), allowNull: false },
-    column_description: Sequelize.STRING(200),
-  },
-  { freezeTableName: true },
-);
-
-module.exports = Column;
+    { freezeTableName: true },
+  );
+  return Column;
+};

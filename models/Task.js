@@ -1,33 +1,31 @@
-const Sequelize = require('sequelize');
-const db = require('./index');
-
-const Task = db.define(
-  'Task',
-  {
-    id_task: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+module.exports = function (sequelize, DataTypes) {
+  var Task = sequelize.define(
+    'Task',
+    {
+      id_task: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      id_user: { type: DataTypes.INTEGER, allowNull: false },
+      id_project: { type: DataTypes.INTEGER, allowNull: false },
+      id_column: { type: DataTypes.INTEGER, allowNull: false },
+      column_place: { type: DataTypes.INTEGER, allowNull: false },
+      task_title: { type: DataTypes.STRING(50), allowNull: false },
+      task_description: DataTypes.STRING(200),
+      start_date: DataTypes.DATE,
+      end_date: DataTypes.DATE,
+      id_label1: { type: DataTypes.INTEGER, allowNull: false },
+      id_label2: { type: DataTypes.INTEGER, allowNull: false },
+      id_label3: { type: DataTypes.INTEGER, allowNull: false },
+      complete: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      created_by: { type: DataTypes.INTEGER, allowNull: false },
     },
-    id_user: { type: Sequelize.INTEGER, allowNull: false },
-    id_project: { type: Sequelize.INTEGER, allowNull: false },
-    id_column: { type: Sequelize.INTEGER, allowNull: false },
-    column_place: { type: Sequelize.INTEGER, allowNull: false },
-    task_title: { type: Sequelize.STRING(50), allowNull: false },
-    task_description: Sequelize.STRING(200),
-    start_date: Sequelize.DATE,
-    end_date: Sequelize.DATE,
-    id_label1: { type: Sequelize.INTEGER, allowNull: false },
-    id_label2: { type: Sequelize.INTEGER, allowNull: false },
-    id_label3: { type: Sequelize.INTEGER, allowNull: false },
-    complete: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-    },
-    created_by: { type: Sequelize.INTEGER, allowNull: false },
-  },
-  { freezeTableName: true },
-);
-
-module.exports = Task;
+    { freezeTableName: true },
+  );
+  return Task;
+};

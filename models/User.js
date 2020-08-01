@@ -1,27 +1,25 @@
-const Sequelize = require('sequelize');
-const db = require('./index');
-
-const User = db.define(
-  'User',
-  {
-    id_user: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+module.exports = function (sequelize, DataTypes) {
+  var User = sequelize.define(
+    'User',
+    {
+      id_user: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      id_project: { type: DataTypes.INTEGER, allowNull: false },
+      first_name: { type: DataTypes.STRING(50), allowNull: false },
+      last_name: { type: DataTypes.STRING(50), allowNull: false },
+      email: { type: DataTypes.STRING(50), allowNull: false },
+      username: { type: DataTypes.STRING(50), allowNull: false },
+      password: { type: DataTypes.STRING(100), allowNull: false },
+      enabled: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
-    id_project: { type: Sequelize.INTEGER, allowNull: false },
-    first_name: { type: Sequelize.STRING(50), allowNull: false },
-    last_name: { type: Sequelize.STRING(50), allowNull: false },
-    email: { type: Sequelize.STRING(50), allowNull: false },
-    username: { type: Sequelize.STRING(50), allowNull: false },
-    password: { type: Sequelize.STRING(100), allowNull: false },
-    enabled: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-    },
-  },
-  { freezeTableName: true },
-);
-
-module.exports = User;
+    { freezeTableName: true },
+  );
+  return User;
+};
