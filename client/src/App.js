@@ -4,12 +4,14 @@ import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
+import { AutoProvider } from './AutoContext';
 import AddColumn from './components/AddColumn';
 import './styles/style.css';
 
 function App() {
   const [drawer, setDrawer] = useState({
     open: false,
+    type: '',
   });
 
   const dummy = [
@@ -65,38 +67,40 @@ function App() {
   ];
 
   return (
-    <div style={{ height: '100vh' }}>
-      <Navbar drawer={drawer} setdrawer={setDrawer} />
-      <ProjectView>
-        <Column title="Would Be Nice">
-          {dummy.map(
-            (item) =>
-              item.column === 0 && (
-                <CardComponent
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                />
-              ),
-          )}
-        </Column>
-        <Column title="MVP">
-          {dummy.map(
-            (item) =>
-              item.column === 1 && (
-                <CardComponent
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                />
-              ),
-          )}
-        </Column>
-        <Column title="In Progress"></Column>
-        <AddColumn />
-        <OptionsDrawer drawer={drawer} />
-      </ProjectView>
-    </div>
+    <AutoProvider value={[drawer, setDrawer]}>
+      <div style={{ height: '100vh' }}>
+        <Navbar />
+        <ProjectView>
+          <Column title="Would Be Nice">
+            {dummy.map(
+              (item) =>
+                item.column === 0 && (
+                  <CardComponent
+                    title={item.title}
+                    description={item.description}
+                    key={item.id}
+                  />
+                ),
+            )}
+          </Column>
+          <Column title="MVP">
+            {dummy.map(
+              (item) =>
+                item.column === 1 && (
+                  <CardComponent
+                    title={item.title}
+                    description={item.description}
+                    key={item.id}
+                  />
+                ),
+            )}
+          </Column>
+          <Column title="In Progress"></Column>
+          <AddColumn />
+          <OptionsDrawer />
+        </ProjectView>
+      </div>
+    </AutoProvider>
   );
 }
 
