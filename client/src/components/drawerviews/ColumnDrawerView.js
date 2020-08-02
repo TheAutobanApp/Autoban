@@ -9,7 +9,7 @@ export default function ColumnDrawerView(props) {
   const [name, setName] = useState('');
 
   // update columns state with new column title, using concat method
-  const updateColumnName = () => {
+  const updateColumnName = (e) => {
     // post column to database
     axios
       .put(`/api/columns/${1}`, {
@@ -18,13 +18,12 @@ export default function ColumnDrawerView(props) {
       })
       .then((res) => {
         // create copy of context, then splice the edited column with new one
-        const columnsCopy = Array.from(context[2])
+        const columnsCopy = Array.from(context[2]);
         columnsCopy.splice(context[0].edit, 1, res.data);
         // update context
-        context[3](columnsCopy)
-      }
-      );
-    // reset local add state
+        context[3](columnsCopy);
+      });
+    // reset local name state
     setName('');
   };
 
@@ -57,6 +56,7 @@ export default function ColumnDrawerView(props) {
       </div>
       <h5>Edit Column Name</h5>
       <Input
+        value={name}
         style={{ margin: '5px 10px' }}
         action={{ icon: 'edit', onClick: updateColumnName }}
         placeholder="Column Name..."
