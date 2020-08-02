@@ -45,35 +45,35 @@ function App() {
     },
     {
       title: 'Task Title 2',
-      id: 1,
+      id: 3,
       column: 0,
       description:
         'What is the description of this task? What is your strategy?',
     },
     {
       title: 'Task Title 2',
-      id: 1,
+      id: 4,
       column: 0,
       description:
         'What is the description of this task? What is your strategy?',
     },
     {
       title: 'Task Title 2',
-      id: 1,
+      id: 5,
       column: 0,
       description:
         'What is the description of this task? What is your strategy?',
     },
     {
       title: 'Task Title 2',
-      id: 1,
+      id: 6,
       column: 0,
       description:
         'What is the description of this task? What is your strategy?',
     },
     {
       title: 'Task Title 2',
-      id: 1,
+      id: 7,
       column: 1,
       description:
         'What is the description of this task? What is your strategy?',
