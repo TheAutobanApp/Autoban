@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { AutoContext } from '../AutoContext';
 import { FaPlus } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { Input } from 'semantic-ui-react';
 
 export default function AddColumn(props) {
+  const context = useContext(AutoContext);
   const [add, setAdd] = useState({ show: false, name: '' });
 
   // update columns state with new column title, using concat method
   const addColumn = () => {
-    props.setcolumns(() => {
-      const newColumns = props.columns.concat(add.name);
+    // post column to database
+    axios.post(`/api/columns/${1}`, {
+      id_place: context[2].length,
+      column_name: add.name,
+      column_description: '',
+    }).then(res => console.log(res.data))
+    // update context
+    context[3](() => {
+      const newColumns = context[2].concat(add.name);
       return newColumns;
     });
     // reset local add state
