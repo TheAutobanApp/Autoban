@@ -1,4 +1,5 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
+import axios from 'axios';
 import { Dropdown } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 
@@ -6,8 +7,11 @@ function DropMenu(props) {
   const context = useContext(AutoContext);
 
   const handleDeleteColumn = () => {
-    console.log(context[2])
-  }
+    axios
+      .delete(`/api/columns/${1}`, { data: { id_place: props.id } })
+      .then((res) => context[3](res.data));
+  };
+
   return (
     <>
       {props.option === 'column' ? (
@@ -17,7 +21,7 @@ function DropMenu(props) {
           className="icon"
         >
           <Dropdown.Menu className="dropdown-menu">
-          <Dropdown.Item
+            <Dropdown.Item
               onClick={() => {
                 context[1]({
                   ...context[0],
@@ -30,7 +34,9 @@ function DropMenu(props) {
             </Dropdown.Item>
             <Dropdown.Item>Archive Cards</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleDeleteColumn}>Delete Column</Dropdown.Item>
+            <Dropdown.Item onClick={handleDeleteColumn}>
+              Delete Column
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
@@ -60,6 +66,6 @@ function DropMenu(props) {
       )}
     </>
   );
-};
+}
 
 export default DropMenu;

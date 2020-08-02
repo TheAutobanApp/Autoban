@@ -127,17 +127,37 @@ router.put('/:proj', function (req, res) {
   }
 });
 
+// delete a column then update all other columns' place ids
 router.delete('/:proj', function (req, res) {
+  console.log(req.params.proj, req.body.id_place);
   if (req.params.proj) {
     db.Columns.destroy({
       where: {
         id_project: req.params.proj,
         id_place: req.body.id_place,
-        column_name: req.body.column_name,
       },
     })
-      .then(function () {
-        res.redirect(`/api/columns/${req.params.proj}`);
+    // update place ids
+      .then((columns) => {
+        db.Columns.findAll({
+          where: {
+            id_project: req.params.proj,
+          },
+        })
+          .then((columns) => {
+            // Check if record exists in db
+            if (columns) {
+              columns.forEach((item, i) => {
+                item.update({
+                  id_place: i,
+                });
+              })            
+            }
+            res.json(columns)
+          })
+          .catch(function (err) {
+            res.status(401).json(err);
+          });
       })
       .catch(function (err) {
         res.status(401).json(err);
