@@ -126,7 +126,6 @@ router.put('/', function (req, res) {
 
 // delete a column then update all other columns' place ids
 router.delete('/', function (req, res) {
-  console.log(req.query.proj, req.body.id_place);
   if (req.query.proj) {
     db.Columns.destroy({
       where: {
