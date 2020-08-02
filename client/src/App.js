@@ -13,14 +13,12 @@ const axios = require('axios');
 
 function App() {
   const [tasks, setTasks] = useState(null);
-  const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     axios.get('/api/task/get/all/1').then((tasks) => {
-      console.log(tasks.data);
       setTasks(tasks.data);
     });
-  }, [update]);
+  }, []);
 
   const [drawer, setDrawer] = useState({
     open: false,
@@ -74,8 +72,6 @@ function App() {
         setModal,
         tasks,
         setTasks,
-        update,
-        setUpdate,
       ]}
     >
       <div style={{ height: '100vh' }}>
@@ -92,16 +88,17 @@ function App() {
                 return (
                   <Column title={item} key={i} id={i}>
                     {/* inside each column, map through the cards and render each one that matches the column index */}
-                    {dummy.map(
-                      (card) =>
-                        card.column === i && (
-                          <CardComponent
-                            title={card.title}
-                            description={card.description}
-                            key={card.id}
-                          />
-                        ),
-                    )}
+                    {tasks !== null &&
+                      tasks.map(
+                        (card) =>
+                          card.id_column === i && (
+                            <CardComponent
+                              title={card.task_title}
+                              description={card.task_description}
+                              key={card.id_task}
+                            />
+                          ),
+                      )}
                   </Column>
                 );
               })}

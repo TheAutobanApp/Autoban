@@ -47,6 +47,10 @@ export default function TaskModal(props) {
     axios.post('/api/task/create/1', task);
   };
 
+  const updateComponent = () => {
+    context[9](context[8] + 1);
+  };
+
   const modalClick = (e) => {
     e.stopPropagation();
   };
@@ -76,6 +80,7 @@ export default function TaskModal(props) {
           <button
             onClick={() => {
               postTask();
+              updateComponent();
               hideModal();
             }}
           >
