@@ -12,14 +12,19 @@ export default function AddColumn(props) {
   // update columns state with new column title, using concat method
   const addColumn = () => {
     // post column to database
-    axios.post(`/api/columns/${1}`, {
-      id_place: context[2].length,
-      column_name: add.name,
-      column_description: '',
-    }).then(res => console.log(res.data))
+    axios
+      .post(`/api/columns/${1}`, {
+        id_place: context[2].length,
+        column_name: add.name,
+        column_description: '',
+      })
+      .then((res) => console.log(res.data));
     // update context
     context[3](() => {
-      const newColumns = context[2].concat(add.name);
+      const newColumns = context[2].concat({
+        column_name: add.name,
+        id_place: context[2].length,
+      });
       return newColumns;
     });
     // reset local add state

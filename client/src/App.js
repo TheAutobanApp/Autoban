@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
@@ -16,11 +17,15 @@ function App() {
     type: 'settings',
   });
 
-  const [columns, setColumns] = useState([
-    'Would Be Nice',
-    'MVP',
-    'In Progress',
-  ]);
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    axios.get(`/api/columns/${1}`).then((res) => {
+      console.log(res.data);
+      setColumns(res.data);
+    })
+    // axios.get(`/api/columns/${1}`)
+  }, [])
 
   const dummy = [
     {
@@ -85,7 +90,7 @@ function App() {
               {/* map through columns array and render each column with the title */}
               {columns.map((item, i) => {
                 return (
-                  <Column title={item} key={i} id={i}>
+                  <Column title={item.column_name} key={i} id={i}>
                     {/* inside each column, map through the cards and render each one that matches the column index */}
                     {dummy.map(
                       (card) =>
