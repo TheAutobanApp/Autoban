@@ -8,7 +8,7 @@ function DropMenu(props) {
 
   const handleDeleteColumn = () => {
     axios
-      .delete(`/api/columns/${1}`, { data: { id_place: props.id } })
+      .delete(`/api/columns/?proj=${1}`, { data: { id_place: props.id } })
       .then((res) => context[3](res.data));
   };
 

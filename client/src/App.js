@@ -22,11 +22,10 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/columns/${1}`).then((res) => {
+    axios.get(`/api/columns/?proj=${1}`).then((res) => {
       console.log(res.data);
       setColumns(res.data);
     })
-    // axios.get(`/api/columns/${1}`)
   }, [])
 
   const [modal, setModal] = useState({
