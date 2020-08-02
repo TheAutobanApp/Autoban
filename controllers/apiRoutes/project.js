@@ -30,6 +30,7 @@ router.post('/', function (req, res) {
     res.redirect('/');
   });
 });
+
 router.put('/', function (req, res) {
   // update project name
   if (req.body.project_name) {
@@ -54,7 +55,7 @@ router.put('/', function (req, res) {
         res.status(401).json(err);
       });
   }
-    // update project description
+  // update project description
 
   if (req.body.project_description) {
     db.Project.findOne({
@@ -65,7 +66,9 @@ router.put('/', function (req, res) {
       .then(function (results) {
         if (results) {
           results
-            .update({ project_description: req.body.project_description })
+            .update({
+              project_description: req.body.project_description,
+            })
             .then(() => {
               res.json(results);
             })
@@ -78,7 +81,7 @@ router.put('/', function (req, res) {
         res.status(401).json(err);
       });
   }
-    // update project start date
+  // update project start date
 
   if (req.body.start_date) {
     db.Project.findOne({
@@ -102,7 +105,7 @@ router.put('/', function (req, res) {
         res.status(401).json(err);
       });
   }
-      // update project start date
+  // update project start date
 
   if (req.body.end_date) {
     db.Project.findOne({
@@ -126,10 +129,10 @@ router.put('/', function (req, res) {
         res.status(401).json(err);
       });
   }
-}
+});
 
 router.delete('/', function (req, res) {
-  //delete project 
+  //delete project
   db.Project.destroy({
     where: {
       id_project: req.params.id,
