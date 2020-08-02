@@ -20,7 +20,7 @@ function Navbar() {
           color="lightblue"
           style={{ fontSize: '20px', margin: '1px' }}
         />
-        <h1 className="race-font">Autoban</h1>
+        <h1 className="race-font">{window.innerWidth > 600 ? 'Autoban' : 'A'}</h1>
       </div>
       <div className="flex-row navoptions">
       {context[0].timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
@@ -31,6 +31,7 @@ function Navbar() {
         });
         }}/>
       <div
+        className="clickable"
         onClick={() => {
           context[1]({
             ...context[0],
