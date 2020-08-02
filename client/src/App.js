@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
@@ -9,8 +9,19 @@ import Timeline from './components/Timeline';
 import TaskModal from './components/TaskModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
+const axios = require('axios');
 
 function App() {
+  const [tasks, setTasks] = useState(null);
+  const [update, setUpdate] = useState(0);
+
+  useEffect(() => {
+    axios.get('/api/task/get/all/1').then((tasks) => {
+      console.log(tasks.data);
+      setTasks(tasks.data);
+    });
+  }, [update]);
+
   const [drawer, setDrawer] = useState({
     open: false,
     timeline: false,
@@ -46,34 +57,6 @@ function App() {
     {
       title: 'Task Title 2',
       id: 1,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 1,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 1,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 1,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 1,
       column: 1,
       description:
         'What is the description of this task? What is your strategy?',
@@ -89,6 +72,10 @@ function App() {
         setColumns,
         modal,
         setModal,
+        tasks,
+        setTasks,
+        update,
+        setUpdate,
       ]}
     >
       <div style={{ height: '100vh' }}>

@@ -9,11 +9,11 @@ router.get('/get/all/:proj_id', function (req, res) {
   });
 });
 
-router.post('/create', function (req, res) {
+router.post('/create/:proj_id', function (req, res) {
   const task = req.body;
   db.Task.create({
     id_user: task.id_user,
-    id_project: task.id_project,
+    id_project: req.params.proj_id,
     id_column: task.id_column,
     column_place: task.column_place,
     created_by: task.created_by,
@@ -26,7 +26,6 @@ router.post('/create', function (req, res) {
     id_label3: task.id_label3,
     complete: task.complete,
   }).then((result) => {
-    console.log(result);
     res.redirect('/');
   });
 });

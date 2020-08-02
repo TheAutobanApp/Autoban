@@ -5,9 +5,9 @@ const axios = require('axios');
 
 export default function TaskModal(props) {
   const context = useContext(AutoContext);
+
   const [task, setTask] = useState({
     id_user: 1,
-    id_project: 1,
     id_column: context[4].column,
     column_place: 0,
     task_title: '',
@@ -28,6 +28,7 @@ export default function TaskModal(props) {
     padding: 20,
     margin: 25,
   };
+
   const modalContainer = {
     display: 'flex',
     justifyContent: 'center',
@@ -43,7 +44,7 @@ export default function TaskModal(props) {
   };
 
   const postTask = () => {
-    axios.post('/api/task/create', task);
+    axios.post('/api/task/create/1', task);
   };
 
   const modalClick = (e) => {
