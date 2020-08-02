@@ -18,7 +18,7 @@ export default function Column(props) {
   };
 
   const showModal = () => {
-    context[5]({ ...context[4], show: true });
+    context[5]({ ...context[4], show: true, column: props.id });
   };
 
   return (

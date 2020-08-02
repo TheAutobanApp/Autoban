@@ -6,19 +6,6 @@ import React, { useContext } from 'react';
 import { AutoContext } from '../../AutoContext';
 
 export default function SettingsDrawerView(props) {
-  const drawerStyle = {
-    width: '250px',
-    height: '100%',
-    backgroundColor: 'whitesmoke',
-    boxShadow: '4px 8px 16px gray',
-    position: 'fixed',
-    right: 0,
-    top: 50,
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 999,
-  };
-
   const closeButton = {
     margin: 10,
     borderRadius: 8,
@@ -100,6 +87,7 @@ export default function SettingsDrawerView(props) {
           <img
             style={{ width: 30, height: 30, borderRadius: 5 }}
             src="https://starwarsblog.starwars.com/wp-content/uploads/2019/08/d23-the-mandalorian-poster-tall-A-1088x816.jpg"
+            alt="background"
           />{' '}
         </span>{' '}
         <button style={changeBGButton}>Change Background</button>

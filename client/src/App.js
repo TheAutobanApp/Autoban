@@ -25,6 +25,7 @@ function App() {
 
   const [modal, setModal] = useState({
     show: false,
+    column: null,
   });
 
   const dummy = [
