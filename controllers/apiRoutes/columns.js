@@ -30,10 +30,10 @@ router.post('/:proj', function (req, res) {
       column_name: req.body.column_name,
       column_description: req.body.column_description,
     })
-      .then(function () {
+      .then(() => {
         res.redirect(`/api/columns/${req.params.proj}`);
       })
-      .catch(function (err) {
+      .catch((err) => {
         res.status(401).json(err);
       });
   }
@@ -57,24 +57,23 @@ router.put('/:proj', function (req, res) {
               .update({
                 id_place: req.body.newPlace,
               })
-              .then(function () {
-                res.redirect(`/api/columns/${req.params.proj}`);
+              .then(() => {
+                res.json(column);
               })
-              .catch(function (err) {
+              .catch((err) => {
                 res.status(401).json(err);
               });
           }
         })
-        .catch(function (err) {
+        .catch((err) => {
           res.status(401).json(err);
         });
     }
     // update column name
-    if (req.body.newName) {
+    if (req.body.column_name) {
       db.Columns.findOne({
         where: {
           id_project: req.params.proj,
-          column_name: req.body.oldName,
           id_place: req.body.id_place,
         },
       })
@@ -83,17 +82,17 @@ router.put('/:proj', function (req, res) {
           if (column) {
             column
               .update({
-                column_name: req.body.newName,
+                column_name: req.body.column_name,
               })
-              .then(function () {
-                res.redirect(`/api/columns/${req.params.proj}`);
+              .then(() => {
+                res.json(column);
               })
-              .catch(function (err) {
+              .catch((err) => {
                 res.status(401).json(err);
               });
           }
         })
-        .catch(function (err) {
+        .catch((err) => {
           res.status(401).json(err);
         });
     }
@@ -112,15 +111,15 @@ router.put('/:proj', function (req, res) {
               .update({
                 column_description: req.body.newDescription,
               })
-              .then(function () {
-                res.redirect(`/api/columns/${req.params.proj}`);
+              .then(() => {
+                res.json(column)
               })
-              .catch(function (err) {
+              .catch((err) => {
                 res.status(401).json(err);
               });
           }
         })
-        .catch(function (err) {
+        .catch((err) => {
           res.status(401).json(err);
         });
     }
@@ -155,11 +154,11 @@ router.delete('/:proj', function (req, res) {
             }
             res.json(columns)
           })
-          .catch(function (err) {
+          .catch((err) => {
             res.status(401).json(err);
           });
       })
-      .catch(function (err) {
+      .catch((err) => {
         res.status(401).json(err);
       });
   }

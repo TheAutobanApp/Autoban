@@ -15,6 +15,7 @@ function App() {
     open: false,
     timeline: false,
     type: 'settings',
+    edit: 0,
   });
 
   const [columns, setColumns] = useState([]);

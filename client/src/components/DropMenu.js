@@ -27,6 +27,7 @@ function DropMenu(props) {
                   ...context[0],
                   open: true,
                   type: 'column',
+                  edit: props.id
                 });
               }}
             >
