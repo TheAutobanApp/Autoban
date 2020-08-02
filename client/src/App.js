@@ -6,6 +6,7 @@ import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
+import TaskModal from './components/TaskModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
@@ -21,6 +22,10 @@ function App() {
     'MVP',
     'In Progress',
   ]);
+
+  const [modal, setModal] = useState({
+    show: false,
+  });
 
   const dummy = [
     {
@@ -75,9 +80,21 @@ function App() {
   ];
 
   return (
-    <AutoProvider value={[drawer, setDrawer, columns, setColumns]}>
+    <AutoProvider
+      value={[
+        drawer,
+        setDrawer,
+        columns,
+        setColumns,
+        modal,
+        setModal,
+      ]}
+    >
       <div style={{ height: '100vh' }}>
+        {modal.show && <TaskModal />}
+
         <Navbar />
+
         <ProjectView>
           {/* if toggle is set to project view */}
           {!drawer.timeline ? (
