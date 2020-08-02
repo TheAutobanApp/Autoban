@@ -71,7 +71,7 @@ export default function SettingsDrawerView(props) {
           do eiusmod tempor incididunt ut labore et dolore magna
         </p>{' '}
         <input
-          value="https://autobanprod.herokuapp.com/autobanproj"
+          defaultValue="https://autobanprod.herokuapp.com/autobanproj"
           style={{
             border: '1px solid lightgray',
             borderRadius: 10,
