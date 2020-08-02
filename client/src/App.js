@@ -27,17 +27,16 @@ function App() {
     axios.get(`/api/columns/?proj=${1}`).then((res) => {
       console.log(res.data);
       setColumns(res.data);
-    })
+    });
     axios.get('/api/task/get/all/1').then((tasks) => {
       setTasks(tasks.data);
     });
-  }, [])
+  }, []);
 
   const [modal, setModal] = useState({
     show: false,
     column: null,
   });
-
 
   return (
     <AutoProvider
@@ -71,6 +70,7 @@ function App() {
                         (card) =>
                           card.id_column === i && (
                             <CardComponent
+                              id={card.id_task}
                               title={card.task_title}
                               description={card.task_description}
                               key={card.id_task}

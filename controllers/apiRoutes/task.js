@@ -26,7 +26,7 @@ router.post('/create/:proj_id', function (req, res) {
     id_label3: task.id_label3,
     complete: task.complete,
   }).then((result) => {
-    res.redirect(`/api/task/get/all/${req.params.proj_id}`);
+    res.redirect(`/api/task/get/all/${task.proj_id}`);
   });
 });
 
@@ -34,8 +34,20 @@ router.put('/', function (req, res) {
   //do things here for other routes
 });
 
-router.delete('/', function (req, res) {
-  //do things here for other routes
+router.delete('/delete/:proj_id', function (req, res) {
+  const task = req.body;
+  db.Task.destroy({
+    where: {
+      id_task: task.id_task,
+      id_project: req.params.proj_id,
+    },
+  })
+    .then((task) => {
+      res.json(task);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 module.exports = router;

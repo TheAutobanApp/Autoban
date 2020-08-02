@@ -18,7 +18,7 @@ function CardComponent(props) {
           }}
         >
           {props.title}
-          <DropMenu option="card" />
+          <DropMenu option="card" id={props.id} />
         </Card.Title>
         <Card.Text>{props.description}</Card.Text>
       </Card.Body>

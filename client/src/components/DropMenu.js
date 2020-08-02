@@ -8,8 +8,20 @@ function DropMenu(props) {
 
   const handleDeleteColumn = () => {
     axios
-      .delete(`/api/columns/?proj=${1}`, { data: { id_place: props.id } })
+      .delete(`/api/columns/?proj=${1}`, {
+        data: { id_place: props.id },
+      })
       .then((res) => context[3](res.data));
+  };
+
+  const handleDeleteCard = () => {
+    axios
+      .delete('/api/task/delete/1', {
+        data: { id_task: props.id },
+      })
+      .then((response) => {
+        console.log(response.data);
+      });
   };
 
   return (
@@ -27,7 +39,7 @@ function DropMenu(props) {
                   ...context[0],
                   open: true,
                   type: 'column',
-                  edit: props.id
+                  edit: props.id,
                 });
               }}
             >
@@ -61,7 +73,9 @@ function DropMenu(props) {
             </Dropdown.Item>
             <Dropdown.Item>Add Label</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Delete Card</Dropdown.Item>
+            <Dropdown.Item onClick={handleDeleteCard}>
+              Delete Card
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       )}
