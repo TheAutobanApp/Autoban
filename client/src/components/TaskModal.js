@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import Fade from 'react-reveal/Fade';
 import { AutoContext } from '../AutoContext';
+import { MdClose } from 'react-icons/md';
 const axios = require('axios');
 
 export default function TaskModal(props) {
@@ -19,14 +19,43 @@ export default function TaskModal(props) {
   });
 
   const modalStyle = {
-    height: '500px',
-    width: '500px',
+    height: '80vh',
+    width: '45vw',
+    minHeight: 500,
+    minWidth: 500,
     border: '1px solid lightgray',
     backgroundColor: 'whitesmoke',
-    borderRadius: 10,
+    borderRadius: 5,
     zIndex: 1000,
     padding: 20,
-    margin: 25,
+    margin: 55,
+  };
+
+  const titleInput = {
+    width: '90%',
+    border: 'none',
+    height: 35,
+    borderRadius: 5,
+  };
+
+  const descriptionInput = {
+    width: '100%',
+    border: 'none',
+    height: 200,
+    borderRadius: 5,
+  };
+
+  const functionContainer = {
+    width: 200,
+  };
+
+  const taskFunction = {
+    backgroundColor: 'lightgray',
+    borderRadius: 3,
+    border: 'none',
+    color: 'gray',
+    padding: 8,
+    margin: 8,
   };
 
   const modalContainer = {
@@ -35,8 +64,18 @@ export default function TaskModal(props) {
     height: '100%',
     position: 'absolute',
     width: '100%',
-    backgroundColor: 'rgb(0,0,0,0.3)',
+    backgroundColor: 'rgb(0,0,0,0.5)',
     zIndex: 999,
+  };
+
+  const saveButton = {
+    borderRadius: 5,
+    color: 'white',
+    border: 'none',
+    padding: 10,
+    marginTop: 10,
+    background:
+      'linear-gradient(to bottom, var(--nav-color), var(--nav-color2))',
   };
 
   const hideModal = () => {
@@ -54,36 +93,55 @@ export default function TaskModal(props) {
 
   return (
     <div onClick={hideModal} style={modalContainer}>
-      <Fade top when={context[4].show} collapse duration={1000}>
-        <div style={modalStyle} onClick={modalClick}>
-          <div>
-            <input
-              onChange={(e) => {
-                setTask({ ...task, task_title: e.target.value });
-              }}
-              value={task.value}
-              placeholder="title"
-            />
-          </div>
-          <div>
-            <textarea
-              onChange={(e) =>
-                setTask({ ...task, task_description: e.target.value })
-              }
-              value={task.description}
-              placeholder="description"
-            />
-          </div>
-          <button
-            onClick={() => {
-              postTask();
-              hideModal();
+      <div style={modalStyle} onClick={modalClick}>
+        <div
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <input
+            style={titleInput}
+            onChange={(e) => {
+              setTask({ ...task, task_title: e.target.value });
             }}
-          >
-            Add
-          </button>
+            value={task.value}
+            placeholder="Title"
+          />
+
+          <MdClose
+            size="1.5em"
+            style={{ cursor: 'pointer' }}
+            onClick={hideModal}
+          />
         </div>
-      </Fade>
+        <div
+          style={{
+            marginTop: 20,
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <textarea
+            style={descriptionInput}
+            onChange={(e) =>
+              setTask({ ...task, task_description: e.target.value })
+            }
+            value={task.description}
+            placeholder="Description"
+          />
+          <div style={functionContainer}>
+            <div style={taskFunction}>Labels</div>
+            <div style={taskFunction}>Assign</div>
+          </div>
+        </div>
+        <button
+          style={saveButton}
+          onClick={() => {
+            postTask();
+            hideModal();
+          }}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 }
