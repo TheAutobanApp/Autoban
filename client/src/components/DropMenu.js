@@ -20,7 +20,7 @@ function DropMenu(props) {
         data: { id_task: props.id },
       })
       .then((response) => {
-        console.log(response.data);
+        context[7](response.data);
       });
   };
 

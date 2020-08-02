@@ -43,7 +43,7 @@ router.delete('/delete/:proj_id', function (req, res) {
     },
   })
     .then((task) => {
-      res.json(task);
+      db.Task.findAll().then((tasks) => res.json(tasks));
     })
     .catch((err) => {
       res.json(err);
