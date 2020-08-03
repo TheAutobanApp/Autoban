@@ -16,9 +16,9 @@ module.exports = function (sequelize, DataTypes) {
       task_description: DataTypes.STRING(200),
       start_date: DataTypes.DATE,
       end_date: DataTypes.DATE,
-      id_label1: { type: DataTypes.INTEGER, allowNull: true },
-      id_label2: { type: DataTypes.INTEGER, allowNull: true },
-      id_label3: { type: DataTypes.INTEGER, allowNull: true },
+      id_label1: { type: DataTypes.INTEGER },
+      id_label2: { type: DataTypes.INTEGER },
+      id_label3: { type: DataTypes.INTEGER },
       complete: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
