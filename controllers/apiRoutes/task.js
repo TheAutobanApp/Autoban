@@ -26,7 +26,7 @@ router.post('/create/:proj_id', function (req, res) {
     id_label3: task.id_label3,
     complete: task.complete,
   }).then((result) => {
-    res.redirect(`/api/task/get/all/${task.proj_id}`);
+    res.json(result);
   });
 });
 
