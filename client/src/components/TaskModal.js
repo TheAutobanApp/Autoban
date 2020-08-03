@@ -65,9 +65,14 @@ export default function TaskModal(props) {
   };
 
   const postTask = () => {
-    console.log(task.id_column);
     axios.post('/api/task/create/1', task);
     context[7](context[6].concat([task]));
+    setTask({
+      ...task,
+      task_title: '',
+      task_description: '',
+      id_column: null,
+    });
   };
 
   const modalStyle = {
@@ -79,9 +84,6 @@ export default function TaskModal(props) {
   };
 
   return (
-    // <div onClick={hideModal} style={modalContainer}>
-    //   <Fade right when={context[4].show} collapse duration={500}>
-    //     <div style={modalStyle} onClick={modalClick}>
     <Rodal
       visible={context[4].show}
       onClose={hideModal}
@@ -98,7 +100,7 @@ export default function TaskModal(props) {
           onChange={(e) => {
             setTask({ ...task, task_title: e.target.value });
           }}
-          value={task.value}
+          value={task.task_title}
           placeholder="Title"
         />
       </div>
@@ -114,7 +116,7 @@ export default function TaskModal(props) {
           onChange={(e) =>
             setTask({ ...task, task_description: e.target.value })
           }
-          value={task.description}
+          value={task.task_description}
           placeholder="Description"
         />
         <div style={functionContainer}>
@@ -132,9 +134,5 @@ export default function TaskModal(props) {
         Save
       </button>
     </Rodal>
-    //     </div>
-    //   </Fade>
-    //   //{' '}
-    // </div>
   );
 }
