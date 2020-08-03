@@ -9,7 +9,7 @@ import DropMenu from './DropMenu';
 function CardComponent(props) {
   const [show, setShow] = useState(false);
   const target = useRef(null);
-  const [menu, setMenu] = useState({ offsetTop: 0, offsetLeft: 0 });
+  const [menu, setMenu] = useState({ offsetTop: 0, offsetLeft: 0, labelLimit: 1});
 
   const [dummy, setDummy] = useState([
     {
@@ -39,12 +39,17 @@ function CardComponent(props) {
     const dummyCopy = Array.from(dummy);
     dummyCopy[i].added = false;
     setDummy(dummyCopy);
+    // let newLimit = menu.labelLimit - 1;
+    // if (newLimit < 1) newLimit = 1;
+    // setMenu({...menu, labelLimit : newLimit});
   };
 
   const handleAddLabel = (i) => {
     const dummyCopy = Array.from(dummy);
     dummyCopy[i].added = true;
     setDummy(dummyCopy);
+    let newLimit = menu.labelLimit + 1;
+    setMenu({...menu, labelLimit : newLimit});
   };
 
   return (
@@ -101,6 +106,7 @@ function CardComponent(props) {
               Label
             </Label>
           }
+          icon={null}
           labeled
           id={`add${props.id}`}
           onClick={(e) => {
