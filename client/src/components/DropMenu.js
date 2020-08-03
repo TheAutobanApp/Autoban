@@ -24,6 +24,15 @@ function DropMenu(props) {
       });
   };
 
+  const editCard = () => {
+    context[5]({
+      ...context[4],
+      show: true,
+      edit: 1,
+      card: props.id,
+    });
+  };
+
   return (
     <>
       {props.option === 'column' ? (
@@ -60,15 +69,7 @@ function DropMenu(props) {
           style={{ fontSize: '15px' }}
         >
           <Dropdown.Menu className="dropdown-menu">
-            <Dropdown.Item
-              onClick={() => {
-                context[1]({
-                  ...context[0],
-                  open: true,
-                  type: 'card',
-                });
-              }}
-            >
+            <Dropdown.Item onClick={editCard}>
               Edit Card
             </Dropdown.Item>
             <Dropdown.Item>Add Label</Dropdown.Item>

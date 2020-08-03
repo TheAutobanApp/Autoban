@@ -12,7 +12,7 @@ export default function TaskModal(props) {
     id_column: null,
     column_place: 0,
     task_title: '',
-    task_description: null,
+    task_description: '',
     start_date: null,
     end_date: null,
     complete: false,
@@ -20,7 +20,19 @@ export default function TaskModal(props) {
   });
 
   useEffect(() => {
-    setTask({ ...task, id_column: context[4].column });
+    if (context[4].edit) {
+      context[6].filter((tsk, index) => {
+        if (tsk.id_task === context[4].card) {
+          setTask({
+            ...task,
+            task_title: tsk.task_title,
+            task_description: tsk.task_description,
+          });
+        }
+      });
+    } else {
+      setTask({ ...task, id_column: context[4].column });
+    }
   }, [context[4]]);
 
   const titleInput = {
@@ -61,17 +73,24 @@ export default function TaskModal(props) {
   };
 
   const hideModal = () => {
-    context[5]({ ...context[4], show: false });
-  };
-
-  const postTask = () => {
-    axios.post('/api/task/create/1', task);
-    context[7](context[6].concat([task]));
+    context[5]({ ...context[4], show: false, edit: 0, card: null });
     setTask({
       ...task,
       task_title: '',
       task_description: '',
       id_column: null,
+    });
+  };
+
+  const postTask = () => {
+    axios.post('/api/task/create/1', task).then((res) => {
+      context[7](context[6].concat(res.data));
+      setTask({
+        ...task,
+        task_title: '',
+        task_description: '',
+        id_column: null,
+      });
     });
   };
 

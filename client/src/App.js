@@ -36,6 +36,8 @@ function App() {
   const [modal, setModal] = useState({
     show: false,
     column: null,
+    card: null,
+    edit: 0,
   });
 
   return (
