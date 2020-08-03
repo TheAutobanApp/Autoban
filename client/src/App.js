@@ -52,8 +52,7 @@ function App() {
       ]}
     >
       <div style={{ height: '100vh' }}>
-        {modal.show && <TaskModal />}
-
+        <TaskModal />
         <Navbar />
 
         <ProjectView>
