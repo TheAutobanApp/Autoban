@@ -12,7 +12,7 @@ export default function ColumnDrawerView(props) {
   const updateColumnName = (e) => {
     // post column to database
     axios
-      .put(`/api/columns/${1}`, {
+      .put(`/api/columns/?proj=${1}`, {
         id_place: context[0].edit,
         column_name: name,
       })

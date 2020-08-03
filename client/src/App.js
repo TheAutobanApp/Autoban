@@ -7,10 +7,13 @@ import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
+import TaskModal from './components/TaskModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
 function App() {
+  const [tasks, setTasks] = useState(null);
+
   const [drawer, setDrawer] = useState({
     open: false,
     timeline: false,
@@ -21,69 +24,37 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/columns/${1}`).then((res) => {
+    axios.get(`/api/columns/?proj=${1}`).then((res) => {
       console.log(res.data);
       setColumns(res.data);
-    })
-    // axios.get(`/api/columns/${1}`)
-  }, [])
+    });
+    axios.get('/api/task/get/all/1').then((tasks) => {
+      setTasks(tasks.data);
+    });
+  }, []);
 
-  const dummy = [
-    {
-      title: 'Task Title',
-      id: 0,
-      column: 0,
-      description:
-        'What is the description of this task? What is your exit criteria?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 1,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 3,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 4,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 5,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 6,
-      column: 0,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-    {
-      title: 'Task Title 2',
-      id: 7,
-      column: 1,
-      description:
-        'What is the description of this task? What is your strategy?',
-    },
-  ];
+  const [modal, setModal] = useState({
+    show: false,
+    column: null,
+  });
 
   return (
-    <AutoProvider value={[drawer, setDrawer, columns, setColumns]}>
+    <AutoProvider
+      value={[
+        drawer,
+        setDrawer,
+        columns,
+        setColumns,
+        modal,
+        setModal,
+        tasks,
+        setTasks,
+      ]}
+    >
       <div style={{ height: '100vh' }}>
+        <TaskModal />
         <Navbar />
+
         <ProjectView>
           {/* if toggle is set to project view */}
           {!drawer.timeline ? (
@@ -93,16 +64,18 @@ function App() {
                 return (
                   <Column title={item.column_name} key={i} id={i}>
                     {/* inside each column, map through the cards and render each one that matches the column index */}
-                    {dummy.map(
-                      (card) =>
-                        card.column === i && (
-                          <CardComponent
-                            title={card.title}
-                            description={card.description}
-                            key={card.id}
-                          />
-                        ),
-                    )}
+                    {tasks !== null &&
+                      tasks.map(
+                        (card) =>
+                          card.id_column === i && (
+                            <CardComponent
+                              id={card.id_task}
+                              title={card.task_title}
+                              description={card.task_description}
+                              key={card.id_task}
+                            />
+                          ),
+                      )}
                   </Column>
                 );
               })}

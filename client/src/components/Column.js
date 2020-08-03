@@ -2,9 +2,12 @@ import React, { useContext } from 'react';
 import { FaPlus, FaEllipsisV } from 'react-icons/fa';
 import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';
+import { AutoContext } from '../AutoContext';
 
 export default function Column(props) {
   let numOfCards = React.Children.toArray(props.children).length;
+
+  const context = useContext(AutoContext);
 
   const addCard = () => {
     console.log('add card');
@@ -12,6 +15,10 @@ export default function Column(props) {
 
   const showOptions = () => {
     console.log('show options');
+  };
+
+  const showModal = () => {
+    context[5]({ ...context[4], show: true, column: props.id });
   };
 
   return (
@@ -27,8 +34,15 @@ export default function Column(props) {
           </div>
           {/* add card and options */}
           <div className="flex-row">
-            <FaPlus className="clickable" onClick={addCard} style={{margin: '0 5px'}}/>
-            <DropMenu option="column" id={props.id}/>
+            <FaPlus
+              className="clickable"
+              onClick={() => {
+                addCard();
+                showModal();
+              }}
+              style={{ margin: '0 5px' }}
+            />
+            <DropMenu option="column" id={props.id} />
           </div>
         </div>
         {/* cards div */}

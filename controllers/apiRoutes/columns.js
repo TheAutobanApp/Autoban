@@ -1,37 +1,35 @@
 const router = require('express').Router();
 var db = require('../../models');
 
-// get default columns
-router.get('/', function (req, res) {
-  db.Columns.findAll({
-    where: { id_project: null },
-  }).then((columns) => {
-    res.json(columns);
-  });
-});
-
 // get columns associated with project using project id as param
-router.get('/:proj', function (req, res) {
-  if (req.params.proj) {
+router.get('/', function (req, res) {
+  if (req.query.proj) {
     db.Columns.findAll({
-      where: { id_project: req.params.proj },
+      where: { id_project: req.query.proj },
     }).then((columns) => {
       res.json(columns);
     });
+  } else {
+    // get default columns
+    db.Columns.findAll({
+          where: { id_project: null },
+        }).then((columns) => {
+          res.json(columns);
+        });
   }
 });
 
 // post column with project id from param, respond with json
-router.post('/:proj', function (req, res) {
-  if (req.params.proj) {
+router.post('/', function (req, res) {
+  if (req.query.proj) {
     db.Columns.create({
-      id_project: req.params.proj,
+      id_project: req.query.proj,
       id_place: req.body.id_place,
       column_name: req.body.column_name,
       column_description: req.body.column_description,
     })
-      .then(() => {
-        res.redirect(`/api/columns/${req.params.proj}`);
+      .then((column) => {
+        res.json(column);
       })
       .catch((err) => {
         res.status(401).json(err);
@@ -40,13 +38,13 @@ router.post('/:proj', function (req, res) {
 });
 
 // update column
-router.put('/:proj', function (req, res) {
-  if (req.params.proj) {
+router.put('/', function (req, res) {
+  if (req.query.proj) {
     // update column place id / order
     if (req.body.newPlace) {
       db.Columns.findOne({
         where: {
-          id_project: req.params.proj,
+          id_project: req.query.proj,
           id_place: req.body.oldPlace,
         },
       })
@@ -73,7 +71,7 @@ router.put('/:proj', function (req, res) {
     if (req.body.column_name) {
       db.Columns.findOne({
         where: {
-          id_project: req.params.proj,
+          id_project: req.query.proj,
           id_place: req.body.id_place,
         },
       })
@@ -100,7 +98,7 @@ router.put('/:proj', function (req, res) {
     if (req.body.newDescription) {
       db.Columns.findOne({
         where: {
-          id_project: req.params.proj,
+          id_project: req.query.proj,
           id_place: req.body.id_place,
         },
       })
@@ -127,12 +125,11 @@ router.put('/:proj', function (req, res) {
 });
 
 // delete a column then update all other columns' place ids
-router.delete('/:proj', function (req, res) {
-  console.log(req.params.proj, req.body.id_place);
-  if (req.params.proj) {
+router.delete('/', function (req, res) {
+  if (req.query.proj) {
     db.Columns.destroy({
       where: {
-        id_project: req.params.proj,
+        id_project: req.query.proj,
         id_place: req.body.id_place,
       },
     })
@@ -140,7 +137,7 @@ router.delete('/:proj', function (req, res) {
       .then((columns) => {
         db.Columns.findAll({
           where: {
-            id_project: req.params.proj,
+            id_project: req.query.proj,
           },
         })
           .then((columns) => {

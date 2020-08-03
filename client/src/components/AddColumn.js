@@ -13,7 +13,7 @@ export default function AddColumn(props) {
   const addColumn = () => {
     // post column to database
     axios
-      .post(`/api/columns/${1}`, {
+      .post(`/api/columns/?proj=${1}`, {
         id_place: context[2].length,
         column_name: add.name,
         column_description: '',
