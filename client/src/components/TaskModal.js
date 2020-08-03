@@ -17,6 +17,9 @@ export default function TaskModal(props) {
     end_date: null,
     complete: false,
     created_by: 1,
+    id_label1: null,
+    id_label2: null,
+    id_label3: null,
   });
 
   useEffect(() => {

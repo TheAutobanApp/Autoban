@@ -71,7 +71,6 @@ function DropMenu(props) {
             >
               Edit Card
             </Dropdown.Item>
-            <Dropdown.Item>Add Label</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleDeleteCard}>
               Delete Card

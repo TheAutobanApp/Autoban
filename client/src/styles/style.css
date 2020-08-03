@@ -30,10 +30,11 @@ body {
 .navbar {
     display: flex;
     justify-content: space-between;
-    height: 50px;
+    align-items: center;
+    height: 55px;
     background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     box-shadow: 0 0 10px gray;
-    padding: 2px;
+    /* padding: 7px; */
     color: white;
 }
 
@@ -45,7 +46,7 @@ body {
 .NavDropdown {
     background-color: rgba(255,255,255, 0.3);
     border: none;
-    padding: 5px;
+    /* padding: 5px; */
 }
 
 .NavDropdown:hover, .NavDropdown:enabled{
@@ -58,6 +59,25 @@ body {
     background-color: transparent;
     border-color: none;
 }
+
+.ui.basic.inverted.button {
+    color: white!important;
+    /* background-color: rgba(255, 255, 255, 0.144)!important; */
+    box-shadow: none!important;
+}
+.ui.basic.inverted.button:hover {
+    color: white!important;
+    background-color: transparent!important;
+    -webkit-box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.342) inset !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.342) inset !important;
+}
+
+/* .ui.basic.inverted.button:hover,
+.ui.basic.inverted.buttons .button:hover {
+  color: #fff !important;
+  -webkit-box-shadow: 0 0 0 2px #fff inset !important;
+  box-shadow: 0 0 0 2px #fff inset !important;
+} */
 
 .navoptions {
     width: 125px;
@@ -85,13 +105,45 @@ label {
     background-color: rgba(245, 245, 245, 0.39)!important;
 }
 
-.ui.dropdown .menu {
+.ui.dropdown .menu>.divider {
+    border-top: 1px solid rgba(34,36,38,.1);
+    height: 0;
+    margin: 0!important;
+}
+
+/* .ui.dropdown .menu {
     cursor: auto;
     position: absolute;
     display: none;
     outline: 0;
-    top: -50%;
+    top: -50%!important;
 }
+
+.ui.dropdown .menu .menu {
+    top: -2px!important;
+    left: 125%!important;
+    margin: 0 0 0 -.5em!important;
+    border-radius: .28571429rem!important;
+    z-index: 21!important;
+}
+
+.ui.dropdown .menu .menu .item {
+    padding: .78571429rem 1.14285714rem!important
+}
+
+.ui.dropdown .menu>.item {
+    padding: 0 16px!important;   
+}
+
+#team-drop {
+    padding: 0 16px!important;   
+}
+
+.ui.dropdown.left.pointing.link.item {
+    padding: 11px 0;
+    width: 100%;
+    height: 36px!important;
+} */
 
 /* wrappers */
 .project-view {
@@ -202,10 +254,14 @@ label {
     padding: 14px;
 }
 
+.card-text {
+    min-height: 30px;
+}
+
 .card-footer {
     border-bottom-left-radius: 15px!important;
     border-bottom-right-radius: 15px!important;
-    padding: 6px 10px;
+    padding: 10px 10px;
 }
 
 .label {
