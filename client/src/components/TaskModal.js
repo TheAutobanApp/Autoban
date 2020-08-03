@@ -94,6 +94,15 @@ export default function TaskModal(props) {
     });
   };
 
+  const editTask = () => {
+    axios
+      .put(`/api/task/edit/${context[4].card}/1`, {
+        task_title: task.task_title,
+        task_description: task.task_description,
+      })
+      .then((res) => context[7](res.data));
+  };
+
   const modalStyle = {
     height: '80vh',
     width: '45vw',
@@ -146,7 +155,7 @@ export default function TaskModal(props) {
       <button
         style={saveButton}
         onClick={() => {
-          postTask();
+          context[4].edit ? editTask() : postTask();
           hideModal();
         }}
       >
