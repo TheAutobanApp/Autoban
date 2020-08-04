@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase, { config } from '../Firebase';
+import firebase from '../Firebase';
+import { AutoContext } from './../AutoContext';
+import Rodal from 'rodal';
+import 'rodal/lib/rodal.css';
 
-// Configure FirebaseUI.
+// Configure FirebaseUI
 export default function Login() {
-  const [signedIn, setsignedIn] = useState(false);
+  const context = useContext(AutoContext);
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
@@ -23,20 +26,23 @@ export default function Login() {
   useEffect(() => {
     let unregisterAuthObserver = firebase
       .auth()
-      .onAuthStateChanged((user) => setsignedIn(!!user));
-
+      .onAuthStateChanged((user) => {
+        context[9](!!user);
+        // console.log('test');
+      });
+    // context[9](true);
     // returned function will be called on component unmount
-    return unregisterAuthObserver();
+    return unregisterAuthObserver;
   }, []);
 
   return (
-    <div>
-      <h1>My App</h1>
-      <p>Please sign-in:</p>
-      <StyledFirebaseAuth
-        uiConfig={uiConfig}
-        firebaseAuth={firebase.auth()}
-      />
-    </div>
+    <Rodal visible={true}>
+      <div>
+        <StyledFirebaseAuth
+          uiConfig={uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      </div>
+    </Rodal>
   );
 }

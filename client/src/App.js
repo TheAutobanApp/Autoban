@@ -7,6 +7,7 @@ import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
+import Login from './components/Login';
 import TaskModal from './components/TaskModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
@@ -39,6 +40,7 @@ function App() {
     card: null,
     edit: 0,
   });
+  const [signedIn, setsignedIn] = useState(false);
 
   return (
     <AutoProvider
@@ -51,43 +53,51 @@ function App() {
         setModal,
         tasks,
         setTasks,
+        signedIn,
+        setsignedIn,
       ]}
     >
       <div style={{ height: '100vh' }}>
         <TaskModal />
         <Navbar />
-
-        <ProjectView>
-          {/* if toggle is set to project view */}
-          {!drawer.timeline ? (
-            <>
-              {/* map through columns array and render each column with the title */}
-              {columns.map((item, i) => {
-                return (
-                  <Column title={item.column_name} key={i} id={i}>
-                    {/* inside each column, map through the cards and render each one that matches the column index */}
-                    {tasks !== null &&
-                      tasks.map(
-                        (card) =>
-                          card.id_column === i && (
-                            <CardComponent
-                              id={card.id_task}
-                              title={card.task_title}
-                              description={card.task_description}
-                              key={card.id_task}
-                            />
-                          ),
-                      )}
-                  </Column>
-                );
-              })}
-              <AddColumn columns={columns} setcolumns={setColumns} />
-            </>
-          ) : (
-            <Timeline />
-          )}
-          <OptionsDrawer />
-        </ProjectView>
+        {!signedIn ? (
+          <Login />
+        ) : (
+          <ProjectView>
+            {/* if toggle is set to project view */}
+            {!drawer.timeline ? (
+              <>
+                {/* map through columns array and render each column with the title */}
+                {columns.map((item, i) => {
+                  return (
+                    <Column title={item.column_name} key={i} id={i}>
+                      {/* inside each column, map through the cards and render each one that matches the column index */}
+                      {tasks !== null &&
+                        tasks.map(
+                          (card) =>
+                            card.id_column === i && (
+                              <CardComponent
+                                id={card.id_task}
+                                title={card.task_title}
+                                description={card.task_description}
+                                key={card.id_task}
+                              />
+                            ),
+                        )}
+                    </Column>
+                  );
+                })}
+                <AddColumn
+                  columns={columns}
+                  setcolumns={setColumns}
+                />
+              </>
+            ) : (
+              <Timeline />
+            )}
+            <OptionsDrawer />
+          </ProjectView>
+        )}
       </div>
     </AutoProvider>
   );
