@@ -285,3 +285,8 @@ label {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+/* rodal */
+.rodal-close {
+    display: none!important;
+}
