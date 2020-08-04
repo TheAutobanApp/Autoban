@@ -28,7 +28,8 @@ export default function Login() {
       .auth()
       .onAuthStateChanged((user) => {
         context[9](!!user);
-        // console.log('test');
+
+        console.log(firebase.auth().currentUser);
       });
     // context[9](true);
     // returned function will be called on component unmount
