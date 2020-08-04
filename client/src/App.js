@@ -26,7 +26,6 @@ function App() {
 
   useEffect(() => {
     axios.get(`/api/columns/?proj=${1}`).then((res) => {
-      console.log(res.data);
       setColumns(res.data);
     });
     axios.get('/api/task/get/all/1').then((tasks) => {
