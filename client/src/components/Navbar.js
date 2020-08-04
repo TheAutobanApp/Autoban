@@ -1,47 +1,65 @@
 import React, { useContext } from 'react';
-import {RiMenu4Line} from 'react-icons/ri'
-import {FiSettings} from 'react-icons/fi'
-import { MdTimeline } from 'react-icons/md'
-import { GoProject } from 'react-icons/go'
-import { Checkbox } from 'semantic-ui-react'
-import Teams from './TeamDropdown'
+import { RiMenu4Line } from 'react-icons/ri';
+import { FiSettings } from 'react-icons/fi';
+import { MdTimeline } from 'react-icons/md';
+import { GoProject } from 'react-icons/go';
+import { Checkbox, Button, Dropdown } from 'semantic-ui-react';
+import TeamDropdown from './TeamDropdown';
+import UserDropdown from './UserDropdown';
+import TeamDropItem from './TeamDropItem';
 import { AutoContext } from '../AutoContext';
 
 function Navbar() {
   const context = useContext(AutoContext);
+
+  const handleHomeClick = () => {
+    console.log("go home")
+  }
+
   return (
     <div className="navbar">
-      <div className="flex-row">
-        <Teams title="Team" item1="Team1" item2="Team2" />
-        <Teams title="User" item1="User1" item2="User2" />
+      <div className="flex-row" style={{ padding: '0 4px' }}>
+        <Button icon="home" inverted compact basic circular onClick={handleHomeClick}/>
+        <TeamDropdown items={['Autoban', 'PubIO']}/>
+        {/* user dropdown */}
+        <UserDropdown />
       </div>
       <div className="flex-row">
         <RiMenu4Line
           color="lightblue"
           style={{ fontSize: '20px', margin: '1px' }}
         />
-        <h1 className="race-font">{window.innerWidth > 600 ? 'Autoban' : 'A'}</h1>
+        <h1 className="race-font">
+          {window.innerWidth > 600 ? 'Autoban' : 'A'}
+        </h1>
       </div>
       <div className="flex-row navoptions">
-      {context[0].timeline ? <MdTimeline size={22}/> : <GoProject size={22}/>}
-      <Checkbox toggle onChange={() => {
-        context[1]({
-          ...context[0],
-          timeline: !context[0].timeline,
-        });
-        }}/>
-      <div
-        className="clickable"
-        onClick={() => {
-          context[1]({
-            ...context[0],
-            open: !context[0].open,
-            type: 'settings',
-          });
-        }}
-      >
-        <FiSettings size={20} style={{ margin: '10px' }} />
-      </div>
+        {context[0].timeline ? (
+          <MdTimeline size={22} />
+        ) : (
+          <GoProject size={22} />
+        )}
+        <Checkbox
+          toggle
+          onChange={() => {
+            context[1]({
+              ...context[0],
+              timeline: !context[0].timeline,
+            });
+          }}
+        />
+        <div
+          className="clickable"
+          onClick={() => {
+            context[1]({
+              ...context[0],
+              open: !context[0].open,
+              type: 'settings',
+            });
+          }}
+        >
+          <FiSettings size={20} style={{ margin: '10px' }} />
+        </div>
       </div>
     </div>
   );
