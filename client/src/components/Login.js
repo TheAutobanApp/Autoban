@@ -19,7 +19,13 @@ export default function Login() {
     email: '',
     agree: false,
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({
+    taken: false,
+    username: false,
+    firstName: false,
+    lastName: false,
+    agree: false,
+  });
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
@@ -74,7 +80,13 @@ export default function Login() {
   }, []);
 
   const handleSignUp = () => {
-    if (signUp.agree) {
+    if (
+      signUp.agree &&
+      signUp.username &&
+      signUp.firstName &&
+      signUp.lastName &&
+      signUp.username.length > 2
+    ) {
       axios
         .post('/api/user', {
           username: signUp.username,
@@ -102,18 +114,60 @@ export default function Login() {
         })
         .catch(function (error) {
           if (error.response.data === 'user.username') {
-            handleUsernameTaken();
+            handleSignupError('taken');
           }
         });
+    } else if (!signUp.username) {
+      handleSignupError('username');
+    } else if (!signUp.firstName) {
+      handleSignupError('firstName');
+    } else if (!signUp.lastName) {
+      handleSignupError('lastName');
+    } else if (!signUp.agree) {
+      handleSignupError('agree');
     }
   };
 
-  const handleUsernameTaken = () => {
-    console.log('Username is already taken.');
-    setError(true);
-    setTimeout(() => {
-      setError(false);
-    }, 4000);
+  const handleSignupError = (error) => {
+    switch (error) {
+      case 'taken':
+        console.log('Username is already taken.');
+        setError({ ...error, taken: true });
+        setTimeout(() => {
+          setError({ ...error, taken: false });
+        }, 4000);
+        break;
+      case 'username':
+        console.log('Must enter a valid username.');
+        setError({ ...error, username: true });
+        setTimeout(() => {
+          setError({ ...error, username: false });
+        }, 4000);
+        break;
+      case 'firstName':
+        console.log('Must enter a first name.');
+        setError({ ...error, firstName: true });
+        setTimeout(() => {
+          setError({ ...error, firstName: false });
+        }, 4000);
+        break;
+      case 'lastName':
+        console.log('Must enter a last name.');
+        setError({ ...error, lastName: true });
+        setTimeout(() => {
+          setError({ ...error, lastName: false });
+        }, 4000);
+        break;
+      case 'agree':
+        console.log('Must agree to the terms of service.');
+        setError({ ...error, agree: true });
+        setTimeout(() => {
+          setError({ ...error, agree: false });
+        }, 4000);
+        break;
+      default:
+        console.log('Sign up failed.');
+    }
   };
 
   return (
@@ -129,12 +183,16 @@ export default function Login() {
             <Form.Field>
               <label>Username</label>
               <input
+                minLength={2}
                 maxLength={16}
                 placeholder="Username"
                 onChange={(e) =>
                   setSignUp({ ...signUp, username: e.target.value })
                 }
               />
+              <Fade bottom collapse when={error.username}>
+                <p style={{ color: 'red' }}>Must enter a username!</p>
+              </Fade>
             </Form.Field>
             <Form.Field>
               <label>First Name</label>
@@ -144,6 +202,9 @@ export default function Login() {
                   setSignUp({ ...signUp, firstName: e.target.value })
                 }
               />
+              <Fade bottom collapse when={error.firstName}>
+                <p style={{ color: 'red' }}>Must enter first name!</p>
+              </Fade>
             </Form.Field>
             <Form.Field>
               <label>Last Name</label>
@@ -153,6 +214,9 @@ export default function Login() {
                   setSignUp({ ...signUp, lastName: e.target.value })
                 }
               />
+              <Fade bottom collapse when={error.lastName}>
+                <p style={{ color: 'red' }}>Must enter last name!</p>
+              </Fade>
             </Form.Field>
             <Form.Field>
               <Checkbox
@@ -164,15 +228,25 @@ export default function Login() {
                   })
                 }
               />
-            </Form.Field>
-            <Button type="submit" onClick={handleSignUp}>
-              Submit
-            </Button>
-              <Fade top collapse when={error}>
-              <h4 style={{ textAlign: 'center', color: 'red' }}>
-                Username is already taken!
-              </h4>
+              <Fade bottom collapse when={error.agree}>
+                <p style={{ color: 'red' }}>
+                  Must agree to continue!
+                </p>
               </Fade>
+            </Form.Field>
+            <div
+              className="flex-row"
+              style={{ justifyContent: 'space-between' }}
+            >
+              <Button type="submit" onClick={handleSignUp}>
+                Submit
+              </Button>
+              <Fade bottom collapse when={error.taken}>
+                <p style={{ color: 'red' }}>
+                  Username is already taken!
+                </p>
+              </Fade>
+            </div>
           </Form>
         )}
       </div>
