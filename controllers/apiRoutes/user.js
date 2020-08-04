@@ -2,15 +2,15 @@ const router = require('express').Router();
 var db = require('../../models');
 
 router.get('/', function (req, res) {
-  if (req.body.password) {
+  if (req.query.email) {
     db.User.findOne({
       where: {
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
+        email: req.query.email,
       },
     }).then((user) => {
       res.json(user);
+    }).catch((err) => {
+      res.status(401).json(err);
     });
   }
 });
@@ -22,14 +22,14 @@ router.post('/', function (req, res) {
       last_name: req.body.last_name,
       email: req.body.email,
       username: req.body.username,
-      password: req.body.password,
       enabled: true,
     })
       .then((user) => {
         res.json(user);
       })
       .catch((err) => {
-        res.status(401).json(err);
+        console.log(err.errors[0].path)
+        res.status(500).send(err.errors[0].path)
       });
   }
 });
@@ -79,26 +79,26 @@ router.put('/', function (req, res) {
       });
   }
   // update password
-  if (req.query.pw !== req.query.newpw) {
-    db.User.findOne({
-      where: { password: req.query.pw, id_user: req.query.uid },
-    })
-      .then((user) => {
-        if (user) {
-          user
-            .update({ password: req.query.newpw })
-            .then(() => {
-              res.json(user);
-            })
-            .catch((err) => {
-              res.status(401).json(err);
-            });
-        }
-      })
-      .catch((err) => {
-        res.status(401).json(err);
-      });
-  }
+  // if (req.query.pw !== req.query.newpw) {
+  //   db.User.findOne({
+  //     where: { password: req.query.pw, id_user: req.query.uid },
+  //   })
+  //     .then((user) => {
+  //       if (user) {
+  //         user
+  //           .update({ password: req.query.newpw })
+  //           .then(() => {
+  //             res.json(user);
+  //           })
+  //           .catch((err) => {
+  //             res.status(401).json(err);
+  //           });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       res.status(401).json(err);
+  //     });
+  // }
 });
 
 // update name

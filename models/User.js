@@ -10,8 +10,8 @@ module.exports = function (sequelize, DataTypes) {
       },
       first_name: { type: DataTypes.STRING(50), allowNull: false },
       last_name: { type: DataTypes.STRING(50), allowNull: false },
-      email: { type: DataTypes.STRING(50), allowNull: false },
-      username: { type: DataTypes.STRING(50), allowNull: false },
+      email: { type: DataTypes.STRING(50), allowNull: false, unique: true, isEmail: true },
+      username: { type: DataTypes.STRING(50), allowNull: false, unique: true, len: [2,16] },
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

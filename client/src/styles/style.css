@@ -256,6 +256,7 @@ label {
 
 .card-text {
     min-height: 30px;
+    white-space: pre-wrap;
 }
 
 .card-footer {
@@ -284,4 +285,9 @@ label {
     color: white!important;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+/* rodal */
+.rodal-close {
+    display: none!important;
 }
