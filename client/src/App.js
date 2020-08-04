@@ -13,6 +13,13 @@ import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
 function App() {
+  const [user, setUser] = useState({
+    signedIn: false,
+    username: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+  });
   const [tasks, setTasks] = useState(null);
 
   const [drawer, setDrawer] = useState({
@@ -25,6 +32,7 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
+    axios.get()
     axios.get(`/api/columns/?proj=${1}`).then((res) => {
       setColumns(res.data);
     });
@@ -52,14 +60,14 @@ function App() {
         setModal,
         tasks,
         setTasks,
-        signedIn,
-        setsignedIn,
+        user,
+        setUser
       ]}
     >
       <div style={{ height: '100vh' }}>
         <TaskModal />
         <Navbar />
-        {!signedIn ? (
+        {!user.signedIn ? (
           <Login />
         ) : (
           <ProjectView>

@@ -11,7 +11,7 @@ export default function UserDropdown() {
       .auth()
       .signOut()
       .then(() => {
-        context[9](false);
+        context[9]({...context[8], signedIn: false});
       });
   };
 
@@ -29,7 +29,7 @@ export default function UserDropdown() {
             key: 'user',
             text: (
               <span>
-                Signed in as <strong>{'tanx'}</strong>
+                Signed in as <strong>{context[8].username}</strong>
               </span>
             ),
             disabled: true,

@@ -44,6 +44,7 @@ export default function Login() {
             .get(`/api/user/?email=${email}`)
             .then((res) => {
               console.log(res.data);
+              const user = res.data;
               if (res.data === null) {
                 setSignUp({
                   ...signUp,
@@ -51,7 +52,13 @@ export default function Login() {
                   email: email,
                 });
               } else {
-                context[9](!!user);
+                context[9]({
+                  signedIn: !!user,
+                  username: user.username,
+                  firstName: user.first_name,
+                  lastName: user.last_name,
+                  email: user.email,
+                });
               }
             })
             .catch(function (error) {
@@ -67,26 +74,33 @@ export default function Login() {
   const handleSignUp = () => {
     if (signUp.agree) {
       axios
-      .post('/api/user', {
-        username: signUp.username,
-        first_name: signUp.firstName,
-        last_name: signUp.lastName,
-        email: signUp.email,
-      })
-      .then((res) => {
-        context[9](true);
-        setSignUp({
-          showSignUp: false,
-          username: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          agree: false,
+        .post('/api/user', {
+          username: signUp.username,
+          first_name: signUp.firstName,
+          last_name: signUp.lastName,
+          email: signUp.email,
+        })
+        .then((res) => {
+          context[9]({
+            ...context[8],
+            signedIn: true,
+            username: signUp.username,
+            firstName: signUp.firstName,
+            lastName: signUp.lastName,
+            email: signUp.email,
+          });
+          setSignUp({
+            showSignUp: false,
+            username: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            agree: false,
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
     }
   };
 
@@ -103,6 +117,7 @@ export default function Login() {
             <Form.Field>
               <label>Username</label>
               <input
+                maxLength={16}
                 placeholder="Username"
                 onChange={(e) =>
                   setSignUp({ ...signUp, username: e.target.value })
@@ -130,10 +145,12 @@ export default function Login() {
             <Form.Field>
               <Checkbox
                 label="I agree to the Terms and Conditions"
-                onChange={() => setSignUp({
-                  ...signUp,
-                  agree: !signUp.agree,
-                })}
+                onChange={() =>
+                  setSignUp({
+                    ...signUp,
+                    agree: !signUp.agree,
+                  })
+                }
               />
             </Form.Field>
             <Button type="submit" onClick={handleSignUp}>
