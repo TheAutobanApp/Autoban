@@ -256,6 +256,7 @@ label {
 
 .card-text {
     min-height: 30px;
+    white-space: pre-wrap;
 }
 
 .card-footer {

@@ -15,14 +15,6 @@ router.get('/', function (req, res) {
   }
 });
 
-router.get('/all', function (req, res) {
-    db.User.findAll().then((user) => {
-      res.json(user);
-    }).catch((err) => {
-      res.status(401).json(err);
-    });
-});
-
 router.post('/', function (req, res) {
   if (req.body.username && req.body.email) {
     db.User.create({
@@ -36,8 +28,8 @@ router.post('/', function (req, res) {
         res.json(user);
       })
       .catch((err) => {
-        console.log(err.errors)
-        res.status(500).send('Something broke!')
+        console.log(err.errors[0].path)
+        res.status(500).send(err.errors[0].path)
       });
   }
 });

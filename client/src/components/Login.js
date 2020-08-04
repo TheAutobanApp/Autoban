@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from '../Firebase';
+import Fade from 'react-reveal/Fade';
 import { AutoContext } from './../AutoContext';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
 import Rodal from 'rodal';
@@ -18,6 +19,7 @@ export default function Login() {
     email: '',
     agree: false,
   });
+  const [error, setError] = useState(false);
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'popup',
@@ -99,9 +101,19 @@ export default function Login() {
           });
         })
         .catch(function (error) {
-          console.log(error);
+          if (error.response.data === 'user.username') {
+            handleUsernameTaken();
+          }
         });
     }
+  };
+
+  const handleUsernameTaken = () => {
+    console.log('Username is already taken.');
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+    }, 4000);
   };
 
   return (
@@ -156,6 +168,11 @@ export default function Login() {
             <Button type="submit" onClick={handleSignUp}>
               Submit
             </Button>
+              <Fade top collapse when={error}>
+              <h4 style={{ textAlign: 'center', color: 'red' }}>
+                Username is already taken!
+              </h4>
+              </Fade>
           </Form>
         )}
       </div>
