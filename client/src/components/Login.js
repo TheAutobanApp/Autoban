@@ -16,6 +16,7 @@ export default function Login() {
     firstName: '',
     lastName: '',
     email: '',
+    agree: false,
   });
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -38,7 +39,7 @@ export default function Login() {
       .onAuthStateChanged((user) => {
         if (user) {
           const email = firebase.auth().currentUser.email;
-          console.log(email)
+          console.log(email);
           axios
             .get(`/api/user/?email=${email}`)
             .then((res) => {
@@ -64,7 +65,8 @@ export default function Login() {
   }, []);
 
   const handleSignUp = () => {
-    axios
+    if (signUp.agree) {
+      axios
       .post('/api/user', {
         username: signUp.username,
         first_name: signUp.firstName,
@@ -79,16 +81,17 @@ export default function Login() {
           firstName: '',
           lastName: '',
           email: '',
+          agree: false,
         });
       })
       .catch(function (error) {
         console.log(error);
-        res.status(500).send('Something broke!')
       });
+    }
   };
 
   return (
-    <Rodal visible={true}>
+    <Rodal visible={true} customStyles={{ height: 'fit-content' }}>
       <div>
         {!signUp.showSignUp ? (
           <StyledFirebaseAuth
@@ -125,7 +128,13 @@ export default function Login() {
               />
             </Form.Field>
             <Form.Field>
-              <Checkbox label="I agree to the Terms and Conditions" />
+              <Checkbox
+                label="I agree to the Terms and Conditions"
+                onChange={() => setSignUp({
+                  ...signUp,
+                  agree: !signUp.agree,
+                })}
+              />
             </Form.Field>
             <Button type="submit" onClick={handleSignUp}>
               Submit
