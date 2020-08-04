@@ -30,8 +30,23 @@ router.post('/create/:proj_id', function (req, res) {
   });
 });
 
-router.put('/', function (req, res) {
-  //do things here for other routes
+router.put('/edit/:id_task/:proj_id', function (req, res) {
+  db.Task.update(
+    {
+      task_title: req.body.task_title,
+      task_description: req.body.task_description,
+    },
+    {
+      where: { id_task: req.params.id_task },
+    },
+  ).then(() => {
+    db.Task.findAll({
+      where: { id_project: req.params.proj_id },
+    }).then((response) => {
+      console.log(response);
+      res.json(response);
+    });
+  });
 });
 
 router.delete('/delete/:proj_id', function (req, res) {
