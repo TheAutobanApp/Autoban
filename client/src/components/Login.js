@@ -28,7 +28,6 @@ export default function Login() {
       .auth()
       .onAuthStateChanged((user) => {
         context[9](!!user);
-
         console.log(firebase.auth().currentUser);
       });
     // context[9](true);
