@@ -36,7 +36,8 @@ router.post('/', function (req, res) {
         res.json(user);
       })
       .catch((err) => {
-        res.status(401).json(err);
+        console.log(err.errors)
+        res.status(500).send('Something broke!')
       });
   }
 });

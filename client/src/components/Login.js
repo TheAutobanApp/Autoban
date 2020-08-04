@@ -83,6 +83,7 @@ export default function Login() {
       })
       .catch(function (error) {
         console.log(error);
+        res.status(500).send('Something broke!')
       });
   };
 
