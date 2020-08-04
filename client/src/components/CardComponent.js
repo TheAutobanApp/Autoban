@@ -23,6 +23,7 @@ function CardComponent(props) {
       const defLabels = [];
       res.data.forEach((label) => {
         defLabels.push({
+          id_label: label.id_label,
           color: label.color,
           text: label.label_name,
           added: false,
@@ -32,6 +33,7 @@ function CardComponent(props) {
     });
   }, []);
 
+  // move added card label to available state and remove from it's label state
   const handleLabelDelete = (e) => {
     let i = e.target.parentElement.id;
     const availCopy = Array.from(availLabels);
@@ -43,10 +45,11 @@ function CardComponent(props) {
     setAvailLabels(availCopy);
   };
 
+  // move label to card's label state and remove from available label state
   const handleAddLabel = (i) => {
     const availCopy = Array.from(availLabels);
-    const newLabel = availCopy[i];
     const labelsCopy = Array.from(labels);
+    const newLabel = availCopy[i];
     labelsCopy.push(newLabel);
     availCopy.splice(i, 1);
     setLabels(labelsCopy);
