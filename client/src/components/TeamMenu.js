@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Menu, Segment } from 'semantic-ui-react'
+import { Grid, Menu, Segment, MenuHeader } from 'semantic-ui-react'
 
 export default function TeamMenu() {
 const [team, setTeam] = useState({
@@ -9,9 +9,9 @@ const [team, setTeam] = useState({
  const handleItemClick = (e, { name }) => setTeam({ ...team, activeItem: name })
 
     return (
-      <Grid>
-        <Grid.Column width={4}>
-          <Menu fluid vertical tabular>
+      <Grid style={{maxHeight:"100%", height: "inherit"}}>
+        <Grid.Column width={2} style={{maxHeight:"100%"}}>
+          <Menu fluid vertical tabular style={{overflowX:"hidden", overflowY:"auto", maxHeight:"100%"}}>
             <Menu.Item
               name='All'
               active={team.activeItem === 'All'}
@@ -82,7 +82,16 @@ const [team, setTeam] = useState({
               active={team.activeItem === 'links'}
               onClick={handleItemClick}
             />
-            
+             <Menu.Item
+              name='links'
+              active={team.activeItem === 'links'}
+              onClick={handleItemClick}
+            />
+                         <Menu.Item
+              name='links'
+              active={team.activeItem === 'links'}
+              onClick={handleItemClick}
+            />
           </Menu>
         </Grid.Column>
       </Grid>
