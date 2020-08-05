@@ -13,9 +13,10 @@ function CardComponent(props) {
   const [menu, setMenu] = useState({
     offsetTop: 0,
     offsetLeft: 0,
+    addLabel: '',
   });
 
-  const [labelIDs, setLabelIDs] = useState([])
+  const [labelIDs, setLabelIDs] = useState([]);
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
 
@@ -40,7 +41,9 @@ function CardComponent(props) {
           // console.log(label);
           // console.log(defLabels[label]);
           if (label !== null) {
-            let foundIndex = defLabels.findIndex(item => item.id_label == label)
+            let foundIndex = defLabels.findIndex(
+              (item) => item.id_label == label,
+            );
             // console.log(foundIndex)
             const newLabel = defLabels[foundIndex];
             if (newLabel) {
@@ -61,39 +64,19 @@ function CardComponent(props) {
   const handleLabelDelete = (i) => {
     const availCopy = Array.from(availLabels);
     const labelsCopy = Array.from(labels);
-    console.log(availCopy, labelsCopy)
-    const foundIndex = labels.findIndex(item => item.id_label === i);
-    const labelIdIndex = labelIDs.findIndex(item => item === i)
-    const newLabel = labelsCopy[foundIndex];
-    console.log(newLabel)
-    availCopy.push(newLabel);
+    console.log(availCopy, labelsCopy);
+    const foundIndex = labels.findIndex(
+      (item) => item.id_label === i,
+    );
+    const labelIdIndex = labelIDs.findIndex((item) => item === i);
+    const deleteLabel = labelsCopy[foundIndex];
+    console.log(deleteLabel);
+    availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
+    // send id_label to be removed
     axios.put(`/api/task/label/remove/?id_task=${props.id}`, {
-              id_label: newLabel.id_label,
-            })
-    // switch (foundIndex) {
-    //   case 2:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_label3: null,
-    //       })
-    //       .then((res) => console.log(res, 'idlabel3'));
-    //     break;
-    //   case 1:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_label2: null,
-    //       })
-    //       .then((res) => console.log(res, 'idlabel2'));
-    //     break;
-    //   case 0:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_label1: null,
-    //       })
-    //       .then((res) => console.log(res, 'idlabel1'));
-    //     break;
-    // }
+      id_label: deleteLabel.id_label,
+    });
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
@@ -101,7 +84,9 @@ function CardComponent(props) {
   // move label to card's label state and remove from available label state
   const handleAddLabel = (i) => {
     const availCopy = Array.from(availLabels);
-    const foundIndex = availCopy.findIndex(item => item.id_label === i)
+    const foundIndex = availCopy.findIndex(
+      (item) => item.id_label === i,
+    );
     // console.log(foundIndex)
     const labelsCopy = Array.from(labels);
     const newLabel = availCopy[foundIndex];
@@ -168,7 +153,10 @@ function CardComponent(props) {
               key={i}
             >
               {item.label_name}
-              <Icon name="delete" onClick={() => handleLabelDelete(item.id_label)} />
+              <Icon
+                name="delete"
+                onClick={() => handleLabelDelete(item.id_label)}
+              />
             </Label>
           );
         })}
@@ -215,13 +203,25 @@ function CardComponent(props) {
                 zIndex: 1000,
               }}
             >
-              {/* <Input
-              size="mini"
-              icon="search"
-              iconPosition="left"
-              className="search"
-            />
-            <Dropdown.Divider /> */}
+              <Input
+                size="mini"
+                icon="add"
+                iconPosition="left"
+                className="search"
+                search
+                options={availLabels.map((option) => {
+                  return {
+                    key: option.label_name,
+                    text: option.label_name,
+                    value: option.label_name,
+                  };
+                })}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) =>
+                  setMenu({ ...menu, addLabel: e.target.value })
+                }
+              />
+              <Dropdown.Divider />
               <Dropdown.Menu scrolling>
                 {availLabels.map((option, i) => {
                   return (
