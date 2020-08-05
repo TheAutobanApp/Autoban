@@ -167,6 +167,12 @@ label {
     min-width: 5px
 }
 
+.home-view {
+    overflow-x: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
 /* column */
 .column {
     width: 15%;

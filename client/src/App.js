@@ -9,6 +9,7 @@ import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/TaskModal';
+import Homeview from './components/Homeview'
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
@@ -30,6 +31,10 @@ function App() {
   });
 
   const [columns, setColumns] = useState([]);
+
+  const [view, setView] = useState({
+    type: "home",
+  });
 
   useEffect(() => {
     axios.get()
@@ -61,7 +66,9 @@ function App() {
         tasks,
         setTasks,
         user,
-        setUser
+        setUser,
+        view, 
+        setView
       ]}
     >
       <div style={{ height: '100vh' }}>
@@ -70,7 +77,7 @@ function App() {
         {!user.signedIn ? (
           <Login />
         ) : (
-          <ProjectView>
+          view.type === 'home' ? <Homeview /> : <ProjectView>
             {/* if toggle is set to project view */}
             {!drawer.timeline ? (
               <>
@@ -104,6 +111,7 @@ function App() {
             )}
             <OptionsDrawer />
           </ProjectView>
+                
         )}
       </div>
     </AutoProvider>
