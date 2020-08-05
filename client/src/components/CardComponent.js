@@ -15,6 +15,7 @@ function CardComponent(props) {
     offsetLeft: 0,
   });
 
+  const [labelIDs, setLabelIDs] = useState([])
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
 
@@ -22,12 +23,7 @@ function CardComponent(props) {
     axios.get('/api/label/').then((res) => {
       const defLabels = [];
       res.data.forEach((label) => {
-        defLabels.push({
-          id_label: label.id_label,
-          color: label.color,
-          text: label.label_name,
-          added: false,
-        });
+        defLabels.push(label);
       });
       // console.log(defLabels)
       axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
@@ -38,13 +34,19 @@ function CardComponent(props) {
           task.id_label3,
         ];
         // console.log (cardLabels);
+        setLabelIDs(cardLabels);
         const labelsCopy = Array.from(labels);
         cardLabels.forEach((label, i) => {
           // console.log(label);
-          console.log(defLabels[label]);
-          const newLabel = defLabels[label - 1];
-          if (newLabel) {
-            labelsCopy.push(newLabel);
+          // console.log(defLabels[label]);
+          if (label !== null) {
+            let foundIndex = defLabels.findIndex(item => item.id_label == label)
+            // console.log(foundIndex)
+            const newLabel = defLabels[foundIndex];
+            if (newLabel) {
+              labelsCopy.push(newLabel);
+              defLabels.splice(foundIndex, 1);
+            }
           }
           // defLabels.splice(label - 1, 1);
         });
@@ -56,37 +58,42 @@ function CardComponent(props) {
   }, []);
 
   // move added card label to available state and remove from it's label state
-  const handleLabelDelete = (e) => {
-    let i = e.target.parentElement.id;
+  const handleLabelDelete = (i) => {
     const availCopy = Array.from(availLabels);
     const labelsCopy = Array.from(labels);
-    const newLabel = labelsCopy[i];
+    console.log(availCopy, labelsCopy)
+    const foundIndex = labels.findIndex(item => item.id_label === i);
+    const labelIdIndex = labelIDs.findIndex(item => item === i)
+    const newLabel = labelsCopy[foundIndex];
+    console.log(newLabel)
     availCopy.push(newLabel);
-    labelsCopy.splice(i, 1);
-    switch (i) {
-      case "2":
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_label3: null,
-          })
-          .then((res) => console.log(res));
-        break;
-      case "1":
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_label2: null,
-          })
-          .then((res) => console.log(res));
-        break;
-      case "0":
-        console.log(i)
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_label1: null,
-          })
-          .then((res) => console.log(res));
-        break;
-    }
+    labelsCopy.splice(foundIndex, 1);
+    axios.put(`/api/task/label/remove/?id_task=${props.id}`, {
+              id_label: newLabel.id_label,
+            })
+    // switch (foundIndex) {
+    //   case 2:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_label3: null,
+    //       })
+    //       .then((res) => console.log(res, 'idlabel3'));
+    //     break;
+    //   case 1:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_label2: null,
+    //       })
+    //       .then((res) => console.log(res, 'idlabel2'));
+    //     break;
+    //   case 0:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_label1: null,
+    //       })
+    //       .then((res) => console.log(res, 'idlabel1'));
+    //     break;
+    // }
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
@@ -94,10 +101,11 @@ function CardComponent(props) {
   // move label to card's label state and remove from available label state
   const handleAddLabel = (i) => {
     const availCopy = Array.from(availLabels);
+    const foundIndex = availCopy.findIndex(item => item.id_label === i)
+    // console.log(foundIndex)
     const labelsCopy = Array.from(labels);
-    const newLabel = availCopy[i];
-    labelsCopy.push(newLabel);
-    availCopy.splice(i, 1);
+    const newLabel = availCopy[foundIndex];
+    // console.log(newLabel)
     switch (labels.length) {
       case 0:
         axios
@@ -121,6 +129,8 @@ function CardComponent(props) {
           .then((res) => console.log(res));
         break;
     }
+    labelsCopy.push(newLabel);
+    availCopy.splice(foundIndex, 1);
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
@@ -154,16 +164,16 @@ function CardComponent(props) {
               size="mini"
               color={item.color}
               circular
-              id={i}
+              id={item.id_label}
               key={i}
             >
-              {item.text}
-              <Icon name="delete" onClick={handleLabelDelete} />
+              {item.label_name}
+              <Icon name="delete" onClick={() => handleLabelDelete(item.id_label)} />
             </Label>
           );
         })}
 
-        {availLabels.length > 1 && (
+        {labels.length < 3 && (
           <Dropdown
             ref={target}
             trigger={
@@ -216,10 +226,10 @@ function CardComponent(props) {
                 {availLabels.map((option, i) => {
                   return (
                     <Dropdown.Item
-                      key={option.text}
-                      text={option.text}
-                      value={option.text}
-                      onClick={() => handleAddLabel(i)}
+                      key={option.label_name}
+                      text={option.label_name}
+                      value={option.label_name}
+                      onClick={() => handleAddLabel(option.id_label)}
                       label={{
                         color: option.color,
                         empty: true,

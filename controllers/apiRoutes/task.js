@@ -11,11 +11,11 @@ router.get('/get/all/:proj_id', function (req, res) {
 
 router.get('/', function (req, res) {
   if (req.query.task_id)
-  db.Task.findOne({
-    where: { id_task: req.query.task_id },
-  }).then((task) => {
-    res.json(task);
-  });
+    db.Task.findOne({
+      where: { id_task: req.query.task_id },
+    }).then((task) => {
+      res.json(task);
+    });
 });
 
 router.post('/create/:proj_id', function (req, res) {
@@ -60,7 +60,7 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
 
 router.put('/', function (req, res) {
   const task = req.body;
-  console.log(task.id_label1, req.query.id_task)
+  console.log(task.id_label1, req.query.id_task);
   db.Task.update(
     {
       id_label1: task.id_label1,
@@ -70,11 +70,66 @@ router.put('/', function (req, res) {
     {
       where: { id_task: req.query.id_task },
     },
-  ).then((res) => {
-    res.json(res)
-  }).catch((err) => {
-    res.json(err);
+  )
+    .then((res) => {
+      res.json(res);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+router.put('/label/remove/', function (req, res) {
+  const task = req.body;
+  // console.log(task.id_label1, req.query.id_task)
+  db.Task.findOne({
+    where: { id_task: req.query.id_task },
+  }).then((response) => {
+    const result = response.dataValues
+    if (result.id_label1 === task.id_label) {
+      db.Task.update({
+        id_label1: result.id_label2,
+        id_label2: result.id_label3,
+        id_label3: null,
+      }, {
+        where: { id_task: req.query.id_task },
+      });
+    }
+    else if (result.id_label2 === task.id_label) {
+      db.Task.update({
+        id_label1: result.id_label1,
+        id_label2: result.id_label3,
+        id_label3: null,
+      }, {
+        where: { id_task: req.query.id_task },
+      });
+    }
+     else if (result.id_label3 === task.id_label) {
+      db.Task.update({
+        id_label1: result.id_label1,
+        id_label2: result.id_label2,
+        id_label3: null,
+      }, {
+        where: { id_task: req.query.id_task },
+      });
+    }
   });
+  // db.Task.update(
+  //   {
+  //     id_label1: task.id_label1,
+  //     id_label2: task.id_label2,
+  //     id_label3: task.id_label3,
+  //   },
+  //   {
+  //     where: { id_task: req.query.id_task },
+  //   },
+  // )
+  //   .then((res) => {
+  //     res.json(res);
+  //   })
+  //   .catch((err) => {
+  //     res.json(err);
+  //   });
 });
 
 router.delete('/delete/:proj_id', function (req, res) {
