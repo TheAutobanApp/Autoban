@@ -37,7 +37,6 @@ function App() {
   });
 
   useEffect(() => {
-    axios.get()
     axios.get(`/api/columns/?proj=${1}`).then((res) => {
       setColumns(res.data);
     });
@@ -52,7 +51,7 @@ function App() {
     card: null,
     edit: 0,
   });
-  const [signedIn, setsignedIn] = useState(false);
+  
 
   return (
     <AutoProvider
