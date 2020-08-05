@@ -76,7 +76,7 @@ function App() {
         {!user.signedIn ? (
           <Login />
         ) : (
-          view.type === 'home' ? <Homeview /> : <ProjectView>
+          view.type === 'proj' ? <Homeview /> : <ProjectView>
             {/* if toggle is set to project view */}
             {!drawer.timeline ? (
               <>

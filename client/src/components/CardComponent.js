@@ -28,8 +28,30 @@ function CardComponent(props) {
           text: label.label_name,
           added: false,
         });
+      });
+      // console.log(defLabels)
+      axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
+        const task = res.data;
+        let cardLabels = [
+          task.id_label1,
+          task.id_label2,
+          task.id_label3,
+        ];
+        // console.log (cardLabels);
+        const labelsCopy = Array.from(labels);
+        cardLabels.forEach((label, i) => {
+          // console.log(label);
+          console.log(defLabels[label]);
+          const newLabel = defLabels[label - 1];
+          if (newLabel) {
+            labelsCopy.push(newLabel);
+          }
+          // defLabels.splice(label - 1, 1);
+        });
+        setLabels(labelsCopy);
         setAvailLabels(defLabels);
       });
+      // setAvailLabels(defLabels, () => console.log(availLabels));
     });
   }, []);
 
@@ -41,6 +63,30 @@ function CardComponent(props) {
     const newLabel = labelsCopy[i];
     availCopy.push(newLabel);
     labelsCopy.splice(i, 1);
+    switch (i) {
+      case "2":
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label3: null,
+          })
+          .then((res) => console.log(res));
+        break;
+      case "1":
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label2: null,
+          })
+          .then((res) => console.log(res));
+        break;
+      case "0":
+        console.log(i)
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label1: null,
+          })
+          .then((res) => console.log(res));
+        break;
+    }
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
@@ -52,6 +98,29 @@ function CardComponent(props) {
     const newLabel = availCopy[i];
     labelsCopy.push(newLabel);
     availCopy.splice(i, 1);
+    switch (labels.length) {
+      case 0:
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label1: newLabel.id_label,
+          })
+          .then((res) => console.log(res));
+        break;
+      case 1:
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label2: newLabel.id_label,
+          })
+          .then((res) => console.log(res));
+        break;
+      case 2:
+        axios
+          .put(`/api/task/?id_task=${props.id}`, {
+            id_label3: newLabel.id_label,
+          })
+          .then((res) => console.log(res));
+        break;
+    }
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
@@ -94,73 +163,75 @@ function CardComponent(props) {
           );
         })}
 
-        {availLabels.length > 0 && <Dropdown
-          ref={target}
-          trigger={
-            <Label
-              size="mini"
-              color="blue"
-              circular
-              basic
-              className="clickable"
-            >
-              <Icon name="add" />
-              Label
-            </Label>
-          }
-          icon={null}
-          labeled
-          id={`add${props.id}`}
-          onClick={(e) => {
-            const targ = ReactDOM.findDOMNode(target.current);
-            setMenu({
-              offsetTop:
-                targ.offsetTop +
-                targ.parentElement.offsetTop +
-                targ.parentElement.parentElement.offsetTop -
-                10,
-              offsetLeft:
-                targ.offsetLeft +
-                targ.parentElement.parentElement.offsetLeft,
-            });
-            // console.log(offsetTop)
-          }}
-        >
-          <Dropdown.Menu
-            style={{
-              position: 'fixed',
-              top: menu.offsetTop,
-              left: menu.offsetLeft,
-              minWidth: 'fit-content',
-              zIndex: 1000,
+        {availLabels.length > 1 && (
+          <Dropdown
+            ref={target}
+            trigger={
+              <Label
+                size="mini"
+                color="blue"
+                circular
+                basic
+                className="clickable"
+              >
+                <Icon name="add" />
+                Label
+              </Label>
+            }
+            icon={null}
+            labeled
+            id={`add${props.id}`}
+            onClick={(e) => {
+              const targ = ReactDOM.findDOMNode(target.current);
+              setMenu({
+                offsetTop:
+                  targ.offsetTop +
+                  targ.parentElement.offsetTop +
+                  targ.parentElement.parentElement.offsetTop -
+                  10,
+                offsetLeft:
+                  targ.offsetLeft +
+                  targ.parentElement.parentElement.offsetLeft,
+              });
+              // console.log(offsetTop)
             }}
           >
-            {/* <Input
+            <Dropdown.Menu
+              style={{
+                position: 'fixed',
+                top: menu.offsetTop,
+                left: menu.offsetLeft,
+                minWidth: 'fit-content',
+                zIndex: 1000,
+              }}
+            >
+              {/* <Input
               size="mini"
               icon="search"
               iconPosition="left"
               className="search"
             />
             <Dropdown.Divider /> */}
-            <Dropdown.Menu scrolling>
-              {availLabels.map((option, i) => {
-                return (
-                  <Dropdown.Item
-                    key={option.text}
-                    text={option.text}
-                    value={option.text}
-                    onClick={() => handleAddLabel(i)}
-                    label={{
-                      color: option.color,
-                      empty: true,
-                      circular: true,
-                    }}
-                  />
-                );
-              })}
+              <Dropdown.Menu scrolling>
+                {availLabels.map((option, i) => {
+                  return (
+                    <Dropdown.Item
+                      key={option.text}
+                      text={option.text}
+                      value={option.text}
+                      onClick={() => handleAddLabel(i)}
+                      label={{
+                        color: option.color,
+                        empty: true,
+                        circular: true,
+                      }}
+                    />
+                  );
+                })}
+              </Dropdown.Menu>
             </Dropdown.Menu>
-          </Dropdown.Menu>
-        </Dropdown>}
+          </Dropdown>
+        )}
 
         {/* <Button
           size="sm"
