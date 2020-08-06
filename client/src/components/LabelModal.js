@@ -29,6 +29,7 @@ export default function TaskModal(props) {
       key: color,
       value: color,
       text: color.charAt(0).toUpperCase() + color.slice(1),
+      label: { color: color, empty: true, circular: true },
     };
   });
 
@@ -139,6 +140,7 @@ export default function TaskModal(props) {
         </div>
         <div className="flex-column">
           <Dropdown
+            defaultValue="true"
             placeholder="Color"
             search
             selection

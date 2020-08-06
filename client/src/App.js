@@ -75,7 +75,7 @@ function App() {
     >
       <div style={{ height: '100vh' }}>
         <TaskModal />
-        <LabelModal />
+        {modal.showLabel && <LabelModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />
