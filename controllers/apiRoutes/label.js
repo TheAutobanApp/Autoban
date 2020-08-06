@@ -24,7 +24,7 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   if (req.body.color) {
     db.Label.create({
-    //   id_project: req.query.proj,
+      id_project: req.query.proj,
       color: req.body.color,
       label_name: req.body.label_name,
     })

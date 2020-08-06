@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Card } from 'react-bootstrap';
@@ -6,8 +6,10 @@ import { Icon, Label, Dropdown, Input } from 'semantic-ui-react';
 // import { IoIosArrowDropright } from 'react-icons/io';
 // import { FaEllipsisV } from 'react-icons/fa';
 import DropMenu from './DropMenu';
+import { AutoContext } from '../AutoContext';
 
 function CardComponent(props) {
+  const context = useContext(AutoContext);
   const target = useRef(null);
   const [menu, setMenu] = useState({
     offsetTop: 0,
@@ -115,6 +117,10 @@ function CardComponent(props) {
     setAvailLabels(availCopy);
   };
 
+  const handleCreateLabel = () => {
+    context[5]({...context[4], showLabel: true, labelName: menu.addLabel});
+  }
+
   return (
     <Card className="card">
       <Card.Body style={{ display: 'inline-block' }}>
@@ -158,6 +164,7 @@ function CardComponent(props) {
 
         {labels.length < 3 && (
           <Dropdown
+            compact
             ref={target}
             pointing="top left"
             trigger={
@@ -175,6 +182,7 @@ function CardComponent(props) {
             icon={null}
             labeled
             id={`add${props.id}`}
+            onClose = {() => {setMenu({...menu, addLabel: ''})}}
             onClick={(e) => {
               const targ = ReactDOM.findDOMNode(target.current);
               setMenu({
@@ -199,19 +207,30 @@ function CardComponent(props) {
               }}
             >
               <Input
+              maxLength={16}
+                scrolling
                 size="mini"
-                icon="add"
-                iconPosition="left"
                 className="search"
                 search
+                value={menu.addLabel}
                 options={availLabels.map((option) => {
                   return {
                     key: option.label_name,
                     text: option.label_name,
                     value: option.label_name,
+                    label: {
+                      empty: true,
+                      circular: true,
+                      color: option.color,
+                    },
                   };
                 })}
                 onClick={(e) => e.stopPropagation()}
+                onKeyDown = {(e) => {
+                  if (e.keyCode === 32) {
+                    e.stopPropagation()}
+                  }
+                }
                 onChange={(e) =>
                   setMenu({ ...menu, addLabel: e.target.value })
                 }
@@ -233,6 +252,12 @@ function CardComponent(props) {
                     />
                   );
                 })}
+                {/* if input is more than 1 letter, show create label selection */}
+                {(menu.addLabel && menu.addLabel.length > 1) && (
+                  <Dropdown.Item onClick={handleCreateLabel}>
+                    <div className="flex-row"><Icon name="add circle" size="small" /><p style={{fontSize: 13}}>New label "{menu.addLabel}"</p></div>
+                  </Dropdown.Item>
+                )}
               </Dropdown.Menu>
             </Dropdown.Menu>
           </Dropdown>

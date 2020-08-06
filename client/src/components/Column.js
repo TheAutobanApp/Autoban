@@ -18,7 +18,7 @@ export default function Column(props) {
   };
 
   return (
-    <Fade>
+    <>
       {/* column div */}
       <div className="column">
         {/* header div */}
@@ -47,6 +47,6 @@ export default function Column(props) {
           {props.children}
         </div>
       </div>
-    </Fade>
+    </>
   );
 }

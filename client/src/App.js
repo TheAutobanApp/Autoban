@@ -9,6 +9,7 @@ import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/TaskModal';
+import LabelModal from './components/LabelModal';
 import Homeview from './components/Homeview'
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
@@ -50,6 +51,8 @@ function App() {
     column: null,
     card: null,
     edit: 0,
+    showLabel: false,
+    labelName: '',
   });
   
 
@@ -72,6 +75,7 @@ function App() {
     >
       <div style={{ height: '100vh' }}>
         <TaskModal />
+        <LabelModal />
         <Navbar />
         {!user.signedIn ? (
           <Login />
