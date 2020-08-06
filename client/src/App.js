@@ -10,7 +10,7 @@ import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/TaskModal';
 import LabelModal from './components/LabelModal';
-import Homeview from './components/Homeview'
+import Homeview from './components/Homeview';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
@@ -23,6 +23,19 @@ function App() {
     email: '',
   });
   const [tasks, setTasks] = useState(null);
+  const [labels, setLabels] = useState({
+    projectLabels: [],
+    getLabels: () => {
+      axios.get(`/api/label/?proj=${1}`).then((res) => {
+        const projLabels = [];
+        res.data.forEach((label) => projLabels.push(label));
+        axios.get(`/api/label/default`).then((res) => {
+          res.data.forEach((label) => projLabels.push(label));
+          setLabels({ ...labels, projectLabels: projLabels });
+        });
+      });
+    },
+  });
 
   const [drawer, setDrawer] = useState({
     open: false,
@@ -34,7 +47,16 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   const [view, setView] = useState({
-    type: "home",
+    type: 'home',
+  });
+
+  const [modal, setModal] = useState({
+    show: false,
+    column: null,
+    card: null,
+    edit: 0,
+    showLabel: false,
+    labelName: '',
   });
 
   useEffect(() => {
@@ -46,15 +68,9 @@ function App() {
     });
   }, []);
 
-  const [modal, setModal] = useState({
-    show: false,
-    column: null,
-    card: null,
-    edit: 0,
-    showLabel: false,
-    labelName: '',
-  });
-  
+  useEffect(() => {
+    labels.getLabels();
+  }, [modal.showLabel]);
 
   return (
     <AutoProvider
@@ -69,8 +85,10 @@ function App() {
         setTasks,
         user,
         setUser,
-        view, 
-        setView
+        view,
+        setView,
+        labels,
+        setLabels,
       ]}
     >
       <div style={{ height: '100vh' }}>
@@ -79,8 +97,10 @@ function App() {
         <Navbar />
         {!user.signedIn ? (
           <Login />
+        ) : view.type === 'proj' ? (
+          <Homeview />
         ) : (
-          view.type === 'proj' ? <Homeview /> : <ProjectView>
+          <ProjectView>
             {/* if toggle is set to project view */}
             {!drawer.timeline ? (
               <>
@@ -114,7 +134,6 @@ function App() {
             )}
             <OptionsDrawer />
           </ProjectView>
-                
         )}
       </div>
     </AutoProvider>

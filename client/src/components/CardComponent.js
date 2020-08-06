@@ -7,7 +7,13 @@ import React, {
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Card } from 'react-bootstrap';
-import { Icon, Label, Dropdown, DropdownDivider, Input } from 'semantic-ui-react';
+import {
+  Icon,
+  Label,
+  Dropdown,
+  DropdownDivider,
+  Input,
+} from 'semantic-ui-react';
 // import { IoIosArrowDropright } from 'react-icons/io';
 // import { FaEllipsisV } from 'react-icons/fa';
 import DropMenu from './DropMenu';
@@ -25,44 +31,32 @@ function CardComponent(props) {
   const [availLabels, setAvailLabels] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/label/?proj=${1}`).then((res) => {
-      const defLabels = [];
-      res.data.forEach((label) => {
-        defLabels.push(label);
+    axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
+      const task = res.data;
+      let cardLabels = [
+        task.id_label1,
+        task.id_label2,
+        task.id_label3,
+      ];
+      const taskLabels = [];
+      const projLabels = Array.from(context[12].projectLabels)
+      cardLabels.forEach((label) => {
+        if (label !== null) {
+          let foundIndex = projLabels.findIndex(
+            (item) => item.id_label === label,
+          );
+          // console.log(foundIndex)
+          const newLabel = projLabels[foundIndex];
+          if (newLabel) {
+            taskLabels.push(newLabel);
+            projLabels.splice(foundIndex, 1);
+          }
+        }
       });
-      axios.get(`/api/label/default`).then((res) => {
-        res.data.forEach((label) => defLabels.push(label));
-        axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
-          const task = res.data;
-          let cardLabels = [
-            task.id_label1,
-            task.id_label2,
-            task.id_label3,
-          ];
-          // console.log (cardLabels);
-          const labelsCopy = [];
-          cardLabels.forEach((label, i) => {
-            // console.log(label);
-            // console.log(defLabels[label]);
-            if (label !== null) {
-              let foundIndex = defLabels.findIndex(
-                (item) => item.id_label === label,
-              );
-              // console.log(foundIndex)
-              const newLabel = defLabels[foundIndex];
-              if (newLabel) {
-                labelsCopy.push(newLabel);
-                defLabels.splice(foundIndex, 1);
-              }
-            }
-          });
-          setLabels(labelsCopy);
-          setAvailLabels(defLabels);
-        });
-      });
-      // console.log(defLabels)
+      setLabels(taskLabels);
+      setAvailLabels(projLabels);
     });
-  }, [context[4].showLabel]);
+  }, [context[12].projectLabels]);
 
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
@@ -269,15 +263,15 @@ function CardComponent(props) {
                 {/* if input is more than 1 letter, show create label selection */}
                 {menu.addLabel && menu.addLabel.length > 1 && (
                   <>
-                  <DropdownDivider/>
-                  <Dropdown.Item onClick={handleCreateLabel}>
-                    <div className="flex-row">
-                      <Icon name="add circle" size="small" />
-                      <p style={{ fontSize: 13 }}>
-                        New label "{menu.addLabel}"
-                      </p>
-                    </div>
-                  </Dropdown.Item>
+                    <DropdownDivider />
+                    <Dropdown.Item onClick={handleCreateLabel}>
+                      <div className="flex-row">
+                        <Icon name="add circle" size="small" />
+                        <p style={{ fontSize: 13 }}>
+                          New label "{menu.addLabel}"
+                        </p>
+                      </div>
+                    </Dropdown.Item>
                   </>
                 )}
               </Dropdown.Menu>

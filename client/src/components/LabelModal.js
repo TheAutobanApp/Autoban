@@ -165,15 +165,6 @@ export default function TaskModal(props) {
               </Label>
             )}
           </div>
-          {/* <Input
-            icon="paint brush"
-            style={titleInput}
-            onChange={(e) =>
-              setLabel({ ...label, color: e.target.value })
-            }
-            value={label.color}
-            placeholder="Color"
-          /> */}
         </div>
         <button
           style={saveButton}
