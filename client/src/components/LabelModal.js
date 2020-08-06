@@ -103,8 +103,8 @@ export default function TaskModal(props) {
   //   };
 
   const modalStyle = {
-    height: '26vh',
-    width: '20vw',
+    height: '250px',
+    width: '300px',
     backgroundColor: 'whitesmoke',
   };
 
@@ -123,6 +123,7 @@ export default function TaskModal(props) {
           height: '100%',
         }}
       >
+        <h5>Create Label</h5>
         <div>
           <Input
             icon="tag"
