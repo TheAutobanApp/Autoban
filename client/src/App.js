@@ -27,6 +27,7 @@ function App() {
     projectLabels: [],
     // get both project labels and default labels and add to context state
     getLabels: () => {
+      // make project id responsive
       axios.get(`/api/label/?proj=${1}`).then((res) => {
         const projLabels = [];
         res.data.forEach((label) => projLabels.push(label));
@@ -61,6 +62,7 @@ function App() {
   });
 
   useEffect(() => {
+    // make project id responsive
     axios.get(`/api/columns/?proj=${1}`).then((res) => {
       setColumns(res.data);
     });
