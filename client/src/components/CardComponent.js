@@ -1,22 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { Card, Button, Overlay, Tooltip } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { Icon, Label, Dropdown, Input } from 'semantic-ui-react';
 // import { IoIosArrowDropright } from 'react-icons/io';
 // import { FaEllipsisV } from 'react-icons/fa';
 import DropMenu from './DropMenu';
 
 function CardComponent(props) {
-  const [show, setShow] = useState(false);
   const target = useRef(null);
   const [menu, setMenu] = useState({
     offsetTop: 0,
     offsetLeft: 0,
     addLabel: '',
   });
-
-  const [labelIDs, setLabelIDs] = useState([]);
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
 
@@ -35,14 +32,13 @@ function CardComponent(props) {
           task.id_label3,
         ];
         // console.log (cardLabels);
-        setLabelIDs(cardLabels);
         const labelsCopy = Array.from(labels);
         cardLabels.forEach((label, i) => {
           // console.log(label);
           // console.log(defLabels[label]);
           if (label !== null) {
             let foundIndex = defLabels.findIndex(
-              (item) => item.id_label == label,
+              (item) => item.id_label === label,
             );
             // console.log(foundIndex)
             const newLabel = defLabels[foundIndex];
@@ -51,12 +47,10 @@ function CardComponent(props) {
               defLabels.splice(foundIndex, 1);
             }
           }
-          // defLabels.splice(label - 1, 1);
         });
         setLabels(labelsCopy);
         setAvailLabels(defLabels);
       });
-      // setAvailLabels(defLabels, () => console.log(availLabels));
     });
   }, []);
 
@@ -68,7 +62,6 @@ function CardComponent(props) {
     const foundIndex = labels.findIndex(
       (item) => item.id_label === i,
     );
-    const labelIdIndex = labelIDs.findIndex((item) => item === i);
     const deleteLabel = labelsCopy[foundIndex];
     console.log(deleteLabel);
     availCopy.push(deleteLabel);
@@ -113,6 +106,8 @@ function CardComponent(props) {
           })
           .then((res) => console.log(res));
         break;
+      default:
+        console.log('Label length is invalid');
     }
     labelsCopy.push(newLabel);
     availCopy.splice(foundIndex, 1);
@@ -164,6 +159,7 @@ function CardComponent(props) {
         {labels.length < 3 && (
           <Dropdown
             ref={target}
+            pointing="top left"
             trigger={
               <Label
                 size="mini"
@@ -183,10 +179,9 @@ function CardComponent(props) {
               const targ = ReactDOM.findDOMNode(target.current);
               setMenu({
                 offsetTop:
-                  targ.offsetTop +
                   targ.parentElement.offsetTop +
-                  targ.parentElement.parentElement.offsetTop -
-                  10,
+                  targ.parentElement.parentElement.offsetTop +
+                  80,
                 offsetLeft:
                   targ.offsetLeft +
                   targ.parentElement.parentElement.offsetLeft,

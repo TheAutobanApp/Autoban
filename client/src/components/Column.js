@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FaPlus, FaEllipsisV } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
@@ -11,10 +11,6 @@ export default function Column(props) {
 
   const addCard = () => {
     console.log('add card');
-  };
-
-  const showOptions = () => {
-    console.log('show options');
   };
 
   const showModal = () => {

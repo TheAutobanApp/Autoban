@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Menu, Segment, MenuHeader } from 'semantic-ui-react'
+import { Grid, Menu } from 'semantic-ui-react'
 
 export default function TeamMenu() {
 const [team, setTeam] = useState({
