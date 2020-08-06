@@ -3,11 +3,12 @@ import { AutoContext } from '../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { Input, Dropdown, Label } from 'semantic-ui-react';
-const axios = require('axios');
+import axios from 'axios';
 
 export default function TaskModal(props) {
   const context = useContext(AutoContext);
 
+  // color choices for new labels
   const colors = [
     'red',
     'orange',
@@ -24,6 +25,7 @@ export default function TaskModal(props) {
     'black',
   ];
 
+  // create color objects for dropdown menu options
   const options = colors.map((color) => {
     return {
       key: color,
@@ -33,13 +35,16 @@ export default function TaskModal(props) {
     };
   });
 
+  // inital state for reseting state
   const initialState = {
+    // make project id responsive
     id_project: 1,
     color: '',
     label_name: '',
   };
   const [label, setLabel] = useState(initialState);
 
+  // when modal is mounted, set local state label name from context
   useEffect(() => {
     setLabel({ ...label, label_name: context[4].labelName });
   }, [context[4].labelName]);
@@ -51,26 +56,6 @@ export default function TaskModal(props) {
     borderRadius: 5,
   };
 
-  const descriptionInput = {
-    width: '100%',
-    border: 'none',
-    height: 200,
-    borderRadius: 5,
-  };
-
-  const functionContainer = {
-    width: 200,
-  };
-
-  const taskFunction = {
-    backgroundColor: 'lightgray',
-    borderRadius: 3,
-    border: 'none',
-    color: 'gray',
-    padding: 8,
-    margin: 8,
-  };
-
   const saveButton = {
     borderRadius: 5,
     color: 'white',
@@ -80,15 +65,28 @@ export default function TaskModal(props) {
       'linear-gradient(to bottom, var(--nav-color), var(--nav-color2))',
   };
 
+  const modalStyle = {
+    height: '250px',
+    width: '300px',
+    backgroundColor: 'whitesmoke',
+  };
+
+  // hide modal, reset state and modal context
   const hideModal = () => {
     context[5]({ ...context[4], showLabel: false, labelName: '' });
     setLabel(initialState);
   };
 
-  const postTask = () => {
-    const contextName = context[4].labelName;
-
+  // post label using settings in state
+  const postLabel = () => {
+    // make project id responsive
     axios.post(`/api/label/?proj=${1}`, label).then((res) => {
+      // create copy of project labels from context
+      // and update that context with new label from response
+      const labelsCopy = Array.from(context[12].projectLabels);
+      labelsCopy.push(res.data);
+      context[13]({ ...context[13], projectLabels: labelsCopy });
+      // reset state
       setLabel(initialState);
     });
   };
@@ -101,12 +99,6 @@ export default function TaskModal(props) {
   //       })
   //       .then((res) => context[7](res.data));
   //   };
-
-  const modalStyle = {
-    height: '250px',
-    width: '300px',
-    backgroundColor: 'whitesmoke',
-  };
 
   return (
     <Rodal
@@ -130,10 +122,6 @@ export default function TaskModal(props) {
             style={titleInput}
             onChange={(e) => {
               setLabel({ ...label, label_name: e.target.value });
-              context[5]({
-                ...context[4],
-                labelName: e.target.value,
-              });
             }}
             defaultValue={context[4].labelName}
             placeholder="Name"
@@ -141,7 +129,6 @@ export default function TaskModal(props) {
         </div>
         <div className="flex-column">
           <Dropdown
-            defaultValue="true"
             placeholder="Color"
             search
             selection
@@ -159,6 +146,7 @@ export default function TaskModal(props) {
               margin: '5px',
             }}
           >
+            {/* if a color is selected, render example */}
             {label.color && (
               <Label circular color={label.color}>
                 {label.label_name}
@@ -169,7 +157,7 @@ export default function TaskModal(props) {
         <button
           style={saveButton}
           onClick={() => {
-            postTask();
+            postLabel();
             hideModal();
           }}
         >

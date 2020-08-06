@@ -1,6 +1,7 @@
 const router = require('express').Router();
 var db = require('../../models');
 
+// get project labels
 router.get('/', function (req, res) {
   if (req.query.proj) {
     db.Label.findAll({
@@ -17,6 +18,7 @@ router.get('/', function (req, res) {
   }
 });
 
+// get default labels
 router.get('/default', function (req, res) {
     db.Label.findAll({
       where: {
@@ -31,8 +33,9 @@ router.get('/default', function (req, res) {
       });
 });
 
+// create a label
 router.post('/', function (req, res) {
-  if (req.body.color) {
+  if (req.body.color && req.body.label_name) {
     db.Label.create({
       id_project: req.query.proj,
       color: req.body.color,
@@ -48,7 +51,7 @@ router.post('/', function (req, res) {
 });
 
 router.put('/', function (req, res) {
-  //do things here for other routes
+  // update label
 });
 
 router.delete('/', function (req, res) {

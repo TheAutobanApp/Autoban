@@ -25,6 +25,7 @@ function App() {
   const [tasks, setTasks] = useState(null);
   const [labels, setLabels] = useState({
     projectLabels: [],
+    // get both project labels and default labels and add to context state
     getLabels: () => {
       axios.get(`/api/label/?proj=${1}`).then((res) => {
         const projLabels = [];
@@ -66,11 +67,8 @@ function App() {
     axios.get('/api/task/get/all/1').then((tasks) => {
       setTasks(tasks.data);
     });
-  }, []);
-
-  useEffect(() => {
     labels.getLabels();
-  }, [modal.showLabel]);
+  }, []);
 
   return (
     <AutoProvider
