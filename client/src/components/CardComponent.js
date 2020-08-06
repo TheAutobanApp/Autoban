@@ -7,7 +7,7 @@ import React, {
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Card } from 'react-bootstrap';
-import { Icon, Label, Dropdown, Input } from 'semantic-ui-react';
+import { Icon, Label, Dropdown, DropdownDivider, Input } from 'semantic-ui-react';
 // import { IoIosArrowDropright } from 'react-icons/io';
 // import { FaEllipsisV } from 'react-icons/fa';
 import DropMenu from './DropMenu';
@@ -268,6 +268,8 @@ function CardComponent(props) {
                 })}
                 {/* if input is more than 1 letter, show create label selection */}
                 {menu.addLabel && menu.addLabel.length > 1 && (
+                  <>
+                  <DropdownDivider/>
                   <Dropdown.Item onClick={handleCreateLabel}>
                     <div className="flex-row">
                       <Icon name="add circle" size="small" />
@@ -276,6 +278,7 @@ function CardComponent(props) {
                       </p>
                     </div>
                   </Dropdown.Item>
+                  </>
                 )}
               </Dropdown.Menu>
             </Dropdown.Menu>

@@ -10,6 +10,8 @@
 body {
     height: 100vh;
     overflow: hidden;
+    background: radial-gradient(ellipse at top, var(--background-color1), transparent),
+    radial-gradient(ellipse at bottom, var(--background-color2), transparent);
     /* font-family: 'Source Sans Pro', sans-serif; */
 }
 
@@ -154,8 +156,6 @@ label {
     position: relative;
     overflow: hidden;
     overflow-x: scroll;
-    background: radial-gradient(ellipse at top, var(--background-color1), transparent),
-    radial-gradient(ellipse at bottom, var(--background-color2), transparent);
 }
 
 .project-view::-webkit-scrollbar {
