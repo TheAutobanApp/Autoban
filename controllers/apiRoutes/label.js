@@ -3,22 +3,32 @@ var db = require('../../models');
 
 router.get('/', function (req, res) {
   if (req.query.proj) {
-    db.Label.findAll({ where: { id_project: req.query.proj } })
+    db.Label.findAll({
+      where: {
+        id_project: req.query.proj
+      },
+    })
       .then((labels) => {
         res.json(labels);
       })
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else {
-    db.Label.findAll({ where: { id_project: null } })
-    .then((labels) => {
-      res.json(labels);
-    })
-    .catch((err) => {
-      res.status(401).json(err);
-    });
   }
+});
+
+router.get('/default', function (req, res) {
+    db.Label.findAll({
+      where: {
+        id_project: null
+      },
+    })
+      .then((labels) => {
+        res.json(labels);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
 });
 
 router.post('/', function (req, res) {

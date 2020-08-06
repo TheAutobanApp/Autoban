@@ -1,4 +1,9 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Card } from 'react-bootstrap';
@@ -20,41 +25,44 @@ function CardComponent(props) {
   const [availLabels, setAvailLabels] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/label/').then((res) => {
+    axios.get(`/api/label/?proj=${1}`).then((res) => {
       const defLabels = [];
       res.data.forEach((label) => {
         defLabels.push(label);
       });
-      // console.log(defLabels)
-      axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
-        const task = res.data;
-        let cardLabels = [
-          task.id_label1,
-          task.id_label2,
-          task.id_label3,
-        ];
-        // console.log (cardLabels);
-        const labelsCopy = Array.from(labels);
-        cardLabels.forEach((label, i) => {
-          // console.log(label);
-          // console.log(defLabels[label]);
-          if (label !== null) {
-            let foundIndex = defLabels.findIndex(
-              (item) => item.id_label === label,
-            );
-            // console.log(foundIndex)
-            const newLabel = defLabels[foundIndex];
-            if (newLabel) {
-              labelsCopy.push(newLabel);
-              defLabels.splice(foundIndex, 1);
+      axios.get(`/api/label/default`).then((res) => {
+        res.data.forEach((label) => defLabels.push(label));
+        axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
+          const task = res.data;
+          let cardLabels = [
+            task.id_label1,
+            task.id_label2,
+            task.id_label3,
+          ];
+          // console.log (cardLabels);
+          const labelsCopy = [];
+          cardLabels.forEach((label, i) => {
+            // console.log(label);
+            // console.log(defLabels[label]);
+            if (label !== null) {
+              let foundIndex = defLabels.findIndex(
+                (item) => item.id_label === label,
+              );
+              // console.log(foundIndex)
+              const newLabel = defLabels[foundIndex];
+              if (newLabel) {
+                labelsCopy.push(newLabel);
+                defLabels.splice(foundIndex, 1);
+              }
             }
-          }
+          });
+          setLabels(labelsCopy);
+          setAvailLabels(defLabels);
         });
-        setLabels(labelsCopy);
-        setAvailLabels(defLabels);
       });
+      // console.log(defLabels)
     });
-  }, []);
+  }, [context[4].showLabel]);
 
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
@@ -118,8 +126,12 @@ function CardComponent(props) {
   };
 
   const handleCreateLabel = () => {
-    context[5]({...context[4], showLabel: true, labelName: menu.addLabel});
-  }
+    context[5]({
+      ...context[4],
+      showLabel: true,
+      labelName: menu.addLabel,
+    });
+  };
 
   return (
     <Card className="card">
@@ -182,7 +194,9 @@ function CardComponent(props) {
             icon={null}
             labeled
             id={`add${props.id}`}
-            onClose = {() => {setMenu({...menu, addLabel: ''})}}
+            onClose={() => {
+              setMenu({ ...menu, addLabel: '' });
+            }}
             onClick={(e) => {
               const targ = ReactDOM.findDOMNode(target.current);
               setMenu({
@@ -207,7 +221,7 @@ function CardComponent(props) {
               }}
             >
               <Input
-              maxLength={16}
+                maxLength={16}
                 scrolling
                 size="mini"
                 className="search"
@@ -226,11 +240,11 @@ function CardComponent(props) {
                   };
                 })}
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown = {(e) => {
+                onKeyDown={(e) => {
                   if (e.keyCode === 32) {
-                    e.stopPropagation()}
+                    e.stopPropagation();
                   }
-                }
+                }}
                 onChange={(e) =>
                   setMenu({ ...menu, addLabel: e.target.value })
                 }
@@ -253,9 +267,14 @@ function CardComponent(props) {
                   );
                 })}
                 {/* if input is more than 1 letter, show create label selection */}
-                {(menu.addLabel && menu.addLabel.length > 1) && (
+                {menu.addLabel && menu.addLabel.length > 1 && (
                   <Dropdown.Item onClick={handleCreateLabel}>
-                    <div className="flex-row"><Icon name="add circle" size="small" /><p style={{fontSize: 13}}>New label "{menu.addLabel}"</p></div>
+                    <div className="flex-row">
+                      <Icon name="add circle" size="small" />
+                      <p style={{ fontSize: 13 }}>
+                        New label "{menu.addLabel}"
+                      </p>
+                    </div>
                   </Dropdown.Item>
                 )}
               </Dropdown.Menu>
