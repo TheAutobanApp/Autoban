@@ -61,6 +61,7 @@ export default function Login() {
                 });
               } else {
                 context[9]({
+                  ...context[8],
                   signedIn: !!user,
                   username: user.username,
                   firstName: user.first_name,
