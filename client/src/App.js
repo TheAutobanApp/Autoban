@@ -14,10 +14,9 @@ import Homeview from './components/Homeview';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
-import socketIOClient from 'socket.io-client'
-const ENDPOINT = "http://localhost:3002"
+import socketIOClient from 'socket.io-client';
 
-const socket = socketIOClient(ENDPOINT);
+const socket = socketIOClient();
 
 function App() {
   const [user, setUser] = useState({
@@ -71,38 +70,35 @@ function App() {
   });
 
   useEffect(() => {
-    if (view.type === "project")  {
+    if (user.signedIn && view.type === 'project') {
       // make project id responsive
       axios.get(`/api/columns/?proj=${1}`).then((res) => {
         setColumns(res.data);
       });
-      socket.on("newColumn", data => {
+      socket.on('newColumn', (data) => {
         axios.get(`/api/columns/?proj=${1}`).then((res) => {
           setColumns(res.data);
         });
-      })
+      });
       axios.get('/api/task/get/all/1').then((tasks) => {
         setTasks(tasks.data);
       });
-      socket.on("newTask", data => {
+      socket.on('newTask', (data) => {
         axios.get('/api/task/get/all/1').then((tasks) => {
           setTasks(tasks.data);
         });
-      })
+      });
       console.log(user.id_user);
       axios
         .get(`/api/team/all/${user.id_user}`)
         .then((response) => console.log(response));
-  
+
       labels.getLabels();
-      socket.on("newLabel", data => {
+      socket.on('newLabel', (data) => {
         labels.getLabels();
-      })
+      });
     }
-    
-      
-    
-  }, [view.type]);
+  }, [user.signedIn]);
 
   useEffect(() => {
     if (user.signedIn) {

@@ -3,7 +3,6 @@ const routes = require('./controllers');
 const app = express();
 const PORT = process.env.PORT || 3001;
 var db = require('./models');
-const http = require('http');
 const socketIo = require('socket.io');
 const PORT2 = process.env.PORT || 3002;
 
@@ -17,9 +16,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 // Add routes, both API and view
 
-// const server = http.createServer(app);
-const io = socketIo.listen(app.listen(PORT2));
-
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
+});
+app.use(routes);
 // Start the API server
 
 io.on('connection', (socket) => {
@@ -32,15 +35,9 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(function (req, res, next) {
-  req.io = io;
-  next();
-});
-app.use(routes);
-
 // ADD SEQUELIZE HERE TO CONNECT TO YOUR DB
 db.sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   });
 });
