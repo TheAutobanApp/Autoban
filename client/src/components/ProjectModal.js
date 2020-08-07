@@ -2,16 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-import { Input, Dropdown, Label } from 'semantic-ui-react';
+import { Input, Dropdown, Label, TextArea } from 'semantic-ui-react';
 import axios from 'axios';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export default function TaskModal(props) {
   const context = useContext(AutoContext);
 
   // inital state for reseting state
   const initialState = {
     // make project id responsive
-    id_team: '',
+    id_team: 1,
     project_name: '',
     project_description: '',
     start_date: '',
@@ -42,7 +43,7 @@ export default function TaskModal(props) {
   };
 
   const modalStyle = {
-    height: '250px',
+    height: 'fit-content',
     width: '300px',
     backgroundColor: 'whitesmoke',
   };
@@ -56,7 +57,7 @@ export default function TaskModal(props) {
   // post label using settings in state
   const postProject = () => {
     // make project id responsive
-    axios.post(`/api/project`, project).then((res) => {
+    axios.post(`/api/project/`, project).then((res) => {
       console.log(res);
       // create copy of project labels from context
       // and update that context with new label from response
@@ -114,6 +115,27 @@ export default function TaskModal(props) {
             options={[]}
             onChange={(e, data) => {
               setProject({ ...project, id_team: '1' });
+            }}
+          />
+          <TextArea
+            onChange={(e) => {
+              setProject({
+                ...project,
+                project_description: e.target.value,
+              });
+            }}
+            placeholder="Description"
+          />
+          <DatePicker
+            selected={project.start_date}
+            onChange={(e) => {
+              setProject({ ...project, start_date: e });
+            }}
+          />
+          <DatePicker
+            selected={project.end_date}
+            onChange={(e) => {
+              setProject({ ...project, end_date: e });
             }}
           />
           <div
