@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Grid, Menu, Input } from 'semantic-ui-react';
+import { AutoContext } from '../AutoContext';
+import axios from 'axios';
 
 export default function TeamMenu() {
+  const context = useContext(AutoContext);
+
   const [team, setTeam] = useState({
     activeItem: 'All',
     teamAdd: false,
@@ -12,8 +16,22 @@ export default function TeamMenu() {
     setTeam({ ...team, activeItem: name });
 
   const handleAddTeam = () => {
-    console.log('team added');
     setTeam({ ...team, teamAdd: !team.teamAdd });
+  };
+
+  const postTeam = () => {
+    axios
+      .post('/api/team/', {
+        team_name: team.teamName,
+        id_user: context[8].id_user,
+      })
+      .then((res) => {
+        context[9]({
+          ...context[8],
+          teams: context[8].teams.concat([res.data]),
+        });
+        setTeam({ ...team, teamAdd: !team.teamAdd, teamName: '' });
+      });
   };
 
   return (
@@ -47,33 +65,26 @@ export default function TeamMenu() {
                 placeholder="team name"
                 value={team.teamName}
                 maxLength={20}
-                action={{ icon: 'add' }}
+                action={{
+                  icon: 'add',
+                  onClick: postTeam,
+                }}
                 onChange={(e) =>
                   setTeam({ ...team, teamName: e.target.value })
                 }
               />
             </Menu.Item>
           )}
-          <Menu.Item
-            name="links"
-            active={team.activeItem === 'links'}
-            onClick={handleItemClick}
-          />
-          <Menu.Item
-            name="links"
-            active={team.activeItem === 'links'}
-            onClick={handleItemClick}
-          />
-          <Menu.Item
-            name="links"
-            active={team.activeItem === 'links'}
-            onClick={handleItemClick}
-          />
-          <Menu.Item
-            name="links"
-            active={team.activeItem === 'links'}
-            onClick={handleItemClick}
-          />
+          {context[8].teams.map((tm, index) => {
+            return (
+              <Menu.Item
+                key={index}
+                name={tm.team_name}
+                active={team.activeItem === tm.team_name}
+                onClick={handleItemClick}
+              />
+            );
+          })}
         </Menu>
       </Grid.Column>
     </Grid>

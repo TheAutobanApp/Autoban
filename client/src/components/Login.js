@@ -67,6 +67,7 @@ export default function Login() {
                   firstName: user.first_name,
                   lastName: user.last_name,
                   email: user.email,
+                  id_user: user.id_user,
                 });
               }
             })

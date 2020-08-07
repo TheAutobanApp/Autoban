@@ -21,7 +21,24 @@ function App() {
     firstName: '',
     lastName: '',
     email: '',
+    team: '',
+    id_user: '',
+    teams: [
+      {
+        id_team: 1,
+        team_name: 'Autoban',
+        team_description: 'Coolest team alive',
+        enabled: 1,
+      },
+      {
+        id_team: 2,
+        team_name: 'Pubio',
+        team_description: 'Coolest team alive u already know',
+        enabled: 1,
+      },
+    ],
   });
+
   const [tasks, setTasks] = useState(null);
   const [labels, setLabels] = useState({
     projectLabels: [],
@@ -69,6 +86,8 @@ function App() {
     axios.get('/api/task/get/all/1').then((tasks) => {
       setTasks(tasks.data);
     });
+
+    axios.get('/api/team');
     labels.getLabels();
   }, []);
 
