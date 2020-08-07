@@ -1,30 +1,43 @@
 const router = require('express').Router();
 var db = require('../../models');
 
+// get project labels
 router.get('/', function (req, res) {
   if (req.query.proj) {
-    db.Label.findAll({ where: { id_project: req.query.proj } })
+    db.Label.findAll({
+      where: {
+        id_project: req.query.proj
+      },
+    })
       .then((labels) => {
         res.json(labels);
       })
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else {
-    db.Label.findAll({ where: { id_project: null } })
-    .then((labels) => {
-      res.json(labels);
-    })
-    .catch((err) => {
-      res.status(401).json(err);
-    });
   }
 });
 
+// get default labels
+router.get('/default', function (req, res) {
+    db.Label.findAll({
+      where: {
+        id_project: null
+      },
+    })
+      .then((labels) => {
+        res.json(labels);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+});
+
+// create a label
 router.post('/', function (req, res) {
-  if (req.body.color) {
+  if (req.body.color && req.body.label_name) {
     db.Label.create({
-    //   id_project: req.query.proj,
+      id_project: req.query.proj,
       color: req.body.color,
       label_name: req.body.label_name,
     })
@@ -38,7 +51,7 @@ router.post('/', function (req, res) {
 });
 
 router.put('/', function (req, res) {
-  //do things here for other routes
+  // update label
 });
 
 router.delete('/', function (req, res) {

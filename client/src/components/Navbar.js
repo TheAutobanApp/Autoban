@@ -3,10 +3,10 @@ import { RiMenu4Line } from 'react-icons/ri';
 import { FiSettings } from 'react-icons/fi';
 import { MdTimeline } from 'react-icons/md';
 import { GoProject } from 'react-icons/go';
-import { Checkbox, Button, Dropdown } from 'semantic-ui-react';
+import { Checkbox, Button } from 'semantic-ui-react';
 import TeamDropdown from './TeamDropdown';
 import UserDropdown from './UserDropdown';
-import TeamDropItem from './TeamDropItem';
+// import TeamDropItem from './TeamDropItem';
 import { AutoContext } from '../AutoContext';
 
 function Navbar() {

@@ -12,6 +12,7 @@ export default function AddColumn(props) {
   // update columns state with new column title, using concat method
   const addColumn = () => {
     // post column to database
+    // make project id responsive
     axios
       .post(`/api/columns/?proj=${1}`, {
         id_place: context[2].length,

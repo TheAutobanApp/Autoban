@@ -9,7 +9,8 @@ import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/TaskModal';
-import Homeview from './components/Homeview'
+import LabelModal from './components/LabelModal';
+import Homeview from './components/Homeview';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
@@ -22,6 +23,21 @@ function App() {
     email: '',
   });
   const [tasks, setTasks] = useState(null);
+  const [labels, setLabels] = useState({
+    projectLabels: [],
+    // get both project labels and default labels and add to context state
+    getLabels: () => {
+      // make project id responsive
+      axios.get(`/api/label/?proj=${1}`).then((res) => {
+        const projLabels = [];
+        res.data.forEach((label) => projLabels.push(label));
+        axios.get(`/api/label/default`).then((res) => {
+          res.data.forEach((label) => projLabels.push(label));
+          setLabels({ ...labels, projectLabels: projLabels });
+        });
+      });
+    },
+  });
 
   const [drawer, setDrawer] = useState({
     open: false,
@@ -33,25 +49,28 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   const [view, setView] = useState({
-    type: "home",
+    type: 'home',
   });
-
-  useEffect(() => {
-    axios.get(`/api/columns/?proj=${1}`).then((res) => {
-      setColumns(res.data);
-    });
-    axios.get('/api/task/get/all/1').then((tasks) => {
-      setTasks(tasks.data);
-    });
-  }, []);
 
   const [modal, setModal] = useState({
     show: false,
     column: null,
     card: null,
     edit: 0,
+    showLabel: false,
+    labelName: '',
   });
-  
+
+  useEffect(() => {
+    // make project id responsive
+    axios.get(`/api/columns/?proj=${1}`).then((res) => {
+      setColumns(res.data);
+    });
+    axios.get('/api/task/get/all/1').then((tasks) => {
+      setTasks(tasks.data);
+    });
+    labels.getLabels();
+  }, []);
 
   return (
     <AutoProvider
@@ -66,17 +85,22 @@ function App() {
         setTasks,
         user,
         setUser,
-        view, 
-        setView
+        view,
+        setView,
+        labels,
+        setLabels,
       ]}
     >
       <div style={{ height: '100vh' }}>
         <TaskModal />
+        {modal.showLabel && <LabelModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />
+        ) : view.type === 'proj' ? (
+          <Homeview />
         ) : (
-          view.type === 'home' ? <Homeview /> : <ProjectView>
+          <ProjectView>
             {/* if toggle is set to project view */}
             {!drawer.timeline ? (
               <>
@@ -110,7 +134,6 @@ function App() {
             )}
             <OptionsDrawer />
           </ProjectView>
-                
         )}
       </div>
     </AutoProvider>

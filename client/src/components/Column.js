@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FaPlus, FaEllipsisV } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
@@ -13,16 +13,12 @@ export default function Column(props) {
     console.log('add card');
   };
 
-  const showOptions = () => {
-    console.log('show options');
-  };
-
   const showModal = () => {
     context[5]({ ...context[4], show: true, column: props.id });
   };
 
   return (
-    <Fade>
+    <>
       {/* column div */}
       <div className="column">
         {/* header div */}
@@ -51,6 +47,6 @@ export default function Column(props) {
           {props.children}
         </div>
       </div>
-    </Fade>
+    </>
   );
 }

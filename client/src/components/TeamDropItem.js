@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Button, Dropdown } from 'semantic-ui-react';
+import { Button, Dropdown } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 
 export default function TeamDropItem(props) {

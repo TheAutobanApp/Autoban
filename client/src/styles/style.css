@@ -10,6 +10,8 @@
 body {
     height: 100vh;
     overflow: hidden;
+    background: radial-gradient(ellipse at top, var(--background-color1), transparent),
+    radial-gradient(ellipse at bottom, var(--background-color2), transparent);
     /* font-family: 'Source Sans Pro', sans-serif; */
 }
 
@@ -31,7 +33,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 55px;
+    height: 50px;
     background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     box-shadow: 0 0 10px gray;
     /* padding: 7px; */
@@ -154,8 +156,6 @@ label {
     position: relative;
     overflow: hidden;
     overflow-x: scroll;
-    background: radial-gradient(ellipse at top, var(--background-color1), transparent),
-    radial-gradient(ellipse at bottom, var(--background-color2), transparent);
 }
 
 .project-view::-webkit-scrollbar {
@@ -184,6 +184,7 @@ label {
     padding-top: 5px;
     border-radius: 5px;
     box-shadow: 1px 1px 5px grey;
+    
 }
 
 .column-header {
