@@ -30,6 +30,7 @@ router.post('/', function (req, res) {
     })
       .then((column) => {
         res.json(column);
+        req.io.sockets.emit('newColumn', column);
       })
       .catch((err) => {
         res.status(401).json(err);

@@ -14,6 +14,11 @@ import Homeview from './components/Homeview';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
+import socketIOClient from 'socket.io-client'
+const ENDPOINT = "http://localhost:3002"
+
+const socket = socketIOClient(ENDPOINT);
+
 function App() {
   const [user, setUser] = useState({
     signedIn: false,
@@ -53,7 +58,7 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   const [view, setView] = useState({
-    type: 'home',
+    type: 'project',
   });
 
   const [modal, setModal] = useState({
@@ -66,20 +71,35 @@ function App() {
   });
 
   useEffect(() => {
-    // make project id responsive
-    axios.get(`/api/columns/?proj=${1}`).then((res) => {
-      setColumns(res.data);
-    });
-    axios.get('/api/task/get/all/1').then((tasks) => {
-      setTasks(tasks.data);
-    });
-    console.log(user.id_user);
-    axios
-      .get(`/api/team/all/${user.id_user}`)
-      .then((response) => console.log(response));
-
-    labels.getLabels();
-  }, []);
+    if (view.type === "project")  {
+      // make project id responsive
+      axios.get(`/api/columns/?proj=${1}`).then((res) => {
+        setColumns(res.data);
+      });
+      socket.on("newColumn", data => {
+        axios.get(`/api/columns/?proj=${1}`).then((res) => {
+          setColumns(res.data);
+        });
+      })
+      axios.get('/api/task/get/all/1').then((tasks) => {
+        setTasks(tasks.data);
+      });
+      socket.on("newTask", data => {
+        axios.get('/api/task/get/all/1').then((tasks) => {
+          setTasks(tasks.data);
+        });
+      })
+      console.log(user.id_user);
+      axios
+        .get(`/api/team/all/${user.id_user}`)
+        .then((response) => console.log(response));
+  
+      labels.getLabels();
+    }
+    
+      
+    
+  }, [view.type]);
 
   useEffect(() => {
     if (user.signedIn) {

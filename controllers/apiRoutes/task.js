@@ -35,6 +35,7 @@ router.post('/create/:proj_id', function (req, res) {
     id_label3: task.id_label3,
     complete: task.complete,
   }).then((result) => {
+    req.io.sockets.emit('newTask', result);
     res.json(result);
   });
 });
