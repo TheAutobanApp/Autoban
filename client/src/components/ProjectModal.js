@@ -8,46 +8,22 @@ import axios from 'axios';
 export default function TaskModal(props) {
   const context = useContext(AutoContext);
 
-  // color choices for new labels
-  const colors = [
-    'red',
-    'orange',
-    'yellow',
-    'olive',
-    'green',
-    'teal',
-    'blue',
-    'violet',
-    'purple',
-    'pink',
-    'brown',
-    'grey',
-    'black',
-  ];
-
-  // create color objects for dropdown menu options
-  const options = colors.map((color) => {
-    return {
-      key: color,
-      value: color,
-      text: color.charAt(0).toUpperCase() + color.slice(1),
-      label: { color: color, empty: true, circular: true },
-    };
-  });
-
   // inital state for reseting state
   const initialState = {
     // make project id responsive
-    id_project: 1,
-    color: '',
-    label_name: '',
+    id_team: '',
+    project_name: '',
+    project_description: '',
+    start_date: '',
+    end_date: '',
+    created_by: context[8].id_user,
   };
-  const [label, setLabel] = useState(initialState);
+  const [project, setProject] = useState(initialState);
 
   // when modal is mounted, set local state label name from context
-  useEffect(() => {
-    setLabel({ ...label, label_name: context[4].labelName });
-  }, [context[4].labelName]);
+  //   useEffect(() => {
+  //     setProject({ ...label, label_name: context[4].labelName });
+  //   }, [context[4].labelName]);
 
   const titleInput = {
     width: '100%',
@@ -73,21 +49,22 @@ export default function TaskModal(props) {
 
   // hide modal, reset state and modal context
   const hideModal = () => {
-    context[5]({ ...context[4], showLabel: false, labelName: '' });
-    setLabel(initialState);
+    context[5]({ ...context[4], showProject: false });
+    setProject(initialState);
   };
 
   // post label using settings in state
-  const postLabel = () => {
+  const postProject = () => {
     // make project id responsive
-    axios.post(`/api/label/?proj=${1}`, label).then((res) => {
+    axios.post(`/api/project`, project).then((res) => {
+      console.log(res);
       // create copy of project labels from context
       // and update that context with new label from response
-      const labelsCopy = Array.from(context[12].projectLabels);
-      labelsCopy.push(res.data);
-      context[13]({ ...context[13], projectLabels: labelsCopy });
-      // reset state
-      setLabel(initialState);
+      //   const projectCopy = Array.from(context[12].projectLabels);
+      //   labelsCopy.push(res.data);
+      //   context[13]({ ...context[13], projectLabels: labelsCopy });
+      //   // reset state
+      setProject(initialState);
     });
   };
 
@@ -102,7 +79,7 @@ export default function TaskModal(props) {
 
   return (
     <Rodal
-      visible={context[4].showLabel}
+      visible={context[4].showProject}
       onClose={hideModal}
       customStyles={modalStyle}
     >
@@ -115,26 +92,28 @@ export default function TaskModal(props) {
           height: '100%',
         }}
       >
-        <h5>Create Label</h5>
+        <h5>Create Project</h5>
         <div>
           <Input
-            icon="tag"
+            icon="clipboard list"
             style={titleInput}
             onChange={(e) => {
-              setLabel({ ...label, label_name: e.target.value });
+              setProject({
+                ...project,
+                project_name: e.target.value,
+              });
             }}
-            defaultValue={context[4].labelName}
             placeholder="Name"
           />
         </div>
         <div className="flex-column">
           <Dropdown
-            placeholder="Color"
+            placeholder="Team"
             search
             selection
-            options={options}
+            options={[]}
             onChange={(e, data) => {
-              setLabel({ ...label, color: data.value });
+              setProject({ ...project, id_team: '1' });
             }}
           />
           <div
@@ -145,19 +124,12 @@ export default function TaskModal(props) {
               justifyContent: 'center',
               margin: '5px',
             }}
-          >
-            {/* if a color is selected, render example */}
-            {label.color && (
-              <Label circular color={label.color}>
-                {label.label_name}
-              </Label>
-            )}
-          </div>
+          ></div>
         </div>
         <button
           style={saveButton}
           onClick={() => {
-            postLabel();
+            postProject();
             hideModal();
           }}
         >

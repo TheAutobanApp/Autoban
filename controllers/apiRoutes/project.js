@@ -27,7 +27,6 @@ router.post('/', function (req, res) {
       start_date: project.start_date,
       end_date: project.end_date,
       enabled: project.enabled,
-      automation_order: project.automation_order,
       created_by: project.created_by,
     }).then((result) => {
       console.log(result);

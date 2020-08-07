@@ -13,6 +13,7 @@ import LabelModal from './components/LabelModal';
 import Homeview from './components/Homeview';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
+import ProjectModal from './components/ProjectModal';
 
 function App() {
   const [user, setUser] = useState({
@@ -112,6 +113,7 @@ function App() {
       <div style={{ height: '100vh' }}>
         <TaskModal />
         {modal.showLabel && <LabelModal />}
+        <ProjectModal />
         <Navbar />
         {!user.signedIn ? (
           <Login />
