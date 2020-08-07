@@ -16,7 +16,6 @@ router.get('/', function (req, res) {
 });
 
 router.get('/all/:id_user', function (req, res) {
-  console.log('I should be getting this');
   if (req.params.id_user) {
     db.TeamUser.findAll({
       where: {
@@ -28,11 +27,12 @@ router.get('/all/:id_user', function (req, res) {
           (tm, index) => tm.dataValues.id_team,
         );
 
-        console.log(teamIds);
         db.Team.findAll({
           where: { id_team: { [Op.or]: teamIds } },
         })
-          .then((teams) => res.json(teams))
+          .then((teams) => {
+            res.json(teams);
+          })
           .catch((err) => res.status(401).json(err));
       })
       .catch((err) => res.status(401).json(err));

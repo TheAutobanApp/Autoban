@@ -63,6 +63,7 @@ function App() {
     edit: 0,
     showLabel: false,
     labelName: '',
+    showProject: false,
   });
 
   useEffect(() => {
@@ -82,9 +83,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-      setUser({ ...user, teams: response.data });
-    });
+    if (user.id_user) {
+      axios.get(`/api/team/all/${user.id_user}`).then((response) => {
+        setUser({ ...user, teams: response.data });
+      });
+    }
   }, [user]);
 
   return (
