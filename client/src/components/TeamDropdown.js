@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Dropdown } from 'semantic-ui-react';
+import { AutoContext } from '../AutoContext';
 // import { Button, Dropdown } from 'react-bootstrap';
 // import { FaUsers, FaUser } from 'react-icons/fa';
 
 function TeamDropdown(props) {
+  const context = useContext(AutoContext);
   return (
     <Dropdown
       trigger={<Button icon="users" inverted compact basic />}
@@ -13,7 +15,11 @@ function TeamDropdown(props) {
       <Dropdown.Menu>
         <Dropdown.Header content="Teams" />
         <Dropdown.Divider />
-        {props.items.map((item, i) => <Dropdown.Item text={item} />)}
+        {/* {props.items.map((item, i) => (
+        ))} */}
+        {context[8].teams.map((team, index) => {
+          return <Dropdown.Item key={index} text={team.team_name} />;
+        })}
         {/* <TeamDropItem team="Autoban" />
             <TeamDropItem team="PubIO" />
             <TeamDropItem team="GHPT" /> */}
