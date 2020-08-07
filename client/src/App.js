@@ -86,10 +86,17 @@ function App() {
     axios.get('/api/task/get/all/1').then((tasks) => {
       setTasks(tasks.data);
     });
+    console.log(user.id_user);
+    axios
+      .get(`/api/team/all/${user.id_user}`)
+      .then((response) => console.log(response));
 
-    axios.get('/api/team');
     labels.getLabels();
   }, []);
+
+  useEffect(() => {
+    axios.get(`/api/team/all/${user.id_user}`).then((response) => {});
+  }, [user]);
 
   return (
     <AutoProvider
