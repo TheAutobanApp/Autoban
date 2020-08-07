@@ -23,20 +23,7 @@ function App() {
     email: '',
     team: '',
     id_user: '',
-    teams: [
-      {
-        id_team: 1,
-        team_name: 'Autoban',
-        team_description: 'Coolest team alive',
-        enabled: 1,
-      },
-      {
-        id_team: 2,
-        team_name: 'Pubio',
-        team_description: 'Coolest team alive u already know',
-        enabled: 1,
-      },
-    ],
+    teams: [],
   });
 
   const [tasks, setTasks] = useState(null);
@@ -95,7 +82,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get(`/api/team/all/${user.id_user}`).then((response) => {});
+    axios.get(`/api/team/all/${user.id_user}`).then((response) => {
+      setUser({ ...user, teams: response.data });
+    });
   }, [user]);
 
   return (
