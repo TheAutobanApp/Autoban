@@ -12,10 +12,10 @@ router.get('/', function (req, res) {
   } else {
     // get default columns
     db.Columns.findAll({
-          where: { id_project: null },
-        }).then((columns) => {
-          res.json(columns);
-        });
+      where: { id_project: null },
+    }).then((columns) => {
+      res.json(columns);
+    });
   }
 });
 
@@ -58,6 +58,7 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
+                req.io.sockets.emit('newColumn', column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -85,6 +86,7 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
+                req.io.sockets.emit('newColumn', column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -111,7 +113,8 @@ router.put('/', function (req, res) {
                 column_description: req.body.newDescription,
               })
               .then(() => {
-                res.json(column)
+                res.json(column);
+                req.io.sockets.emit('newColumn', column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -134,7 +137,7 @@ router.delete('/', function (req, res) {
         id_place: req.body.id_place,
       },
     })
-    // update place ids
+      // update place ids
       .then((columns) => {
         db.Columns.findAll({
           where: {
@@ -148,9 +151,10 @@ router.delete('/', function (req, res) {
                 item.update({
                   id_place: i,
                 });
-              })            
+              });
             }
-            res.json(columns)
+            res.json(columns);
+            req.io.sockets.emit('newColumn', columns);
           })
           .catch((err) => {
             res.status(401).json(err);

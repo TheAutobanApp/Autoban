@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
 // Add routes, both API and view
 
 // const server = http.createServer(app);
-const io = socketIo.listen(app.listen(3002));
+const io = socketIo.listen(app.listen(PORT2));
 
 // Start the API server
 

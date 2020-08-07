@@ -95,6 +95,9 @@ function App() {
         .then((response) => console.log(response));
   
       labels.getLabels();
+      socket.on("newLabel", data => {
+        labels.getLabels();
+      })
     }
     
       
