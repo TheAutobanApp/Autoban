@@ -82,10 +82,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-      setUser({ ...user, teams: response.data });
-    });
-  }, [user]);
+    if (user.signedIn) {
+      axios.get(`/api/team/all/${user.id_user}`).then((response) => {
+        setUser({ ...user, teams: response.data });
+      });
+    }
+  }, [user.signedIn]);
 
   return (
     <AutoProvider
