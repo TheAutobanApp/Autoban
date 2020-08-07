@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-import { Input, Dropdown, Label, TextArea } from 'semantic-ui-react';
+import { Input, Dropdown, Form, TextArea } from 'semantic-ui-react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -27,8 +27,7 @@ export default function TaskModal(props) {
   //   }, [context[4].labelName]);
 
   const titleInput = {
-    width: '100%',
-    border: 'none',
+    width: '80%',
     height: 35,
     borderRadius: 5,
   };
@@ -94,8 +93,9 @@ export default function TaskModal(props) {
         }}
       >
         <h5>Create Project</h5>
-        <div>
-          <Input
+
+        <div className="flex-column" style={{width: '100%'}}>
+        <Input
             icon="clipboard list"
             style={titleInput}
             onChange={(e) => {
@@ -106,9 +106,8 @@ export default function TaskModal(props) {
             }}
             placeholder="Name"
           />
-        </div>
-        <div className="flex-column">
           <Dropdown
+          style={{margin: '6px', width: '80%'}}
             placeholder="Team"
             search
             selection
@@ -117,6 +116,7 @@ export default function TaskModal(props) {
               setProject({ ...project, id_team: '1' });
             }}
           />
+          <Form>
           <TextArea
             onChange={(e) => {
               setProject({
@@ -126,18 +126,7 @@ export default function TaskModal(props) {
             }}
             placeholder="Description"
           />
-          <DatePicker
-            selected={project.start_date}
-            onChange={(e) => {
-              setProject({ ...project, start_date: e });
-            }}
-          />
-          <DatePicker
-            selected={project.end_date}
-            onChange={(e) => {
-              setProject({ ...project, end_date: e });
-            }}
-          />
+          </Form>
           <div
             className="flex-row"
             style={{
@@ -146,7 +135,24 @@ export default function TaskModal(props) {
               justifyContent: 'center',
               margin: '5px',
             }}
-          ></div>
+          >
+            <DatePicker
+              placeholderText="Start Date"
+              className="datepicker small"
+              selected={project.start_date}
+              onChange={(e) => {
+                setProject({ ...project, start_date: e });
+              }}
+            />
+            <DatePicker
+              placeholderText="End Date"
+              className="datepicker small"
+              selected={project.end_date}
+              onChange={(e) => {
+                setProject({ ...project, end_date: e });
+              }}
+            />
+          </div>
         </div>
         <button
           style={saveButton}

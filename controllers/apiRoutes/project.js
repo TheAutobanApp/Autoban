@@ -26,11 +26,11 @@ router.post('/', function (req, res) {
       project_description: project.project_description,
       start_date: project.start_date,
       end_date: project.end_date,
-      enabled: project.enabled,
+      enabled: true,
       created_by: project.created_by,
     }).then((result) => {
       console.log(result);
-      res.redirect('/');
+      res.json(result);
     });
   } else {
     res.status(401).json(err);

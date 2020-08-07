@@ -89,7 +89,7 @@ function App() {
         setUser({ ...user, teams: response.data });
       });
     }
-  }, [user]);
+  }, [user.id_user]);
 
   return (
     <AutoProvider
