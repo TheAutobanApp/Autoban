@@ -97,7 +97,7 @@ function App() {
         <Navbar />
         {!user.signedIn ? (
           <Login />
-        ) : view.type === 'proj' ? (
+        ) : view.type === 'home' ? (
           <Homeview />
         ) : (
           <ProjectView>
