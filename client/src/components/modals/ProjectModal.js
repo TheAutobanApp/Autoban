@@ -12,16 +12,16 @@ export default function TaskModal(props) {
   // inital state for reseting state
   const initialState = {
     // make project id responsive
-    id_team: 1,
-    project_name: '',
-    project_description: '',
-    start_date: '',
-    end_date: '',
+    id_team: null,
+    project_name: null,
+    project_description: null,
+    start_date: null,
+    end_date: null,
     created_by: context[8].id_user,
   };
   const [project, setProject] = useState(initialState);
-  
-  console.log(project)
+
+  console.log(project);
 
   // when modal is mounted, set local state label name from context
   //   useEffect(() => {
@@ -48,6 +48,13 @@ export default function TaskModal(props) {
     width: '300px',
     backgroundColor: 'whitesmoke',
   };
+  const options = context[8].teams.map((team) => {
+    return {
+      key: team.id_team,
+      value: team.id_team,
+      text: team.team_name,
+    };
+  });
 
   // hide modal, reset state and modal context
   const hideModal = () => {
@@ -57,18 +64,19 @@ export default function TaskModal(props) {
 
   // post label using settings in state
   const postProject = () => {
-    console.log(project)
     // make project id responsive
-    axios.post(`/api/project/`, project).then((res) => {
-      console.log(res);
-      // create copy of project labels from context
-      // and update that context with new label from response
-      //   const projectCopy = Array.from(context[12].projectLabels);
-      //   labelsCopy.push(res.data);
-      //   context[13]({ ...context[13], projectLabels: labelsCopy });
-      //   // reset state
-      setProject(initialState);
-    });
+    if (project.project_name && project.id_team) {
+      axios.post(`/api/project/`, project).then((res) => {
+        // create copy of project labels from context
+        // and update that context with new label from response
+        //   const projectCopy = Array.from(context[12].projectLabels);
+        //   labelsCopy.push(res.data);
+        //   context[13]({ ...context[13], projectLabels: labelsCopy });
+        //   // reset state
+        console.log(res);
+        hideModal();
+      });
+    }
   };
 
   //   const editTask = () => {
@@ -97,8 +105,9 @@ export default function TaskModal(props) {
       >
         <h5>Create Project</h5>
 
-        <div className="flex-column" style={{width: '100%'}}>
-        <Input
+        <div className="flex-column" style={{ width: '100%' }}>
+          <Input
+            error={!project.project_name}
             icon="clipboard list"
             style={titleInput}
             onChange={(e) => {
@@ -110,25 +119,26 @@ export default function TaskModal(props) {
             placeholder="Name"
           />
           <Dropdown
-          style={{margin: '6px', width: '80%'}}
+            error={!project.id_team}
+            style={{ margin: '6px', width: '80%' }}
             placeholder="Team"
             search
             selection
-            options={[]}
+            options={options}
             onChange={(e, data) => {
-              setProject({ ...project, id_team: '1' });
+              setProject({ ...project, id_team: data.value });
             }}
           />
           <Form>
-          <TextArea
-            onChange={(e) => {
-              setProject({
-                ...project,
-                project_description: e.target.value,
-              });
-            }}
-            placeholder="Description"
-          />
+            <TextArea
+              onChange={(e) => {
+                setProject({
+                  ...project,
+                  project_description: e.target.value,
+                });
+              }}
+              placeholder="Description"
+            />
           </Form>
           <div
             className="flex-row"
@@ -161,7 +171,6 @@ export default function TaskModal(props) {
           style={saveButton}
           onClick={() => {
             postProject();
-            hideModal();
           }}
         >
           Save
