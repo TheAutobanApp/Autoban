@@ -2,26 +2,25 @@ const express = require('express');
 const routes = require('./controllers');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
 var db = require('./models');
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// add socket.io middleware to our router requests
+// Serve up static assets (usually on heroku)
+// console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 app.use(function (req, res, next) {
   req.io = io;
   next();
 });
 // Add routes, both API and view
 app.use(routes);
-
-// Serve up static assets (usually on heroku)
-// console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-}
 
 io.on('connection', (socket) => {
   console.log('new client connected');
