@@ -47,11 +47,9 @@ export default function Login() {
       .onAuthStateChanged((user) => {
         if (user) {
           const email = firebase.auth().currentUser.email;
-          console.log(email);
           axios
             .get(`/api/user/?email=${email}`)
             .then((res) => {
-              console.log(res.data);
               const user = res.data;
               if (res.data === null) {
                 setSignUp({

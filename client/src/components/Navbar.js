@@ -13,14 +13,21 @@ function Navbar() {
   const context = useContext(AutoContext);
 
   const handleHomeClick = () => {
-    console.log("go home")
-  }
+    console.log('go home');
+  };
 
   return (
     <div className="navbar">
       <div className="flex-row" style={{ padding: '0 4px' }}>
-        <Button icon="home" inverted compact basic circular onClick={handleHomeClick}/>
-        <TeamDropdown items={['Autoban', 'PubIO']}/>
+        <Button
+          icon="home"
+          inverted
+          compact
+          basic
+          circular
+          onClick={handleHomeClick}
+        />
+        <TeamDropdown items={['Autoban', 'PubIO']} />
         {/* user dropdown */}
         <UserDropdown />
       </div>
@@ -33,8 +40,8 @@ function Navbar() {
           {window.innerWidth > 600 ? 'Autoban' : 'A'}
         </h1>
       </div>
-      <div className="flex-row navoptions">
-        {context[0].timeline ? (
+      {/* <div className="flex-row navoptions"> */}
+      {/* {context[0].timeline ? (
           <MdTimeline size={22} />
         ) : (
           <GoProject size={22} />
@@ -47,21 +54,21 @@ function Navbar() {
               timeline: !context[0].timeline,
             });
           }}
-        />
-        <div
-          className="clickable"
-          onClick={() => {
-            context[1]({
-              ...context[0],
-              open: !context[0].open,
-              type: 'settings',
-            });
-          }}
-        >
-          <FiSettings size={20} style={{ margin: '10px' }} />
-        </div>
+        /> */}
+      <div
+        className="clickable"
+        onClick={() => {
+          context[1]({
+            ...context[0],
+            open: !context[0].open,
+            type: 'settings',
+          });
+        }}
+      >
+        <FiSettings size={20} style={{ margin: '10px' }} />
       </div>
     </div>
+    // </div>
   );
 }
 

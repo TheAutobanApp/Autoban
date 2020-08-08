@@ -18,7 +18,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      automation_order: { type: DataTypes.INTEGER, allowNull: false },
       created_by: { type: DataTypes.INTEGER, allowNull: false },
     },
     { freezeTableName: true },
