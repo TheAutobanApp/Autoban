@@ -14,9 +14,21 @@ export default function Homeview(props) {
           context[8].team,
           element.project_name,
         );
-        return <ProjectCard title={element.project_name} key={i} id={element.id_project}/>;
+        return (
+          <ProjectCard
+            title={element.project_name}
+            key={i}
+            id={element.id_project}
+          />
+        );
       } else if (context[8].team === null) {
-        return <ProjectCard title={element.project_name} key={i} id={element.id_project}/>;
+        return (
+          <ProjectCard
+            title={element.project_name}
+            key={i}
+            id={element.id_project}
+          />
+        );
       }
     });
   };
@@ -27,14 +39,12 @@ export default function Homeview(props) {
         style={{
           width: '70%',
           height: '75%',
-          overflow: 'hidden',
+          // overflow: 'hidden',
           display: 'flex',
         }}
       >
         <TeamMenu />
-        <div
-          style={{ height: '100%', width: '100%', padding: '10px' }}
-        >
+        <div className="project-list">
           <AddProject />
           {renderProjects()}
         </div>

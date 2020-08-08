@@ -18,6 +18,7 @@ export default function AddProject() {
         width: '175px',
         borderRadius: '5px',
         boxShadow: '1px 1px 5px grey',
+        margin: '4px 4px 4px'
       }}
       onClick={handleAddProject}
     >

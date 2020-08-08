@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Grid, Menu, Input } from 'semantic-ui-react';
+import { Grid, Menu, Input, Label } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
 
@@ -38,8 +38,8 @@ export default function TeamMenu() {
   };
 
   return (
-    <Grid style={{ maxHeight: '100%', height: 'inherit' }}>
-      <Grid.Column width={2} style={{ maxHeight: '100%' }}>
+    <Grid style={{ height: 'calc((100vh - 50px) * .75)' }}>
+      <Grid.Column width={2} style={{ height: 'calc((100vh - 50px) * .75)' }}>
         <Menu
           fluid
           vertical
@@ -65,7 +65,7 @@ export default function TeamMenu() {
           {team.teamAdd && (
             <Menu.Item>
               <Input
-                placeholder="team name"
+                placeholder="Team Name"
                 value={team.teamName}
                 maxLength={20}
                 action={{
@@ -86,7 +86,7 @@ export default function TeamMenu() {
                 name={tm.team_name}
                 active={team.activeItem === tm.team_name}
                 onClick={handleItemClick}
-              />
+              >{tm.team_name}<Label color="red" circular size="mini"/></Menu.Item>
             );
           })}
         </Menu>

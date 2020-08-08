@@ -7,7 +7,6 @@ import Homeview from './components/Homeview';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
-import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/modals/TaskModal';
 import LabelModal from './components/modals/LabelModal';
@@ -198,6 +197,7 @@ function App() {
             ) : (
               <Timeline />
             )} */}
+            
           </ProjectView>
         )}
         <OptionsDrawer />
