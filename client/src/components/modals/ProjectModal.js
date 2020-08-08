@@ -69,9 +69,11 @@ export default function TaskModal(props) {
       axios.post(`/api/project/`, project).then((res) => {
         // create copy of project labels from context
         // and update that context with new label from response
-        //   const projectCopy = Array.from(context[12].projectLabels);
-        //   labelsCopy.push(res.data);
-        //   context[13]({ ...context[13], projectLabels: labelsCopy });
+
+        context[9]({
+          ...context[8],
+          projects: context[8].projects.concat([res.data]),
+        });
         //   // reset state
         console.log(res);
         hideModal();

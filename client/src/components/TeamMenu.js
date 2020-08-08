@@ -12,9 +12,12 @@ export default function TeamMenu() {
     teamName: '',
   });
 
-  const handleItemClick = (e, { name }) =>
+  const handleItemClick = (e, { name }) => {
     setTeam({ ...team, activeItem: name });
-
+    if (e.target.id) {
+      context[9]({ ...context[8], team: parseInt(e.target.id) });
+    } else context[9]({ ...context[8], team: null });
+  };
   const handleAddTeam = () => {
     setTeam({ ...team, teamAdd: !team.teamAdd });
   };
@@ -79,6 +82,7 @@ export default function TeamMenu() {
             return (
               <Menu.Item
                 key={index}
+                id={tm.id_team}
                 name={tm.team_name}
                 active={team.activeItem === tm.team_name}
                 onClick={handleItemClick}

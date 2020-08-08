@@ -1,5 +1,6 @@
 const router = require('express').Router();
 var db = require('../../models');
+const { Op } = require('sequelize');
 
 router.get('/', function (req, res) {
   //get project
@@ -15,6 +16,29 @@ router.get('/', function (req, res) {
     res.status(401).json(err);
   }
 });
+router.get('/all/:id_user', function (req, res) {
+  if (req.params.id_user) {
+    db.ProjectUser.findAll({
+      where: {
+        id_user: req.params.id_user,
+      },
+    })
+      .then((project) => {
+        const projectIds = project.map(
+          (tm, index) => tm.dataValues.id_project,
+        );
+
+        db.Project.findAll({
+          where: { id_project: { [Op.or]: projectIds } },
+        })
+          .then((projects) => {
+            res.json(projects);
+          })
+          .catch((err) => res.status(401).json(err));
+      })
+      .catch((err) => res.status(401).json(err));
+  }
+});
 
 router.post('/', function (req, res) {
   //new project
@@ -28,10 +52,17 @@ router.post('/', function (req, res) {
       end_date: project.end_date,
       enabled: true,
       created_by: project.created_by,
-    }).then((result) => {
-      console.log(result);
-      res.json(result);
-    });
+    })
+      .then((result) => {
+        db.ProjectUser.create({
+          id_project: result.dataValues.id_project,
+          id_user: project.created_by,
+        }).catch((err) => res.status(401).json(err));
+        res.json(result);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
   } else {
     res.status(401).json(err);
   }

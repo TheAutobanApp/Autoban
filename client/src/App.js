@@ -22,9 +22,10 @@ function App() {
     firstName: '',
     lastName: '',
     email: '',
-    team: '',
+    team: null,
     id_user: '',
     teams: [],
+    projects: [],
   });
 
   const [tasks, setTasks] = useState(null);
@@ -86,7 +87,14 @@ function App() {
   useEffect(() => {
     if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-        setUser({ ...user, teams: response.data });
+        axios.get(`/api/project/all/${user.id_user}`).then((res) => {
+          setUser({
+            ...user,
+            teams: response.data,
+            projects: res.data,
+          });
+          // console.log(res);
+        });
       });
     }
   }, [user.id_user]);
