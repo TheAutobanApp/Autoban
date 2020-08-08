@@ -160,9 +160,9 @@ function App() {
             ) : (
               <Timeline />
             )}
-            <OptionsDrawer />
           </ProjectView>
         )}
+        <OptionsDrawer />
       </div>
     </AutoProvider>
   );
