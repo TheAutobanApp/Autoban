@@ -54,7 +54,7 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   const [view, setView] = useState({
-    type: 'project',
+    type: 'home',
   });
 
   const [modal, setModal] = useState({
@@ -113,7 +113,7 @@ function App() {
       <div style={{ height: '100vh' }}>
         <TaskModal />
         {modal.showLabel && <LabelModal />}
-        <ProjectModal />
+        {modal.showProject && <ProjectModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />

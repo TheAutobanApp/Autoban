@@ -20,6 +20,8 @@ export default function TaskModal(props) {
     created_by: context[8].id_user,
   };
   const [project, setProject] = useState(initialState);
+  
+  console.log(project)
 
   // when modal is mounted, set local state label name from context
   //   useEffect(() => {
@@ -55,6 +57,7 @@ export default function TaskModal(props) {
 
   // post label using settings in state
   const postProject = () => {
+    console.log(project)
     // make project id responsive
     axios.post(`/api/project/`, project).then((res) => {
       console.log(res);
