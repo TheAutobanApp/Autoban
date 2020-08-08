@@ -3,17 +3,17 @@ import axios from 'axios';
 import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
+import Homeview from './components/Homeview';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
 import Login from './components/Login';
-import TaskModal from './components/TaskModal';
-import LabelModal from './components/LabelModal';
-import Homeview from './components/Homeview';
+import TaskModal from './components/modals/TaskModal';
+import LabelModal from './components/modals/LabelModal';
+import ProjectModal from './components/modals/ProjectModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
-import ProjectModal from './components/ProjectModal';
 
 function App() {
   const [user, setUser] = useState({
@@ -54,7 +54,7 @@ function App() {
   const [columns, setColumns] = useState([]);
 
   const [view, setView] = useState({
-    type: 'home',
+    type: 'project',
   });
 
   const [modal, setModal] = useState({
