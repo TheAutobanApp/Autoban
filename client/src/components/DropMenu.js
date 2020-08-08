@@ -7,9 +7,8 @@ function DropMenu(props) {
   const context = useContext(AutoContext);
 
   const handleDeleteColumn = () => {
-    // make project id responsive
     axios
-      .delete(`/api/columns/?proj=${1}`, {
+      .delete(`/api/columns/?proj=${context[10].project}`, {
         data: { id_place: props.id },
       })
       .then((res) => context[3](res.data));

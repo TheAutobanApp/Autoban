@@ -30,7 +30,7 @@ router.post('/', function (req, res) {
     })
       .then((column) => {
         res.json(column);
-        req.io.sockets.emit('newColumn', column);
+        req.io.sockets.emit(`newColumn${req.query.proj}`, column);
       })
       .catch((err) => {
         res.status(401).json(err);
@@ -58,7 +58,7 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit('newColumn', column);
+                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -86,7 +86,7 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit('newColumn', column);
+                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -114,7 +114,7 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit('newColumn', column);
+                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -154,7 +154,7 @@ router.delete('/', function (req, res) {
               });
             }
             res.json(columns);
-            req.io.sockets.emit('newColumn', columns);
+            req.io.sockets.emit(`columnDelete${req.query.proj}`, columns);
           })
           .catch((err) => {
             res.status(401).json(err);

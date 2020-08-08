@@ -50,8 +50,6 @@ router.post('/', function (req, res) {
         db.TeamUser.create({
           id_team: team.dataValues.id_team,
           id_user: req.body.id_user,
-        }).then(res => {
-          req.io.sockets.emit('newTeam', team);
         }).catch((err) => res.status(401).json(err));
         res.json(team);
       })

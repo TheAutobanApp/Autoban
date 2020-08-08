@@ -35,7 +35,7 @@ router.post('/create/:proj_id', function (req, res) {
     id_label3: task.id_label3,
     complete: task.complete,
   }).then((result) => {
-    req.io.sockets.emit('newTask', result);
+    req.io.sockets.emit(`newTask${req.params.proj_id}`, result);
     res.json(result);
   });
 });
@@ -55,7 +55,7 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
     }).then((response) => {
       console.log(response);
       res.json(response);
-      req.io.sockets.emit('newTask', response);
+      req.io.sockets.emit(`newTask${req.params.proj_id}`, response);
 
     });
   });
@@ -75,8 +75,8 @@ router.put('/', function (req, res) {
     },
   )
     .then((res) => {
-      req.io.sockets.emit('newLabel', res);
-
+      console.log(res)
+      req.io.sockets.emit(`newTask${task.id_project}`, res);
       res.json(res);
     })
     .catch((err) => {
@@ -128,7 +128,7 @@ router.put('/label/remove/', function (req, res) {
         },
       );
     }
-    req.io.sockets.emit('newLabel', response);
+    req.io.sockets.emit(`newTask${result.id_project}`, response);
 
   });
 });
@@ -144,7 +144,7 @@ router.delete('/delete/:proj_id', function (req, res) {
     .then((task) => {
       db.Task.findAll().then((tasks) => {
         res.json(tasks);
-        req.io.sockets.emit('newTask', tasks);
+        req.io.sockets.emit(`newTask${req.params.proj_id}`, tasks);
       });
     })
     .catch((err) => {

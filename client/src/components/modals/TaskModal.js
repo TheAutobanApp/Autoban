@@ -86,7 +86,7 @@ export default function TaskModal(props) {
   };
 
   const postTask = () => {
-    axios.post('/api/task/create/1', task).then((res) => {
+    axios.post(`/api/task/create/${context[10].project}`, task).then((res) => {
       context[7](context[6].concat(res.data));
       setTask({
         ...task,
