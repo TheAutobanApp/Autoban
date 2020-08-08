@@ -3,14 +3,15 @@ import axios from 'axios';
 import Navbar from './components/Navbar';
 import OptionsDrawer from './components/OptionsDrawer';
 import ProjectView from './components/ProjectView';
+import Homeview from './components/Homeview';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
 import Timeline from './components/Timeline';
 import Login from './components/Login';
-import TaskModal from './components/TaskModal';
-import LabelModal from './components/LabelModal';
-import Homeview from './components/Homeview';
+import TaskModal from './components/modals/TaskModal';
+import LabelModal from './components/modals/LabelModal';
+import ProjectModal from './components/modals/ProjectModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
@@ -25,9 +26,10 @@ function App() {
     firstName: '',
     lastName: '',
     email: '',
-    team: '',
+    team: null,
     id_user: '',
     teams: [],
+    projects: [],
   });
 
   const [tasks, setTasks] = useState(null);
@@ -67,6 +69,7 @@ function App() {
     edit: 0,
     showLabel: false,
     labelName: '',
+    showProject: false,
   });
 
   useEffect(() => {
@@ -101,12 +104,19 @@ function App() {
   }, [user.signedIn]);
 
   useEffect(() => {
-    if (user.signedIn) {
+    if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-        setUser({ ...user, teams: response.data });
+        axios.get(`/api/project/all/${user.id_user}`).then((res) => {
+          setUser({
+            ...user,
+            teams: response.data,
+            projects: res.data,
+          });
+          // console.log(res);
+        });
       });
     }
-  }, [user.signedIn]);
+  }, [user.id_user]);
 
   return (
     <AutoProvider
@@ -130,6 +140,7 @@ function App() {
       <div style={{ height: '100vh' }}>
         <TaskModal />
         {modal.showLabel && <LabelModal />}
+        {modal.showProject && <ProjectModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />
@@ -168,9 +179,9 @@ function App() {
             ) : (
               <Timeline />
             )}
-            <OptionsDrawer />
           </ProjectView>
         )}
+        <OptionsDrawer />
       </div>
     </AutoProvider>
   );

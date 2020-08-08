@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AutoContext } from '../AutoContext';
+import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 const axios = require('axios');
