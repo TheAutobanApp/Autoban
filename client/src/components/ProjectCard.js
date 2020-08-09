@@ -17,7 +17,7 @@ export default function ProjectCard(props) {
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
         height: '100px',
-        width: '175px',
+        width: '160px',
         background: 'linear-gradient(to bottom, rgb(73, 153, 219), rgb(55, 116, 165))',
         borderRadius: '5px',
         boxShadow: '1px 1px 5px grey',

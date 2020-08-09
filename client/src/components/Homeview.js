@@ -37,7 +37,7 @@ export default function Homeview(props) {
     <div className="project-view home-view">
       <div
         style={{
-          width: '70%',
+          width: '80%',
           height: '75%',
           // overflow: 'hidden',
           display: 'flex',
