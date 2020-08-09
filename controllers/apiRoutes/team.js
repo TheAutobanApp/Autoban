@@ -44,6 +44,7 @@ router.post('/', function (req, res) {
     db.Team.create({
       team_name: req.body.team_name,
       team_description: req.body.team_description,
+      team_color: req.body.team_color,
       enabled: true,
     })
       .then((team) => {

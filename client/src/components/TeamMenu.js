@@ -14,26 +14,19 @@ export default function TeamMenu() {
 
   const colors = [
     'red',
+    'blue',
+    'green',
+    'purple',
     'orange',
+    'teal',
+    'pink',
     'yellow',
     'olive',
-    'green',
-    'teal',
-    'blue',
     'violet',
-    'purple',
-    'pink',
     'brown',
     'grey',
     'black',
   ];
-
-  const colorTeams = context[8].teams.map((team, i) => {
-    console.log(team);
-    team = { ...team, color: colors[i] };
-    console.log(team);
-    return team;
-  });
 
   const [team, setTeam] = useState({
     activeItem: 'All',
@@ -57,6 +50,7 @@ export default function TeamMenu() {
       .post('/api/team/', {
         team_name: team.teamName,
         id_user: context[8].id_user,
+        team_color: colors[context[8].teams.length]
       })
       .then((res) => {
         context[9]({
@@ -114,7 +108,7 @@ export default function TeamMenu() {
           />
         </Menu.Item>
       )}
-      {colorTeams.map((tm, index) => {
+      {context[8].teams.map((tm, index) => {
         return (
           <Menu.Item
             key={index}
@@ -128,7 +122,7 @@ export default function TeamMenu() {
               empty
               size="mini"
               circular
-              color={tm.color}
+              color={tm.team_color}
             ></Label>
           </Menu.Item>
         );

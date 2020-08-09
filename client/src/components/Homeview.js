@@ -9,24 +9,28 @@ export default function Homeview(props) {
   const renderProjects = () => {
     return context[8].projects.map((element, i) => {
       if (element.id_team === context[8].team) {
-        console.log(
-          element.id_team,
-          context[8].team,
-          element.project_name,
+        const foundIndex = context[8].teams.findIndex(
+          (team) => team.id_team === element.id_team,
         );
+        console.log(foundIndex);
         return (
           <ProjectCard
             title={element.project_name}
             key={i}
             id={element.id_project}
+            color={context[8].teams[foundIndex].team_color}
           />
         );
       } else if (context[8].team === null) {
+        const foundIndex = context[8].teams.findIndex(
+          (team) => team.id_team === element.id_team,
+        );
         return (
           <ProjectCard
             title={element.project_name}
             key={i}
             id={element.id_project}
+            color={context[8].teams.length > 0 ? context[8].teams[foundIndex].team_color : null}
           />
         );
       }

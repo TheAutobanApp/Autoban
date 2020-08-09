@@ -12,6 +12,7 @@ module.exports = function (sequelize, DataTypes) {
       team_description: {
         type: DataTypes.STRING(200),
       },
+      team_color: { type: DataTypes.STRING(20), allowNull: false},
       enabled: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
