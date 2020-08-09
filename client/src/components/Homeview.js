@@ -14,7 +14,10 @@ export default function Homeview(props) {
           const foundIndex = context[8].teams.findIndex(
             (team) => team.id_team === element.id_team,
           );
-          const color = context[8].teams[foundIndex].team_color;
+          let color = 'red';
+          if (foundIndex !== -1) {
+            color = context[8].teams[foundIndex].team_color;
+          }
           return (
             <ProjectCard
               title={element.project_name}
@@ -27,7 +30,10 @@ export default function Homeview(props) {
           const foundIndex = context[8].teams.findIndex(
             (team) => team.id_team === element.id_team,
           );
-          const color = context[8].teams[foundIndex].team_color;
+          let color = 'red';
+          if (foundIndex !== -1) {
+            color = context[8].teams[foundIndex].team_color;
+          }
           return (
             <ProjectCard
               title={element.project_name}

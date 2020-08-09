@@ -95,6 +95,7 @@ export default function Login() {
           email: signUp.email,
         })
         .then((res) => {
+          console.log(res.data.id_user)
           context[9]({
             ...context[8],
             signedIn: true,

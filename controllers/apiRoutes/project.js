@@ -16,6 +16,7 @@ router.get('/', function (req, res) {
     res.status(401).json(err);
   }
 });
+
 router.get('/all/:id_user', function (req, res) {
   if (req.params.id_user) {
     db.ProjectUser.findAll({
@@ -24,17 +25,20 @@ router.get('/all/:id_user', function (req, res) {
       },
     })
       .then((project) => {
+        console.log(project);
+
         const projectIds = project.map(
           (tm, index) => tm.dataValues.id_project,
         );
-
-        db.Project.findAll({
-          where: { id_project: { [Op.or]: projectIds } },
-        })
-          .then((projects) => {
-            res.json(projects);
+        if (projectIds.length > 0) {
+          db.Project.findAll({
+            where: { id_project: { [Op.or]: projectIds } },
           })
-          .catch((err) => res.status(401).json(err));
+            .then((projects) => {
+              res.json(projects);
+            })
+            .catch((err) => res.status(401).json(err));
+        } else res.status(200).send('No projects found');
       })
       .catch((err) => res.status(401).json(err));
   }

@@ -124,11 +124,20 @@ function App() {
     if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
         axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          setUser({
-            ...user,
-            teams: response.data,
-            projects: res.data,
-          });
+          if (Array.isArray(res.data) && Array.isArray(response.data)) {
+            console.log('teams and projects')
+            setUser({
+              ...user,
+              teams: response.data,
+              projects: res.data,
+            });
+          } else if (Array.isArray(response.data)) {
+            console.log(res.data)
+            setUser({
+              ...user,
+              teams: response.data,
+            });
+          }
         });
       });
     }
