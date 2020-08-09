@@ -66,8 +66,6 @@ export default function TaskModal(props) {
           ...context[8],
           projects: context[8].projects.concat([res.data]),
         });
-        //   // reset state
-        console.log(res);
       }); 
       hideModal();
     }

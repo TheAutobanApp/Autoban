@@ -9,7 +9,7 @@ export default function ProjectCard(props) {
     context[11]({ type: 'project', project: props.id });
     context[9]({ ...context[8], team: null });
   };
-console.log(props.color)
+  
   return (
     <Label
       className="clickable"

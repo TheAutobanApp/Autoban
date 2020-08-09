@@ -93,7 +93,6 @@ function App() {
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
-        console.log(data);
         axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
           setTasks(tasks.data);
         });
@@ -130,7 +129,6 @@ function App() {
             teams: response.data,
             projects: res.data,
           });
-          // console.log(res);
         });
       });
     }

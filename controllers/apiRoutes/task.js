@@ -53,10 +53,8 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
     db.Task.findAll({
       where: { id_project: req.params.proj_id },
     }).then((response) => {
-      console.log(response);
       res.json(response);
       req.io.sockets.emit(`newTask${req.params.proj_id}`, response);
-
     });
   });
 });
@@ -75,7 +73,6 @@ router.put('/', function (req, res) {
     },
   )
     .then((res) => {
-      console.log(res)
       req.io.sockets.emit(`newTask${task.id_project}`, res);
       res.json(res);
     })
