@@ -11,9 +11,8 @@ export default function ColumnDrawerView(props) {
   // update columns state with new column title, using concat method
   const updateColumnName = (e) => {
     // post column to database
-    // make project id responsive
     axios
-      .put(`/api/columns/?proj=${1}`, {
+      .put(`/api/columns/?proj=${context[10].project}`, {
         id_place: context[0].edit,
         column_name: name,
       })

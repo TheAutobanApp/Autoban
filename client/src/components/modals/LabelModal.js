@@ -37,8 +37,7 @@ export default function TaskModal(props) {
 
   // inital state for reseting state
   const initialState = {
-    // make project id responsive
-    id_project: 1,
+    id_project: context[10].project,
     color: '',
     label_name: '',
   };
@@ -79,8 +78,7 @@ export default function TaskModal(props) {
 
   // post label using settings in state
   const postLabel = () => {
-    // make project id responsive
-    axios.post(`/api/label/?proj=${1}`, label).then((res) => {
+    axios.post(`/api/label/`, label).then((res) => {
       // create copy of project labels from context
       // and update that context with new label from response
       const labelsCopy = Array.from(context[12].projectLabels);

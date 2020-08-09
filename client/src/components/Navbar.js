@@ -13,7 +13,10 @@ function Navbar() {
   const context = useContext(AutoContext);
 
   const handleHomeClick = () => {
-    console.log('go home');
+    context[11]({ type: 'home', project: null });
+    context[3]([]);
+    context[7]([]);
+    context[13]({ ...context[12], projectLabels: [] });
   };
 
   return (

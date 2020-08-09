@@ -15,6 +15,10 @@ import ProjectModal from './components/modals/ProjectModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 
+import socketIOClient from 'socket.io-client';
+
+const socket = socketIOClient();
+
 function App() {
   const [user, setUser] = useState({
     signedIn: false,
@@ -33,8 +37,7 @@ function App() {
     projectLabels: [],
     // get both project labels and default labels and add to context state
     getLabels: () => {
-      // make project id responsive
-      axios.get(`/api/label/?proj=${1}`).then((res) => {
+      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
         const projLabels = [];
         res.data.forEach((label) => projLabels.push(label));
         axios.get(`/api/label/default`).then((res) => {
@@ -56,6 +59,7 @@ function App() {
 
   const [view, setView] = useState({
     type: 'home',
+    project: null,
   });
 
   const [modal, setModal] = useState({
@@ -69,20 +73,54 @@ function App() {
   });
 
   useEffect(() => {
-    // make project id responsive
-    axios.get(`/api/columns/?proj=${1}`).then((res) => {
-      setColumns(res.data);
-    });
-    axios.get('/api/task/get/all/1').then((tasks) => {
-      setTasks(tasks.data);
-    });
-    console.log(user.id_user);
-    axios
-      .get(`/api/team/all/${user.id_user}`)
-      .then((response) => console.log(response));
-
-    labels.getLabels();
-  }, []);
+    if (user.signedIn && view.type === 'project') {
+      // get columns for project
+      axios.get(`/api/columns/?proj=${view.project}`).then((res) => {
+        setColumns(res.data);
+      });
+      // listen for column updates, on update refresh column state
+      socket.on(`newColumn${view.project}`, (data) => {
+        axios.get(`/api/columns/?proj=${view.project}`).then((res) => {
+          setColumns(res.data);
+        });
+      });
+      // listen for a column delete, set column state to new columns
+      socket.on(`columnDelete${view.project}`, (data) => {
+          setColumns(data);
+      });
+      // get tasks for project
+      axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
+        setTasks(tasks.data);
+      });
+      // listen for task updates, on update refresh task state
+      socket.on(`newTask${view.project}`, (data) => {
+        console.log(data);
+        axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
+          setTasks(tasks.data);
+        });
+      });
+      // get labels for project
+      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
+        const projLabels = [];
+        res.data.forEach((label) => projLabels.push(label));
+        axios.get(`/api/label/default`).then((res) => {
+          res.data.forEach((label) => projLabels.push(label));
+          setLabels({ ...labels, projectLabels: projLabels });
+        });
+      });
+      // listen for label updates, on update refresh label state
+      socket.on(`newLabel${view.project}`, (data) => {
+        axios.get(`/api/label/?proj=${view.project}`).then((res) => {
+          const projLabels = [];
+          res.data.forEach((label) => projLabels.push(label));
+          axios.get(`/api/label/default`).then((res) => {
+            res.data.forEach((label) => projLabels.push(label));
+            setLabels({ ...labels, projectLabels: projLabels });
+          });
+        });
+      });
+    }
+  }, [view.type]);
 
   useEffect(() => {
     if (user.id_user) {
@@ -129,9 +167,9 @@ function App() {
           <Homeview />
         ) : (
           <ProjectView>
-            {/* if toggle is set to project view */}
+            {/* if toggle is set to project view
             {!drawer.timeline ? (
-              <>
+              <> */}
                 {/* map through columns array and render each column with the title */}
                 {columns.map((item, i) => {
                   return (
@@ -156,10 +194,10 @@ function App() {
                   columns={columns}
                   setcolumns={setColumns}
                 />
-              </>
+              {/* </>
             ) : (
               <Timeline />
-            )}
+            )} */}
           </ProjectView>
         )}
         <OptionsDrawer />

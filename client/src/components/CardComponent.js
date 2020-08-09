@@ -34,8 +34,10 @@ function CardComponent(props) {
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
-      const task = res.data;
+    // axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
+    // });
+      const foundIndex = context[6].findIndex(task => task.id_task === props.id);
+      const task = context[6][foundIndex];
       let cardLabels = [
         task.id_label1,
         task.id_label2,
@@ -58,8 +60,7 @@ function CardComponent(props) {
       });
       setLabels(taskLabels);
       setAvailLabels(projLabels);
-    });
-  }, [context[12].projectLabels]);
+  }, [context[12].projectLabels, context[6]]);
 
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
@@ -99,6 +100,7 @@ function CardComponent(props) {
       case 0:
         axios
           .put(`/api/task/?id_task=${props.id}`, {
+            id_project: context[10].project,
             id_label1: newLabel.id_label,
           })
           .then((res) => console.log(res));
@@ -106,6 +108,7 @@ function CardComponent(props) {
       case 1:
         axios
           .put(`/api/task/?id_task=${props.id}`, {
+            id_project: context[10].project,
             id_label2: newLabel.id_label,
           })
           .then((res) => console.log(res));
@@ -113,6 +116,7 @@ function CardComponent(props) {
       case 2:
         axios
           .put(`/api/task/?id_task=${props.id}`, {
+            id_project: context[10].project,
             id_label3: newLabel.id_label,
           })
           .then((res) => console.log(res));
