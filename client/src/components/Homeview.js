@@ -6,35 +6,43 @@ import { AutoContext } from '../AutoContext';
 
 export default function Homeview(props) {
   const context = useContext(AutoContext);
+
   const renderProjects = () => {
+    if (context[8].projects.length > 0) {
     return context[8].projects.map((element, i) => {
       if (element.id_team === context[8].team) {
         const foundIndex = context[8].teams.findIndex(
           (team) => team.id_team === element.id_team,
         );
+        console.log(context[8].teams[foundIndex])
+        const color = context[8].teams[foundIndex].team_color;
         console.log(foundIndex);
         return (
           <ProjectCard
             title={element.project_name}
             key={i}
             id={element.id_project}
-            color={context[8].teams[foundIndex].team_color}
+            color={color}
           />
         );
       } else if (context[8].team === null) {
         const foundIndex = context[8].teams.findIndex(
           (team) => team.id_team === element.id_team,
         );
+        
+        console.log(context[8].teams[foundIndex])
+        const color = context[8].teams[foundIndex].team_color;
         return (
           <ProjectCard
             title={element.project_name}
             key={i}
             id={element.id_project}
-            color={context[8].teams.length > 0 ? context[8].teams[foundIndex].team_color : null}
+            color={color}
           />
         );
       }
     });
+  }
   };
 
   return (

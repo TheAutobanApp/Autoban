@@ -68,8 +68,8 @@ export default function TaskModal(props) {
         });
         //   // reset state
         console.log(res);
-        hideModal();
-      });
+      }); 
+      hideModal();
     }
   };
 

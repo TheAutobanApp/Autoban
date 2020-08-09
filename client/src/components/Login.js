@@ -102,6 +102,7 @@ export default function Login() {
             firstName: signUp.firstName,
             lastName: signUp.lastName,
             email: signUp.email,
+            id_user: res.data.id_user,
           });
           setSignUp({
             showSignUp: false,
