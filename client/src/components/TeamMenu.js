@@ -35,6 +35,7 @@ export default function TeamMenu() {
   });
 
   const handleItemClick = (e, { id }) => {
+    console.log(id)
     setTeam({ ...team, activeItem: id });
     if (e.target.id) {
       context[9]({ ...context[8], team: parseInt(e.target.id) });
@@ -75,6 +76,7 @@ export default function TeamMenu() {
     >
       <Menu.Item
         name="All"
+        id={null}
         active={team.activeItem === null}
         onClick={handleItemClick}
       />
