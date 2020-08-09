@@ -29,13 +29,13 @@ export default function TeamMenu() {
   ];
 
   const [team, setTeam] = useState({
-    activeItem: 'All',
+    activeItem: context[8].team,
     teamAdd: false,
     teamName: '',
   });
 
-  const handleItemClick = (e, { name }) => {
-    setTeam({ ...team, activeItem: name });
+  const handleItemClick = (e, { id }) => {
+    setTeam({ ...team, activeItem: id });
     if (e.target.id) {
       context[9]({ ...context[8], team: parseInt(e.target.id) });
     } else context[9]({ ...context[8], team: null });
@@ -50,7 +50,7 @@ export default function TeamMenu() {
       .post('/api/team/', {
         team_name: team.teamName,
         id_user: context[8].id_user,
-        team_color: colors[context[8].teams.length]
+        team_color: colors[context[8].teams.length],
       })
       .then((res) => {
         context[9]({
@@ -75,7 +75,7 @@ export default function TeamMenu() {
     >
       <Menu.Item
         name="All"
-        active={team.activeItem === 'All'}
+        active={team.activeItem === null}
         onClick={handleItemClick}
       />
       <Menu.Item
@@ -88,13 +88,14 @@ export default function TeamMenu() {
       {team.teamAdd && (
         <Menu.Item fitted>
           <Input
+            fluid
             placeholder="Team Name"
             value={team.teamName}
             maxLength={20}
             size="mini"
             action={{
               icon: 'add',
-              size:"mini",
+              size: 'mini',
               onClick: postTeam,
             }}
             onChange={(e) =>
@@ -114,7 +115,7 @@ export default function TeamMenu() {
             key={index}
             id={tm.id_team}
             name={tm.team_name}
-            active={team.activeItem === tm.team_name}
+            active={team.activeItem === tm.id_team}
             onClick={handleItemClick}
           >
             {tm.team_name}
