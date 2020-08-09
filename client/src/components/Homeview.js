@@ -47,6 +47,8 @@ export default function Homeview(props) {
         style={{
           width: '80%',
           height: '75%',
+          maxWidth: '870px',
+          maxHeight: '600px',
           // overflow: 'hidden',
           display: 'flex',
         }}
