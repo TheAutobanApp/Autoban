@@ -54,7 +54,7 @@ function DropMenu(props) {
             >
               Edit Column
             </Dropdown.Item>
-            <Dropdown.Item>Archive Cards</Dropdown.Item>
+            {/* <Dropdown.Item>Archive Cards</Dropdown.Item> */}
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleDeleteColumn}>
               Delete Column
