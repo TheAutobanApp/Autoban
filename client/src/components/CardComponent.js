@@ -14,6 +14,7 @@ import {
   DropdownDivider,
   Input,
 } from 'semantic-ui-react';
+import ReactMarkdown from 'react-markdown';
 // import { IoIosArrowDropright } from 'react-icons/io';
 // import { FaEllipsisV } from 'react-icons/fa';
 import DropMenu from './DropMenu';
@@ -146,6 +147,7 @@ function CardComponent(props) {
       <Card.Body style={{ display: 'inline-block' }}>
         <Card.Title
           style={{
+            fontSize: '16px',
             display: 'flex',
             justifyContent: 'space-between',
             position: 'relative',
@@ -154,7 +156,7 @@ function CardComponent(props) {
           {props.title}
           <DropMenu option="card" id={props.id} />
         </Card.Title>
-        <Card.Text>{props.description}</Card.Text>
+        <Card.Text><ReactMarkdown source={props.description}/></Card.Text>
       </Card.Body>
       <Card.Footer
         className="flex-row card-footer"
