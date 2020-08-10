@@ -49,6 +49,9 @@ export default function TaskModal(props) {
             ...task,
             task_title: tsk.task_title,
             task_description: tsk.task_description,
+            id_label1: tsk.id_label1,
+            id_label2: tsk.id_label2,
+            id_label3: tsk.id_label3,
           });
         }
       });
@@ -64,32 +67,37 @@ export default function TaskModal(props) {
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    axios.get(`/api/task/?task_id=${context[4].card}`).then((res) => {
-      console.log(context[4].card);
-      const task = res.data;
-      let cardLabels = [
-        task.id_label1,
-        task.id_label2,
-        task.id_label3,
-      ];
-      const taskLabels = [];
-      // create a copy of project labels from context and find matching ids from task
-      const projLabels = Array.from(context[12].projectLabels);
-      cardLabels.forEach((label) => {
-        if (label !== null) {
-          let foundIndex = projLabels.findIndex(
-            (item) => item.id_label === label,
-          );
-          const newLabel = projLabels[foundIndex];
-          if (newLabel) {
-            taskLabels.push(newLabel);
-            projLabels.splice(foundIndex, 1);
+    if (context[4].card) {
+      axios.get(`/api/task/?task_id=${context[4].card}`).then((res) => {
+        console.log(context[4].card);
+        const task = res.data;
+        let cardLabels = [
+          task.id_label1,
+          task.id_label2,
+          task.id_label3,
+        ];
+        const taskLabels = [];
+        // create a copy of project labels from context and find matching ids from task
+        const projLabels = Array.from(context[12].projectLabels);
+        cardLabels.forEach((label) => {
+          if (label !== null) {
+            let foundIndex = projLabels.findIndex(
+              (item) => item.id_label === label,
+            );
+            const newLabel = projLabels[foundIndex];
+            if (newLabel) {
+              taskLabels.push(newLabel);
+              projLabels.splice(foundIndex, 1);
+            }
           }
-        }
+        });
+        setLabels(taskLabels);
+        setAvailLabels(projLabels);
       });
-      setLabels(taskLabels);
-      setAvailLabels(projLabels);
-    });
+    } else {
+      setAvailLabels(context[12].projectLabels);
+    }
+    
   }, [context[12].projectLabels]);
 
   // move added card label to available state and remove from it's label state
@@ -106,9 +114,19 @@ export default function TaskModal(props) {
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
     // send id_label to be removed from task
-    axios.put(`/api/task/label/remove/?id_task=${context[4].card}`, {
-      id_label: deleteLabel.id_label,
-    });
+    switch (foundIndex) {
+      case 0:
+        setTask({...task, id_label1: task.id_label2, id_label2: task.id_label3, id_label3: null})
+        break;
+      case 1:
+        setTask({...task, id_label2: task.id_label3, id_label3: null})
+        break;
+      case 2:
+        setTask({...task, id_label3: null})
+        break;
+      default:
+        console.log('Label length is invalid');
+    }
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
@@ -128,25 +146,13 @@ export default function TaskModal(props) {
     // use label array length to determine which column to update
     switch (labels.length) {
       case 0:
-        axios
-          .put(`/api/task/?id_task=${context[4].card}`, {
-            id_label1: newLabel.id_label,
-          })
-          .then((res) => console.log(res));
+        setTask({...task, id_label1: i})
         break;
       case 1:
-        axios
-          .put(`/api/task/?id_task=${context[4].card}`, {
-            id_label2: newLabel.id_label,
-          })
-          .then((res) => console.log(res));
+        setTask({...task, id_label2: i})
         break;
       case 2:
-        axios
-          .put(`/api/task/?id_task=${context[4].card}`, {
-            id_label3: newLabel.id_label,
-          })
-          .then((res) => console.log(res));
+        setTask({...task, id_label3: i})
         break;
       default:
         console.log('Label length is invalid');
@@ -228,9 +234,12 @@ export default function TaskModal(props) {
 
   const editTask = () => {
     axios
-      .put(`/api/task/edit/${context[4].card}/1`, {
+      .put(`/api/task/edit/${context[4].card}/${context[10].project}`, {
         task_title: task.task_title,
         task_description: task.task_description,
+        id_label1: task.id_label1,
+        id_label2: task.id_label2,
+        id_label3: task.id_label3,
       })
       .then((res) => context[7](res.data));
   };
@@ -355,9 +364,6 @@ export default function TaskModal(props) {
             >
               <Dropdown.Menu
                 style={{
-                  position: 'fixed',
-                  top: menu.offsetTop,
-                  left: menu.offsetLeft,
                   minWidth: 'fit-content',
                   zIndex: 1000,
                 }}
@@ -368,20 +374,8 @@ export default function TaskModal(props) {
                   scrolling
                   size="mini"
                   className="search"
-                  search
                   value={menu.addLabel}
-                  options={availLabels.map((option) => {
-                    return {
-                      key: option.label_name,
-                      text: option.label_name,
-                      value: option.label_name,
-                      label: {
-                        empty: true,
-                        circular: true,
-                        color: option.color,
-                      },
-                    };
-                  })}
+                  
                   // prevents closing of dropdown when selecting input
                   onClick={(e) => e.stopPropagation()}
                   // prevents closing of dropdown when hitting space bar
@@ -400,7 +394,7 @@ export default function TaskModal(props) {
                 <Dropdown.Divider />
                 <Dropdown.Menu scrolling>
                   {/* if input has more than 1 character, show the add label item */}
-                  {menu.addLabel && menu.addLabel.length > 1 && (
+                  {context[4].labelName && context[4].labelName.length > 1 && (
                     <>
                       <Dropdown.Item onClick={handleCreateLabel}>
                         <div className="flex-row">

@@ -45,6 +45,9 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
     {
       task_title: req.body.task_title,
       task_description: req.body.task_description,
+      id_label1: req.body.id_label1,
+      id_label2: req.body.id_label2,
+      id_label3: req.body.id_label3,
     },
     {
       where: { id_task: req.params.id_task },

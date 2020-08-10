@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
         autoIncrement: true,
         primaryKey: true,
       },
-      id_user: { type: DataTypes.INTEGER, allowNull: false },
+      id_user: { type: DataTypes.INTEGER, allowNull: true },
       id_project: { type: DataTypes.INTEGER, allowNull: false },
       id_column: { type: DataTypes.INTEGER, allowNull: false },
       column_place: { type: DataTypes.INTEGER, allowNull: false },
