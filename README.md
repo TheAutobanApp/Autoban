@@ -1,13 +1,14 @@
 # Autoban
 
+View the deployed application <a href= "https://autobanprod.herokuapp.com/"> here!</a>
+
 ## Value Add Proposal
 
 An app that:
 
-- Allows users to create kanban boards for their projects
-- Allow users to collaborate in real-time with their project teams
-- Allow users to re-order and organize project tasks
-- Create multiple views for displaying project tasks
+- Allows users to create kanban boards for projects
+- Allows users to create teams and create projects assigned to those teams
+- View all projects and teams in their unique home page
 
 ## Team Members:
 
@@ -16,23 +17,28 @@ An app that:
 - <a href="https://github.com/mmomin11">Mubin Momin</a>
 - <a href="https://github.com/tan-x">Tanner Griffin</a>
 
-## Documentation
-
-Components:
-![image info](./documentation/autoban-compLayout.jpg)
-
-Database:
-![image info](./documentation/autobanSchema.jpg)
-
 ## Tech Stack
 
 - React
 - Sequlize
 - MySQL
 - Socket.io
-- Electron
-- Tailwind
+- Semantic UI
 - Express
+
+## Documentation
+
+Components:
+![image info](./documentation/autoban-compLayout.jpg)
+
+Database:
+![image info](./documentation/schema.png)
+
+Home Page:
+![home page](./documentation/homeScreen.png)
+
+Project Board:
+![project board](./documentation/projectBoard.png)
 
 ## License
 
