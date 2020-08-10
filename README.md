@@ -18,14 +18,6 @@ An app that:
 - <a href="https://github.com/mmomin11">Mubin Momin</a>
 - <a href="https://github.com/tan-x">Tanner Griffin</a>
 
-## Documentation
-
-Components:
-![image info](./documentation/autoban-compLayout.jpg)
-
-Database:
-![image info](./documentation/schema.png)
-
 ## Tech Stack
 
 - React
@@ -35,6 +27,17 @@ Database:
 - Electron
 - Tailwind
 - Express
+
+## Documentation
+
+Components:
+![image info](./documentation/autoban-compLayout.jpg)
+
+Database:
+![image info](./documentation/schema.png)
+
+Home Page:
+![home page](./documentation/homeScreen.png)
 
 ## License
 
