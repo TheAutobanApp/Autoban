@@ -14,6 +14,8 @@ import {
   Dropdown,
   DropdownDivider,
   Input,
+  Form,
+  TextArea
 } from 'semantic-ui-react';
 import ReactDOM from 'react-dom';
 
@@ -35,7 +37,7 @@ export default function TaskModal(props) {
     start_date: null,
     end_date: null,
     complete: false,
-    created_by: 1,
+    created_by: context[10].project,
     id_label1: null,
     id_label2: null,
     id_label3: null,
@@ -174,14 +176,14 @@ export default function TaskModal(props) {
     });
   };
   const titleInput = {
-    width: '90%',
+    width: '100%',
     border: 'none',
     height: 35,
     borderRadius: 5,
   };
 
   const descriptionInput = {
-    width: '100%',
+    width: '100%!important',
     border: 'none',
     height: 200,
     borderRadius: 5,
@@ -245,11 +247,11 @@ export default function TaskModal(props) {
   };
 
   const modalStyle = {
-    height: '80vh',
+    height: 'fit-content',
     width: '45vw',
     backgroundColor: 'whitesmoke',
     minWidth: 500,
-    minHeight: 500,
+    maxWidth: 600
   };
 
   return (
@@ -264,7 +266,7 @@ export default function TaskModal(props) {
           justifyContent: 'space-between',
         }}
       >
-        <input
+        <Input
           style={titleInput}
           onChange={(e) => {
             setTask({ ...task, task_title: e.target.value });
@@ -280,7 +282,8 @@ export default function TaskModal(props) {
           justifyContent: 'space-between',
         }}
       >
-        <textarea
+        <Form style={{width: '100%'}}>
+        <TextArea
           style={descriptionInput}
           onChange={(e) =>
             setTask({ ...task, task_description: e.target.value })
@@ -288,10 +291,11 @@ export default function TaskModal(props) {
           value={task.task_description}
           placeholder="Description"
         />
-        <div style={functionContainer}>
+        </Form>
+        {/* <div style={functionContainer}>
           <div style={taskFunction}>Labels</div>
           <div style={taskFunction}>Assign</div>
-        </div>
+        </div> */}
       </div>
       <div
         style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -305,7 +309,7 @@ export default function TaskModal(props) {
         >
           Save
         </button>
-        <div>
+        <div style={{margin: '5px'}}>
           {labels.map((item, i) => {
             return (
               <Label
