@@ -6,35 +6,61 @@ import { AutoContext } from '../AutoContext';
 
 export default function Homeview(props) {
   const context = useContext(AutoContext);
+
   const renderProjects = () => {
-    return context[8].projects.map((element, i) => {
-      if (element.id_team === context[8].team) {
-        console.log(
-          element.id_team,
-          context[8].team,
-          element.project_name,
-        );
-        return <ProjectCard title={element.project_name} key={i} id={element.id_project}/>;
-      } else if (context[8].team === null) {
-        return <ProjectCard title={element.project_name} key={i} id={element.id_project}/>;
-      }
-    });
+    if (context[8].projects.length > 0) {
+      return context[8].projects.map((element, i) => {
+        if (element.id_team === context[8].team) {
+          const foundIndex = context[8].teams.findIndex(
+            (team) => team.id_team === element.id_team,
+          );
+          let color = 'red';
+          if (foundIndex !== -1) {
+            color = context[8].teams[foundIndex].team_color;
+          }
+          return (
+            <ProjectCard
+              title={element.project_name}
+              key={i}
+              id={element.id_project}
+              color={color}
+            />
+          );
+        } else if (context[8].team === null) {
+          const foundIndex = context[8].teams.findIndex(
+            (team) => team.id_team === element.id_team,
+          );
+          let color = 'red';
+          if (foundIndex !== -1) {
+            color = context[8].teams[foundIndex].team_color;
+          }
+          return (
+            <ProjectCard
+              title={element.project_name}
+              key={i}
+              id={element.id_project}
+              color={color}
+            />
+          );
+        }
+      });
+    }
   };
 
   return (
     <div className="project-view home-view">
       <div
         style={{
-          width: '70%',
+          width: '80%',
           height: '75%',
-          overflow: 'hidden',
+          maxWidth: '870px',
+          maxHeight: '600px',
+          // overflow: 'hidden',
           display: 'flex',
         }}
       >
         <TeamMenu />
-        <div
-          style={{ height: '100%', width: '100%', padding: '10px' }}
-        >
+        <div className="project-list">
           <AddProject />
           {renderProjects()}
         </div>

@@ -21,7 +21,10 @@ function Navbar() {
 
   return (
     <div className="navbar">
-      <div className="flex-row" style={{ padding: '0 4px' }}>
+      <div
+        className="flex-row"
+        style={{ padding: '0 4px', marginRight: 'auto' }}
+      >
         <Button
           icon="home"
           inverted
@@ -58,18 +61,26 @@ function Navbar() {
             });
           }}
         /> */}
-      <div
-        className="clickable"
-        onClick={() => {
-          context[1]({
-            ...context[0],
-            open: !context[0].open,
-            type: 'settings',
-          });
-        }}
-      >
-        <FiSettings size={20} style={{ margin: '10px' }} />
-      </div>
+      {context[10].project !== null && (
+        <div
+          style={{
+            marginLeft: 'auto',
+            width: '115px',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+          className="clickable"
+          onClick={() => {
+            context[1]({
+              ...context[0],
+              open: !context[0].open,
+              type: 'settings',
+            });
+          }}
+        >
+          <FiSettings size={20} style={{ margin: '10px' }} />
+        </div>
+      )}
     </div>
     // </div>
   );

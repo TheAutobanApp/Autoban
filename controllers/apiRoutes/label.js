@@ -3,7 +3,6 @@ var db = require('../../models');
 
 // get project labels
 router.get('/', function (req, res) {
-  console.log(req.query.proj)
   if (req.query.proj) {
     db.Label.findAll({
       where: {
@@ -36,7 +35,6 @@ router.get('/default', function (req, res) {
 
 // create a label
 router.post('/', function (req, res) {
-  console.log(req.body.id_project)
   if (req.body.color && req.body.label_name) {
     db.Label.create({
       id_project: req.body.id_project,

@@ -7,7 +7,6 @@ import Homeview from './components/Homeview';
 import Column from './components/Column';
 import CardComponent from './components/CardComponent';
 import AddColumn from './components/AddColumn';
-import Timeline from './components/Timeline';
 import Login from './components/Login';
 import TaskModal from './components/modals/TaskModal';
 import LabelModal from './components/modals/LabelModal';
@@ -94,7 +93,6 @@ function App() {
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
-        console.log(data);
         axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
           setTasks(tasks.data);
         });
@@ -126,12 +124,20 @@ function App() {
     if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
         axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          setUser({
-            ...user,
-            teams: response.data,
-            projects: res.data,
-          });
-          // console.log(res);
+          if (Array.isArray(res.data) && Array.isArray(response.data)) {
+            console.log('teams and projects')
+            setUser({
+              ...user,
+              teams: response.data,
+              projects: res.data,
+            });
+          } else if (Array.isArray(response.data)) {
+            console.log(res.data)
+            setUser({
+              ...user,
+              teams: response.data,
+            });
+          }
         });
       });
     }
@@ -157,7 +163,7 @@ function App() {
       ]}
     >
       <div style={{ height: '100vh' }}>
-        <TaskModal />
+        {modal.show && <TaskModal />}
         {modal.showLabel && <LabelModal />}
         {modal.showProject && <ProjectModal />}
         <Navbar />
@@ -198,6 +204,7 @@ function App() {
             ) : (
               <Timeline />
             )} */}
+            
           </ProjectView>
         )}
         <OptionsDrawer />

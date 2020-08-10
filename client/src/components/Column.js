@@ -9,10 +9,6 @@ export default function Column(props) {
 
   const context = useContext(AutoContext);
 
-  const addCard = () => {
-    console.log('add card');
-  };
-
   const showModal = () => {
     context[5]({ ...context[4], show: true, column: props.id });
   };
@@ -33,7 +29,6 @@ export default function Column(props) {
             <FaPlus
               className="clickable"
               onClick={() => {
-                addCard();
                 showModal();
               }}
               style={{ margin: '0 5px' }}

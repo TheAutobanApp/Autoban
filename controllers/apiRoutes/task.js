@@ -45,6 +45,9 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
     {
       task_title: req.body.task_title,
       task_description: req.body.task_description,
+      id_label1: req.body.id_label1,
+      id_label2: req.body.id_label2,
+      id_label3: req.body.id_label3,
     },
     {
       where: { id_task: req.params.id_task },
@@ -53,10 +56,8 @@ router.put('/edit/:id_task/:proj_id', function (req, res) {
     db.Task.findAll({
       where: { id_project: req.params.proj_id },
     }).then((response) => {
-      console.log(response);
       res.json(response);
       req.io.sockets.emit(`newTask${req.params.proj_id}`, response);
-
     });
   });
 });
@@ -75,7 +76,6 @@ router.put('/', function (req, res) {
     },
   )
     .then((res) => {
-      console.log(res)
       req.io.sockets.emit(`newTask${task.id_project}`, res);
       res.json(res);
     })

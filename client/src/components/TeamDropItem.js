@@ -1,35 +1,41 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Button, Dropdown } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 
 export default function TeamDropItem(props) {
+  const context = useContext(AutoContext);
 
   const handleProjectSelect = (e) => {
-      console.log(e.target.innerText, e.target);
+    console.log(e.target.value)
+      context[11]({view: 'project', project: e.target.id})
   };
 
-  const dummy = [
-    {
-        key: 1,
-        text: 'MVP',
-        onClick: handleProjectSelect,
-      },
-      {
-        key: 2,
-        text: 'Bugs',
-        onClick: handleProjectSelect,
-        id: 2
-      },
-      
-  ]
+  let teamProjects = [];
+
+  useEffect(() => {
+    console.log(context[8].projects)
+    context[8].projects.forEach((project, i) => {
+      if (project.id_team === props.id) {
+        
+      console.log(project.id_project)
+        let projectItem = {
+          key: i,
+          text: project.project_name,
+          onClick: handleProjectSelect,
+          value: project.id_project
+        }
+        teamProjects.push(projectItem);
+      }
+    })
+    console.log(teamProjects)
+  }, [context[8].projects]);
 
   return (
     <Dropdown.Item id="team-drop">
       <Dropdown
         text={props.team}
-        pointing="left"
         className="link item"
-        options={dummy}
+        options={teamProjects}
       />
     </Dropdown.Item>
   );

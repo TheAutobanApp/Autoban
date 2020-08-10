@@ -26,14 +26,15 @@ router.get('/all/:id_user', function (req, res) {
         const teamIds = team.map(
           (tm, index) => tm.dataValues.id_team,
         );
-
-        db.Team.findAll({
-          where: { id_team: { [Op.or]: teamIds } },
-        })
-          .then((teams) => {
-            res.json(teams);
+        if (teamIds.length > 0) {
+          db.Team.findAll({
+            where: { id_team: { [Op.or]: teamIds } },
           })
-          .catch((err) => res.status(401).json(err));
+            .then((teams) => {
+              res.json(teams);
+            })
+            .catch((err) => res.status(401).json(err));
+        } else res.status(200).send('No teams found');
       })
       .catch((err) => res.status(401).json(err));
   }
@@ -44,6 +45,7 @@ router.post('/', function (req, res) {
     db.Team.create({
       team_name: req.body.team_name,
       team_description: req.body.team_description,
+      team_color: req.body.team_color,
       enabled: true,
     })
       .then((team) => {

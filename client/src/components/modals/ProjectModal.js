@@ -11,7 +11,7 @@ export default function TaskModal(props) {
 
   // inital state for reseting state
   const initialState = {
-    id_team: null,
+    id_team: context[8].team,
     project_name: null,
     project_description: null,
     start_date: null,
@@ -19,13 +19,6 @@ export default function TaskModal(props) {
     created_by: context[8].id_user,
   };
   const [project, setProject] = useState(initialState);
-
-  console.log(project);
-
-  // when modal is mounted, set local state label name from context
-  //   useEffect(() => {
-  //     setProject({ ...label, label_name: context[4].labelName });
-  //   }, [context[4].labelName]);
 
   const titleInput = {
     width: '80%',
@@ -50,6 +43,7 @@ export default function TaskModal(props) {
   const options = context[8].teams.map((team) => {
     return {
       key: team.id_team,
+      id: team.id_team,
       value: team.id_team,
       text: team.team_name,
     };
@@ -72,10 +66,8 @@ export default function TaskModal(props) {
           ...context[8],
           projects: context[8].projects.concat([res.data]),
         });
-        //   // reset state
-        console.log(res);
-        hideModal();
-      });
+      }); 
+      hideModal();
     }
   };
 
@@ -122,6 +114,7 @@ export default function TaskModal(props) {
             error={!project.id_team}
             style={{ margin: '6px', width: '80%' }}
             placeholder="Team"
+            defaultValue={options.findIndex(team => team.id === context[8].team) + 1}
             search
             selection
             options={options}

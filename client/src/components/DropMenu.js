@@ -16,7 +16,7 @@ function DropMenu(props) {
 
   const handleDeleteCard = () => {
     axios
-      .delete('/api/task/delete/1', {
+      .delete(`/api/task/delete/${context[10].project}`, {
         data: { id_task: props.id },
       })
       .then((response) => {
@@ -54,7 +54,7 @@ function DropMenu(props) {
             >
               Edit Column
             </Dropdown.Item>
-            <Dropdown.Item>Archive Cards</Dropdown.Item>
+            {/* <Dropdown.Item>Archive Cards</Dropdown.Item> */}
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleDeleteColumn}>
               Delete Column

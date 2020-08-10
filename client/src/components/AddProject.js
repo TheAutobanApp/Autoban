@@ -15,12 +15,14 @@ export default function AddProject() {
       className="flex-column  add-column addhover clickable"
       style={{
         height: '100px',
-        width: '175px',
+        width: '160px',
         borderRadius: '5px',
         boxShadow: '1px 1px 5px grey',
+        margin: '4px 4px 4px'
       }}
       onClick={handleAddProject}
     >
+      <h5>Add Project</h5>
       <FaPlus size={20} style={{}} />
     </div>
   );

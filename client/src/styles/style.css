@@ -36,7 +36,7 @@ body {
     height: 50px;
     background: linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
     box-shadow: 0 0 10px gray;
-    /* padding: 7px; */
+    padding: 7px;
     color: white;
 }
 
@@ -154,7 +154,7 @@ label {
 
 /* wrappers */
 .project-view {
-    height: 100%;
+    height: calc(100vh - 50px);
     width: 100%;
     padding: 5px;
     display: flex;
@@ -176,6 +176,19 @@ label {
     overflow-x: hidden;
     justify-content: center;
     align-items: center;
+}
+
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, .3);
+    border-radius: 5px;
+    overflow-wrap: normal;
+    align-content: flex-start;
+    overflow-y: auto;
 }
 
 /* column */
