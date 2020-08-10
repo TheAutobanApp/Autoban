@@ -24,8 +24,7 @@ An app that:
 - Sequlize
 - MySQL
 - Socket.io
-- Electron
-- Tailwind
+- Semantic UI
 - Express
 
 ## Documentation
