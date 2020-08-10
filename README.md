@@ -39,6 +39,9 @@ Database:
 Home Page:
 ![home page](./documentation/homeScreen.png)
 
+Project Board:
+![project board](./documentation/projectBoard.png)
+
 ## License
 
 MIT License
