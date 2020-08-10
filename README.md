@@ -6,10 +6,9 @@ View the deployed application <a href= "https://autobanprod.herokuapp.com/"> her
 
 An app that:
 
-- Allows users to create kanban boards for their projects
-- Allow users to collaborate in real-time with their project teams
-- Allow users to re-order and organize project tasks
-- Create multiple views for displaying project tasks
+- Allows users to create kanban boards for projects
+- Allows users to create teams and create projects assigned to those teams
+- View all projects and teams in their unique home page
 
 ## Team Members:
 
