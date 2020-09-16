@@ -34,6 +34,7 @@ router.get('/default', function (req, res) {
 });
 
 // create a label
+// update the state with the socket emit instead of doing a get call
 router.post('/', function (req, res) {
   if (req.body.color && req.body.label_name) {
     db.Label.create({

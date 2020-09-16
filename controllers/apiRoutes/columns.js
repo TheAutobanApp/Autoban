@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
 });
 
 // post column with project id from param, respond with json
+// update the state with the socket emit instead of doing a get call
 router.post('/', function (req, res) {
   if (req.query.proj) {
     db.Columns.create({
@@ -39,6 +40,8 @@ router.post('/', function (req, res) {
 });
 
 // update column
+// update the state with the socket emit instead of doing a get call
+
 router.put('/', function (req, res) {
   if (req.query.proj) {
     // update column place id / order
@@ -58,7 +61,10 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
+                req.io.sockets.emit(
+                  `newColumn${req.query.proj}`,
+                  column,
+                );
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -86,7 +92,10 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
+                req.io.sockets.emit(
+                  `newColumn${req.query.proj}`,
+                  column,
+                );
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -114,7 +123,10 @@ router.put('/', function (req, res) {
               })
               .then(() => {
                 res.json(column);
-                req.io.sockets.emit(`newColumn${req.query.proj}`, column);
+                req.io.sockets.emit(
+                  `newColumn${req.query.proj}`,
+                  column,
+                );
               })
               .catch((err) => {
                 res.status(401).json(err);
@@ -154,7 +166,10 @@ router.delete('/', function (req, res) {
               });
             }
             res.json(columns);
-            req.io.sockets.emit(`columnDelete${req.query.proj}`, columns);
+            req.io.sockets.emit(
+              `columnDelete${req.query.proj}`,
+              columns,
+            );
           })
           .catch((err) => {
             res.status(401).json(err);
