@@ -20,11 +20,32 @@ An app that:
 ## Tech Stack
 
 - React
-- Sequlize
+- Sequelize
 - MySQL
 - Socket.io
 - Semantic UI
 - Express
+- MongoDB
+- Electron
+
+## Sprint 1
+
+- Conceptualization and Planning of UI and Database structure
+- Built out Project view with corresponding components (Columns, Tasks, Drawer, Header, Labels, etc.)
+- Built out Home view to create Teams and Projects
+- Built back-end models and controllers using Express and MySQL
+- Implented Socket.io for real-time updates from server
+- User sign in authentication with Firebase
+
+## Sprint 2
+
+- Implementing "drag and drop" option for tasks, columns, and labels using ReactDnD
+- Moving some data to NoSQL database (MongoDB)
+- Use Test-Driven Development (TDD) for new features
+- React routes for homepage and specific projects
+- Wrap App in Electron build for use on desktop
+- Allow deletion for team, projects, and tasks (cascading)
+- Add user to team functionality
 
 ## Documentation
 
