@@ -79,21 +79,6 @@ export default function Login() {
     return unregisterAuthObserver;
   }, []);
 
-  const postPersonalTeam = (id_user, team_color) => {
-    axios
-      .post('/api/team/', {
-        team_name: 'Personal',
-        id_user: id_user,
-        team_color: 'violet',
-      })
-      .then((res) => {
-        context[9]({
-          ...context[8],
-          teams: context[8].teams.concat([res.data]),
-        });
-      });
-  };
-
   const handleSignUp = () => {
     if (
       signUp.agree &&
