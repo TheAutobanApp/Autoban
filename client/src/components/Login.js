@@ -19,6 +19,7 @@ export default function Login() {
     email: '',
     agree: false,
   });
+  const [signedIn, setSignedIn] = useState(true);
   const [error, setError] = useState({
     taken: false,
     username: false,
@@ -72,6 +73,8 @@ export default function Login() {
             .catch(function (error) {
               console.log(error);
             });
+        } else {
+          setSignedIn(false);
         }
       });
     // context[9](true);
@@ -183,7 +186,7 @@ export default function Login() {
   };
 
   return (
-    <Rodal visible={true} customStyles={{ height: 'fit-content' }}>
+    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }}>
       <div>
         {!signUp.showSignUp ? (
           <StyledFirebaseAuth
