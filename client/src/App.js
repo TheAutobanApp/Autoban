@@ -11,6 +11,7 @@ import Login from './components/Login';
 import TaskModal from './components/modals/TaskModal';
 import LabelModal from './components/modals/LabelModal';
 import ProjectModal from './components/modals/ProjectModal';
+import InviteModal from './components/modals/InviteModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 import socketIOClient from 'socket.io-client';
@@ -32,7 +33,6 @@ export const initialUserState = {
 
 function App() {
   const [user, setUser] = useState(initialUserState);
-
   const [tasks, setTasks] = useState(null);
   const [labels, setLabels] = useState({
     projectLabels: [],
@@ -65,12 +65,13 @@ function App() {
 
   const [modal, setModal] = useState({
     show: false,
+    showLabel: false,
+    showProject: false,
+    showInvite: false,
     column: null,
     card: null,
     edit: 0,
-    showLabel: false,
     labelName: '',
-    showProject: false,
   });
 
   useEffect(() => {
@@ -182,6 +183,7 @@ function App() {
         {modal.show && <TaskModal />}
         {modal.showLabel && <LabelModal />}
         {modal.showProject && <ProjectModal />}
+        {modal.showInvite && <InviteModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />

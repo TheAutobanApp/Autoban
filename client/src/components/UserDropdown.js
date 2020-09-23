@@ -21,7 +21,7 @@ export default function UserDropdown() {
   };
 
   const handleInvites = () => {
-    console.log('Invites View');
+    context[5]({...context[4], showInvite: true});
   };
 
   return (
