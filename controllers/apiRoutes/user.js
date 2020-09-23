@@ -15,6 +15,18 @@ router.get('/', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
+  } else if (req.query.id_user) {
+    db.User.findOne({
+      where: {
+        id_user: req.query.id_user,
+      },
+    })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
   }
 });
 

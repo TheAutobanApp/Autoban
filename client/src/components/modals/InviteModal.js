@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
@@ -10,21 +10,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function InviteModal(props) {
   const context = useContext(AutoContext);
-  const initialState = {
-    id_team: context[8].team,
-    project_name: null,
-    project_description: null,
-    start_date: null,
-    end_date: null,
-    created_by: context[8].id_user,
-  };
-  const [project, setProject] = useState(initialState);
-
-  const titleInput = {
-    width: '80%',
-    height: 35,
-    borderRadius: 5,
-  };
 
   const saveButton = {
     borderRadius: 5,
@@ -41,23 +26,15 @@ export default function InviteModal(props) {
     backgroundColor: 'whitesmoke',
   };
 
-  const options = context[8].teams.map((team) => {
-    return {
-      key: team.id_team,
-      id: team.id_team,
-      value: team.id_team,
-      text: team.team_name,
-    };
-  });
-
   // hide modal, reset state and modal context
   const hideModal = () => {
     context[5]({ ...context[4], showInvite: false });
-    setProject(initialState);
   };
 
-  const handleAccept = () => {
-    console.log('accept invite');
+  const handleAccept = (team, user) => {
+    axios.put('/api/team/invite', { id_team: team, id_user: user }).then((res) => {
+        console.log('success', res);
+    })
   };
 
   const handleReject = () => {
@@ -92,8 +69,8 @@ export default function InviteModal(props) {
                 }}
               >
                 <List.Content>
-                  <List.Header>Test Team</List.Header>
-                  Invited by tanx
+                  <List.Header>{invite.team}</List.Header>
+                  Invited by {invite.inviter}
                 </List.Content>
                 <div>
                   <Button
@@ -101,7 +78,7 @@ export default function InviteModal(props) {
                     color="green"
                     size="mini"
                     icon="check"
-                    onClick={handleAccept}
+                    onClick={() => handleAccept(invite.id_team, invite.id_user)}
                   />
                   <Button
                     compact

@@ -3,11 +3,10 @@ const { Op } = require('sequelize');
 var db = require('../../models');
 
 router.get('/', function (req, res) {
-  if (req.body.team_name) {
+  if (req.query.id_team) {
     db.Team.findOne({
       where: {
-        team_name: req.body.team_name,
-        username: req.body.team_description,
+        id_team: req.query.id_team,
       },
     }).then((team) => {
       res.json(team);
@@ -44,6 +43,7 @@ router.get('/all/:id_user', function (req, res) {
 
 // get invite teams
 router.get('/invite/:id_user', function (req, res) {
+  let inviteArray = [];
   if (req.params.id_user) {
     db.TeamUser.findAll({
       where: {
@@ -52,7 +52,37 @@ router.get('/invite/:id_user', function (req, res) {
       },
     })
       .then((invite) => {
-        res.json(invite);
+        inviteArray = invite.map((item) => ({
+          id: item.dataValues.id,
+          team: item.dataValues.id_team,
+          inviter: item.dataValues.id_inviter,
+        }));
+        db.User.findAll({
+          where: {
+            id_user: {
+              [Op.or]: inviteArray.map((item) => item.inviter),
+            },
+          },
+        }).then(inviters => {
+          inviteArray.forEach(el => {
+            let foundIndex = inviters.findIndex(item => item.dataValues.id_user === el.inviter);
+            el.inviter = inviters[foundIndex].dataValues.username
+          })
+          db.Team.findAll({
+            where: {
+              id_team: {
+                [Op.or]: inviteArray.map((item) => item.team),
+              },
+            },
+          }).then(teams => {
+            inviteArray.forEach(el => {
+              let foundIndex = teams.findIndex(item => item.dataValues.id_team === el.team);
+              el.team = teams[foundIndex].dataValues.team_name
+            })
+            console.log(inviteArray)
+            res.json(inviteArray)
+          })
+        })
       })
       .catch((err) => res.status(401).json(err));
   }
@@ -91,7 +121,7 @@ router.post('/invite', (req, res) => {
     })
       .then((invite) => {
         req.io.sockets.emit(`newInvite${req.body.invitee}`, invite);
-        res.status(200);
+        res.status(200).send(invite);
       })
       .catch((err) => {
         res.status(401).json(err);
@@ -125,7 +155,7 @@ router.put('/', function (req, res) {
   // update team description
   if (req.query.description !== req.query.newdescription) {
     db.Team.findOne({
-      where: { eteam_description: req.query.description },
+      where: { team_description: req.query.description },
     })
       .then((team) => {
         if (team) {
@@ -137,6 +167,35 @@ router.put('/', function (req, res) {
             .catch((err) => {
               res.status(401).json(err);
             });
+        }
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  }
+});
+
+// update TeamUser association when accepted by user
+router.put('/invite/:id_user', (req, res) => {
+  if (req.params.id_user && req.body.id_team) {
+    db.TeamUser.findOne({
+      where: {
+        id_team: req.body.id_team,
+        id_user: req.params.id_user,
+      },
+    })
+      .then((team) => {
+        if (team) {
+          team
+            .update({ accepted: true })
+            .then(() => {
+              req.io.sockets.emit(
+                `inviteAccepted${req.body.id_user}`,
+                invite,
+              );
+              res.status(200).send(team);
+            })
+            .catch((err) => res.status(401).json(err));
         }
       })
       .catch((err) => {
