@@ -25,8 +25,6 @@ router.get('/all/:id_user', function (req, res) {
       },
     })
       .then((project) => {
-        console.log(project);
-
         const projectIds = project.map(
           (tm, index) => tm.dataValues.id_project,
         );
@@ -152,7 +150,7 @@ router.put('/', function (req, res) {
   } else {
     res.status(401).json(err);
   }
-  // update project start date
+  // update project end date
 
   if (req.body.end_date) {
     db.Project.findOne({
@@ -179,7 +177,7 @@ router.put('/', function (req, res) {
     res.status(401).json(err);
   }
 });
-
+// figure out how to cascade delete all associated tasks, columns, and labels
 router.delete('/', function (req, res) {
   //delete project
   if (req.query.id) {

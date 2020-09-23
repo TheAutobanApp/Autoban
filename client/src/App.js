@@ -13,7 +13,6 @@ import LabelModal from './components/modals/LabelModal';
 import ProjectModal from './components/modals/ProjectModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
-
 import socketIOClient from 'socket.io-client';
 
 const socket = socketIOClient();
@@ -79,13 +78,15 @@ function App() {
       });
       // listen for column updates, on update refresh column state
       socket.on(`newColumn${view.project}`, (data) => {
-        axios.get(`/api/columns/?proj=${view.project}`).then((res) => {
-          setColumns(res.data);
-        });
+        axios
+          .get(`/api/columns/?proj=${view.project}`)
+          .then((res) => {
+            setColumns(res.data);
+          });
       });
       // listen for a column delete, set column state to new columns
       socket.on(`columnDelete${view.project}`, (data) => {
-          setColumns(data);
+        setColumns(data);
       });
       // get tasks for project
       axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
@@ -93,11 +94,14 @@ function App() {
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
-        axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
-          setTasks(tasks.data);
-        });
+        axios
+          .get(`/api/task/get/all/${view.project}`)
+          .then((tasks) => {
+            setTasks(tasks.data);
+          });
       });
       // get labels for project
+      // adjust to collect labels using function in label state
       axios.get(`/api/label/?proj=${view.project}`).then((res) => {
         const projLabels = [];
         res.data.forEach((label) => projLabels.push(label));
@@ -124,15 +128,18 @@ function App() {
     if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
         axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          if (Array.isArray(res.data) && Array.isArray(response.data)) {
-            console.log('teams and projects')
+          if (
+            Array.isArray(res.data) &&
+            Array.isArray(response.data)
+          ) {
+            console.log('teams and projects');
             setUser({
               ...user,
               teams: response.data,
               projects: res.data,
             });
           } else if (Array.isArray(response.data)) {
-            console.log(res.data)
+            console.log(res.data);
             setUser({
               ...user,
               teams: response.data,
@@ -176,35 +183,31 @@ function App() {
             {/* if toggle is set to project view
             {!drawer.timeline ? (
               <> */}
-                {/* map through columns array and render each column with the title */}
-                {columns.map((item, i) => {
-                  return (
-                    <Column title={item.column_name} key={i} id={i}>
-                      {/* inside each column, map through the cards and render each one that matches the column index */}
-                      {tasks !== null &&
-                        tasks.map(
-                          (card) =>
-                            card.id_column === i && (
-                              <CardComponent
-                                id={card.id_task}
-                                title={card.task_title}
-                                description={card.task_description}
-                                key={card.id_task}
-                              />
-                            ),
-                        )}
-                    </Column>
-                  );
-                })}
-                <AddColumn
-                  columns={columns}
-                  setcolumns={setColumns}
-                />
-              {/* </>
+            {/* map through columns array and render each column with the title */}
+            {columns.map((item, i) => {
+              return (
+                <Column title={item.column_name} key={i} id={i}>
+                  {/* inside each column, map through the cards and render each one that matches the column index */}
+                  {tasks !== null &&
+                    tasks.map(
+                      (card) =>
+                        card.id_column === i && (
+                          <CardComponent
+                            id={card.id_task}
+                            title={card.task_title}
+                            description={card.task_description}
+                            key={card.id_task}
+                          />
+                        ),
+                    )}
+                </Column>
+              );
+            })}
+            <AddColumn columns={columns} setcolumns={setColumns} />
+            {/* </>
             ) : (
               <Timeline />
             )} */}
-            
           </ProjectView>
         )}
         <OptionsDrawer />

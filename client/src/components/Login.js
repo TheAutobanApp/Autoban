@@ -87,6 +87,7 @@ export default function Login() {
       signUp.lastName &&
       signUp.username.length > 2
     ) {
+      // create user
       axios
         .post('/api/user', {
           username: signUp.username,
@@ -95,24 +96,33 @@ export default function Login() {
           email: signUp.email,
         })
         .then((res) => {
-          console.log(res.data.id_user)
-          context[9]({
-            ...context[8],
-            signedIn: true,
-            username: signUp.username,
-            firstName: signUp.firstName,
-            lastName: signUp.lastName,
-            email: signUp.email,
-            id_user: res.data.id_user,
-          });
-          setSignUp({
-            showSignUp: false,
-            username: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            agree: false,
-          });
+          // create default Personal team
+          axios
+            .post('/api/team/', {
+              team_name: 'Personal',
+              id_user: res.data.id_user,
+              team_color: 'violet',
+            })
+            .then((response) => {
+              context[9]({
+                ...context[8],
+                signedIn: true,
+                username: signUp.username,
+                firstName: signUp.firstName,
+                lastName: signUp.lastName,
+                email: signUp.email,
+                id_user: res.data.id_user,
+                teams: context[8].teams.concat([res.data]),
+              });
+              setSignUp({
+                showSignUp: false,
+                username: '',
+                firstName: '',
+                lastName: '',
+                email: '',
+                agree: false,
+              });
+            });
         })
         .catch(function (error) {
           if (error.response.data === 'user.username') {

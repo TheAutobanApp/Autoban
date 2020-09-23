@@ -1,6 +1,7 @@
 const router = require('express').Router();
 var db = require('../../models');
 
+// find all project tasks
 router.get('/get/all/:proj_id', function (req, res) {
   db.Task.findAll({
     where: { id_project: req.params.proj_id },
@@ -8,7 +9,7 @@ router.get('/get/all/:proj_id', function (req, res) {
     res.json(allTasks);
   });
 });
-
+// find task to render in task modal
 router.get('/', function (req, res) {
   if (req.query.task_id)
     db.Task.findOne({
@@ -17,6 +18,8 @@ router.get('/', function (req, res) {
       res.json(task);
     });
 });
+
+// create new task
 
 router.post('/create/:proj_id', function (req, res) {
   const task = req.body;
@@ -40,6 +43,7 @@ router.post('/create/:proj_id', function (req, res) {
   });
 });
 
+// Update task information
 router.put('/edit/:id_task/:proj_id', function (req, res) {
   db.Task.update(
     {
@@ -85,6 +89,7 @@ router.put('/', function (req, res) {
 });
 
 // remove a label, replacing with null and shift remaining labels over in id_label columns
+// updating to mongoDB should remove the need to determine label place
 router.put('/label/remove/', function (req, res) {
   const task = req.body;
   // find the task being updated
@@ -129,10 +134,9 @@ router.put('/label/remove/', function (req, res) {
       );
     }
     req.io.sockets.emit(`newTask${result.id_project}`, response);
-
   });
 });
-
+// delete task
 router.delete('/delete/:proj_id', function (req, res) {
   const task = req.body;
   db.Task.destroy({
