@@ -152,6 +152,12 @@ label {
     height: 36px!important;
 } */
 
+.invite-label {
+    top: 1.5em!important;
+    left: 105%!important;
+    box-shadow: .3px .3px 2px black;
+}
+
 /* wrappers */
 .project-view {
     height: calc(100vh - 50px);
