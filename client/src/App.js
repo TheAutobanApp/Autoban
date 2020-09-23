@@ -17,19 +17,21 @@ import socketIOClient from 'socket.io-client';
 
 const socket = socketIOClient();
 
+export const initialUserState = {
+  signedIn: false,
+  username: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  team: null,
+  id_user: '',
+  teams: [],
+  projects: [],
+  invites: [],
+}
+
 function App() {
-  const [user, setUser] = useState({
-    signedIn: false,
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    team: null,
-    id_user: '',
-    teams: [],
-    projects: [],
-    invites: [],
-  });
+  const [user, setUser] = useState(initialUserState);
 
   const [tasks, setTasks] = useState(null);
   const [labels, setLabels] = useState({

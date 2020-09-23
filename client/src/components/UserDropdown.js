@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button, Dropdown, Label } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
+import { initialUserState } from '../App';
 import firebase from '../Firebase';
 
 export default function UserDropdown() {
@@ -11,7 +12,7 @@ export default function UserDropdown() {
       .auth()
       .signOut()
       .then(() => {
-        context[9]({ ...context[8], signedIn: false });
+        context[9](initialUserState);
       });
   };
 
