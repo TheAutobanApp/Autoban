@@ -28,6 +28,7 @@ function App() {
     id_user: '',
     teams: [],
     projects: [],
+    invites: [],
   });
 
   const [tasks, setTasks] = useState(null);
@@ -128,23 +129,29 @@ function App() {
     if (user.id_user) {
       axios.get(`/api/team/all/${user.id_user}`).then((response) => {
         axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          if (
-            Array.isArray(res.data) &&
-            Array.isArray(response.data)
-          ) {
-            console.log('teams and projects');
-            setUser({
-              ...user,
-              teams: response.data,
-              projects: res.data,
+          axios
+            .get(`/api/team/invite/${user.id_user}`)
+            .then((invite) => {
+              if (
+                Array.isArray(res.data) &&
+                Array.isArray(response.data)
+              ) {
+                console.log('teams and projects');
+                setUser({
+                  ...user,
+                  teams: response.data,
+                  projects: res.data,
+                  invites: invite.data,
+                });
+              } else if (Array.isArray(response.data)) {
+                console.log(res.data);
+                setUser({
+                  ...user,
+                  teams: response.data,
+                  invites: invite.data,
+                });
+              }
             });
-          } else if (Array.isArray(response.data)) {
-            console.log(res.data);
-            setUser({
-              ...user,
-              teams: response.data,
-            });
-          }
         });
       });
     }

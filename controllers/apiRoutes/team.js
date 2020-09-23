@@ -15,11 +15,13 @@ router.get('/', function (req, res) {
   }
 });
 
+// get accepted teams
 router.get('/all/:id_user', function (req, res) {
   if (req.params.id_user) {
     db.TeamUser.findAll({
       where: {
         id_user: req.params.id_user,
+        accepted: true,
       },
     })
       .then((team) => {
@@ -40,6 +42,23 @@ router.get('/all/:id_user', function (req, res) {
   }
 });
 
+// get invite teams
+router.get('/invite/:id_user', function (req, res) {
+  if (req.params.id_user) {
+    db.TeamUser.findAll({
+      where: {
+        id_user: req.params.id_user,
+        accepted: false,
+      },
+    })
+      .then((invite) => {
+        res.json(invite);
+      })
+      .catch((err) => res.status(401).json(err));
+  }
+});
+
+// create team
 router.post('/', function (req, res) {
   if (req.body.team_name) {
     db.Team.create({
@@ -52,8 +71,27 @@ router.post('/', function (req, res) {
         db.TeamUser.create({
           id_team: team.dataValues.id_team,
           id_user: req.body.id_user,
+          accepted: true,
         }).catch((err) => res.status(401).json(err));
         res.json(team);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  }
+});
+
+// invite user to team
+router.post('/invite', (req, res) => {
+  if (req.body.invitee && req.body.inviter) {
+    db.TeamUser.create({
+      id_team: req.body.team,
+      id_user: req.body.invitee,
+      id_inviter: req.body.inviter,
+    })
+      .then((invite) => {
+        req.io.sockets.emit(`newInvite${req.body.invitee}`, invite);
+        res.status(200);
       })
       .catch((err) => {
         res.status(401).json(err);
