@@ -31,7 +31,16 @@ export default function InviteModal(props) {
     context[5]({ ...context[4], showInvite: false });
   };
 
-  const handleAccept = (team) => {
+  const removeInvite = (id) => {
+    const newInvites = Array.from(context[8].invites);
+    newInvites.splice(
+      newInvites.findIndex((invite) => invite.id === id),
+      1,
+    );
+    context[9]({ ...context[8], invites: newInvites });
+  };
+
+  const handleAccept = (team, id) => {
     axios
       .put('/api/team/invite', {
         id_team: team,
@@ -39,6 +48,8 @@ export default function InviteModal(props) {
       })
       .then((res) => {
         console.log('success', res);
+        console.log(id);
+        removeInvite(id);
       });
   };
 
@@ -49,6 +60,8 @@ export default function InviteModal(props) {
       )
       .then((res) => {
         console.log('success', res);
+        console.log(id);
+        removeInvite(id);
       });
   };
 
@@ -77,38 +90,46 @@ export default function InviteModal(props) {
             borderRadius: '4px',
           }}
         >
-          {context[8].invites.map((invite) => {
-            return (
-              <List.Item
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <List.Content>
-                  <List.Header>{invite.team}</List.Header>
-                  Invited by {invite.inviter}
-                </List.Content>
-                <div style={{ position: 'absolute', right: 35 }}>
-                  <Button
-                    compact
-                    color="green"
-                    size="mini"
-                    icon="check"
-                    onClick={() => handleAccept(invite.id_team)}
-                  />
-                  <Button
-                    compact
-                    color="red"
-                    size="mini"
-                    icon="x"
-                    onClick={() => handleReject(invite.id)}
-                  />
-                </div>
-              </List.Item>
-            );
-          })}
+          {context[8].invites.length === 0 ? (
+            <List.Item style={{ textAlign: 'center' }}>
+              No Invites
+            </List.Item>
+          ) : (
+            context[8].invites.map((invite) => {
+              return (
+                <List.Item
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <List.Content>
+                    <List.Header>{invite.team}</List.Header>
+                    Invited by {invite.inviter}
+                  </List.Content>
+                  <div style={{ position: 'absolute', right: 35 }}>
+                    <Button
+                      compact
+                      color="green"
+                      size="mini"
+                      icon="check"
+                      onClick={() =>
+                        handleAccept(invite.id_team, invite.id)
+                      }
+                    />
+                    <Button
+                      compact
+                      color="red"
+                      size="mini"
+                      icon="x"
+                      onClick={() => handleReject(invite.id)}
+                    />
+                  </div>
+                </List.Item>
+              );
+            })
+          )}
         </List>
         <button
           style={saveButton}

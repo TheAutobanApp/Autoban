@@ -29,7 +29,7 @@ export const initialUserState = {
   teams: [],
   projects: [],
   invites: [],
-}
+};
 
 function App() {
   const [user, setUser] = useState(initialUserState);
@@ -106,24 +106,10 @@ function App() {
       });
       // get labels for project
       // adjust to collect labels using function in label state
-      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
-        const projLabels = [];
-        res.data.forEach((label) => projLabels.push(label));
-        axios.get(`/api/label/default`).then((res) => {
-          res.data.forEach((label) => projLabels.push(label));
-          setLabels({ ...labels, projectLabels: projLabels });
-        });
-      });
+      labels.getLabels();
       // listen for label updates, on update refresh label state
       socket.on(`newLabel${view.project}`, (data) => {
-        axios.get(`/api/label/?proj=${view.project}`).then((res) => {
-          const projLabels = [];
-          res.data.forEach((label) => projLabels.push(label));
-          axios.get(`/api/label/default`).then((res) => {
-            res.data.forEach((label) => projLabels.push(label));
-            setLabels({ ...labels, projectLabels: projLabels });
-          });
-        });
+        labels.getLabels();
       });
     }
   }, [view.type]);
@@ -139,7 +125,6 @@ function App() {
                 Array.isArray(res.data) &&
                 Array.isArray(response.data)
               ) {
-                console.log('teams and projects');
                 setUser({
                   ...user,
                   teams: response.data,
@@ -159,6 +144,21 @@ function App() {
       });
     }
   }, [user.id_user]);
+
+  useEffect(() => {
+    socket.on(`newInvite${user.id_user}`, (data) => {
+      axios
+        .get(`/api/team/invite/${user.id_user}`)
+        .then((invite) => {
+          if (Array.isArray(invite.data)) {
+            setUser({
+              ...user,
+              invites: invite.data,
+            });
+          }
+        });
+    });
+  }, [user.invites])
 
   return (
     <AutoProvider

@@ -212,6 +212,12 @@ router.put('/invite/', (req, res) => {
                       res.status(200).send(team, assoc);
                     },
                   );
+                } else {
+                  req.io.sockets.emit(
+                    `inviteAccepted${req.body.id_user}`,
+                    team
+                  );
+                  res.status(200).send(team);
                 }
               });
             })
