@@ -54,29 +54,29 @@ router.get('/invite/:id_user', function (req, res) {
       .then((invite) => {
         inviteArray = invite.map((item) => ({
           id: item.dataValues.id,
-          team: item.dataValues.id_team,
-          inviter: item.dataValues.id_inviter,
+          id_team: item.dataValues.id_team,
+          id_inviter: item.dataValues.id_inviter,
         }));
         db.User.findAll({
           where: {
             id_user: {
-              [Op.or]: inviteArray.map((item) => item.inviter),
+              [Op.or]: inviteArray.map((item) => item.id_inviter),
             },
           },
         }).then(inviters => {
           inviteArray.forEach(el => {
-            let foundIndex = inviters.findIndex(item => item.dataValues.id_user === el.inviter);
+            let foundIndex = inviters.findIndex(item => item.dataValues.id_user === el.id_inviter);
             el.inviter = inviters[foundIndex].dataValues.username
           })
           db.Team.findAll({
             where: {
               id_team: {
-                [Op.or]: inviteArray.map((item) => item.team),
+                [Op.or]: inviteArray.map((item) => item.id_team),
               },
             },
           }).then(teams => {
             inviteArray.forEach(el => {
-              let foundIndex = teams.findIndex(item => item.dataValues.id_team === el.team);
+              let foundIndex = teams.findIndex(item => item.dataValues.id_team === el.id_team);
               el.team = teams[foundIndex].dataValues.team_name
             })
             console.log(inviteArray)
@@ -176,12 +176,12 @@ router.put('/', function (req, res) {
 });
 
 // update TeamUser association when accepted by user
-router.put('/invite/:id_user', (req, res) => {
-  if (req.params.id_user && req.body.id_team) {
+router.put('/invite/', (req, res) => {
+  if (req.body.id_user && req.body.id_team) {
     db.TeamUser.findOne({
       where: {
         id_team: req.body.id_team,
-        id_user: req.params.id_user,
+        id_user: req.body.id_user,
       },
     })
       .then((team) => {

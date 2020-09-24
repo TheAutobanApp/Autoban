@@ -22,7 +22,7 @@ export default function InviteModal(props) {
 
   const modalStyle = {
     height: 'fit-content',
-    width: '300px',
+    width: '350px',
     backgroundColor: 'whitesmoke',
   };
 
@@ -31,8 +31,8 @@ export default function InviteModal(props) {
     context[5]({ ...context[4], showInvite: false });
   };
 
-  const handleAccept = (team, user) => {
-    axios.put('/api/team/invite', { id_team: team, id_user: user }).then((res) => {
+  const handleAccept = (team) => {
+    axios.put('/api/team/invite', { id_team: team, id_user: context[8].id_user }).then((res) => {
         console.log('success', res);
     })
   };
@@ -64,7 +64,7 @@ export default function InviteModal(props) {
               <List.Item
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-evenly',
+                  justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
               >
@@ -72,13 +72,13 @@ export default function InviteModal(props) {
                   <List.Header>{invite.team}</List.Header>
                   Invited by {invite.inviter}
                 </List.Content>
-                <div>
+                <div style={{position: 'absolute', right: 35}}>
                   <Button
                     compact
                     color="green"
                     size="mini"
                     icon="check"
-                    onClick={() => handleAccept(invite.id_team, invite.id_user)}
+                    onClick={() => handleAccept(invite.id_team)}
                   />
                   <Button
                     compact
