@@ -192,11 +192,28 @@ router.put('/invite/', (req, res) => {
           team
             .update({ accepted: true })
             .then(() => {
-              req.io.sockets.emit(
-                `inviteAccepted${req.body.id_user}`,
-                invite,
-              );
-              res.status(200).send(team);
+              // find all team projects and create ProjectUser associations for all found team projects
+              db.Project.findAll({
+                where: { id_team: req.body.id_team },
+              }).then((projects) => {
+                // only create ProjectUser associations if projects exist in the team
+                if (projects.length > 0) {
+                  const projectArray = projects.map((project) => ({
+                    id_project: project.dataValues.id_project,
+                    id_user: req.body.id_user,
+                  }));
+                  db.ProjectUser.bulkCreate(projectArray).then(
+                    (assoc) => {
+                      req.io.sockets.emit(
+                        `inviteAccepted${req.body.id_user}`,
+                        team,
+                        assoc
+                      );
+                      res.status(200).send(team, assoc);
+                    },
+                  );
+                }
+              });
             })
             .catch((err) => res.status(401).json(err));
         }
