@@ -63,26 +63,29 @@ router.get('/invite/:id_user', function (req, res) {
               [Op.or]: inviteArray.map((item) => item.id_inviter),
             },
           },
-        }).then(inviters => {
-          inviteArray.forEach(el => {
-            let foundIndex = inviters.findIndex(item => item.dataValues.id_user === el.id_inviter);
-            el.inviter = inviters[foundIndex].dataValues.username
-          })
+        }).then((inviters) => {
+          inviteArray.forEach((el) => {
+            let foundIndex = inviters.findIndex(
+              (item) => item.dataValues.id_user === el.id_inviter,
+            );
+            el.inviter = inviters[foundIndex].dataValues.username;
+          });
           db.Team.findAll({
             where: {
               id_team: {
                 [Op.or]: inviteArray.map((item) => item.id_team),
               },
             },
-          }).then(teams => {
-            inviteArray.forEach(el => {
-              let foundIndex = teams.findIndex(item => item.dataValues.id_team === el.id_team);
-              el.team = teams[foundIndex].dataValues.team_name
-            })
-            console.log(inviteArray)
-            res.json(inviteArray)
-          })
-        })
+          }).then((teams) => {
+            inviteArray.forEach((el) => {
+              let foundIndex = teams.findIndex(
+                (item) => item.dataValues.id_team === el.id_team,
+              );
+              el.team = teams[foundIndex].dataValues.team_name;
+            });
+            res.json(inviteArray);
+          });
+        });
       })
       .catch((err) => res.status(401).json(err));
   }
@@ -209,13 +212,33 @@ router.delete('/', function (req, res) {
     db.Team.findOne({ where: { id_team: req.query.teamid } })
       .then((team) => {
         if (team.team_name === req.query.team_name) {
-          user
+          team
             .destroy()
             .then((team) => res.status(200).json(team))
             .catch((err) => {
               res.status(401).json(err);
             });
         }
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  }
+});
+
+// invite delete when invitee rejects
+router.delete('/invite', function (req, res) {
+  if (req.query.id && req.query.id_user) {
+    db.TeamUser.findOne({
+      where: { id: req.query.id, id_user: req.query.id_user },
+    })
+      .then((team) => {
+        team
+          .destroy()
+          .then((team) => res.status(200).json(team))
+          .catch((err) => {
+            res.status(401).json(err);
+          });
       })
       .catch((err) => {
         res.status(401).json(err);

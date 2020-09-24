@@ -32,13 +32,24 @@ export default function InviteModal(props) {
   };
 
   const handleAccept = (team) => {
-    axios.put('/api/team/invite', { id_team: team, id_user: context[8].id_user }).then((res) => {
+    axios
+      .put('/api/team/invite', {
+        id_team: team,
+        id_user: context[8].id_user,
+      })
+      .then((res) => {
         console.log('success', res);
-    })
+      });
   };
 
-  const handleReject = () => {
-    console.log('reject invite');
+  const handleReject = (id) => {
+    axios
+      .delete(
+        `/api/team/invite/?id=${id}&id_user=${context[8].id_user}`,
+      )
+      .then((res) => {
+        console.log('success', res);
+      });
   };
 
   return (
@@ -58,21 +69,28 @@ export default function InviteModal(props) {
       >
         <h5>Team Invites</h5>
 
-        <List celled style={{ width: '90%', border: '1px solid lightgrey', borderRadius: '4px'}}>
+        <List
+          celled
+          style={{
+            width: '90%',
+            border: '1px solid lightgrey',
+            borderRadius: '4px',
+          }}
+        >
           {context[8].invites.map((invite) => {
             return (
               <List.Item
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
                 <List.Content>
                   <List.Header>{invite.team}</List.Header>
                   Invited by {invite.inviter}
                 </List.Content>
-                <div style={{position: 'absolute', right: 35}}>
+                <div style={{ position: 'absolute', right: 35 }}>
                   <Button
                     compact
                     color="green"
@@ -85,7 +103,7 @@ export default function InviteModal(props) {
                     color="red"
                     size="mini"
                     icon="x"
-                    onClick={handleReject}
+                    onClick={() => handleReject(invite.id)}
                   />
                 </div>
               </List.Item>
