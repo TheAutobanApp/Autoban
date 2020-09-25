@@ -12,6 +12,7 @@ import TaskModal from './components/modals/TaskModal';
 import LabelModal from './components/modals/LabelModal';
 import ProjectModal from './components/modals/ProjectModal';
 import InviteModal from './components/modals/InviteModal';
+import InviteSearchModal from './components/modals/InviteSearchModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 import socketIOClient from 'socket.io-client';
@@ -68,6 +69,7 @@ function App() {
     showLabel: false,
     showProject: false,
     showInvite: false,
+    showSearch: false,
     column: null,
     card: null,
     edit: 0,
@@ -148,18 +150,24 @@ function App() {
   useEffect(() => {
     socket.on(`newInvite${user.id_user}`, (data) => {
       console.log(data);
-      let newInvite = {id: data.id, id_team: data.id_team, id_inviter: data.id_inviter};
+      let newInvite = {
+        id: data.id,
+        id_team: data.id_team,
+        id_inviter: data.id_inviter,
+      };
       axios
-        .get(`/api/team/invite/new/?inviter=${data.id_inviter}&team=${data.id_team}`)
+        .get(
+          `/api/team/invite/new/?inviter=${data.id_inviter}&team=${data.id_team}`,
+        )
         .then((invite) => {
-          console.log(invite)
+          console.log(invite);
           // if (Array.isArray(invite.data)) {
           //   newInvite.team = invite.data.
           //   user.invites.concat(invite.data)
           // }
         });
     });
-  }, [user.invites])
+  }, [user.invites]);
 
   return (
     <AutoProvider
@@ -185,6 +193,7 @@ function App() {
         {modal.showLabel && <LabelModal />}
         {modal.showProject && <ProjectModal />}
         {modal.showInvite && <InviteModal />}
+        {modal.showSearch && <InviteSearchModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />
