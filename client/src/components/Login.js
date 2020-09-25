@@ -67,6 +67,7 @@ export default function Login() {
                   lastName: user.last_name,
                   email: user.email,
                   id_user: user.id_user,
+                  avatar: firebase.auth().currentUser.photoURL,
                 });
               }
             })

@@ -13,6 +13,10 @@ export default function UserDropdown() {
       .signOut()
       .then(() => {
         context[9](initialUserState);
+        context[11]({
+          type: 'home',
+          project: null,
+        })
       });
   };
 
