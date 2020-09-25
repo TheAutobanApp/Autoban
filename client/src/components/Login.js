@@ -17,6 +17,7 @@ export default function Login() {
     firstName: '',
     lastName: '',
     email: '',
+    avatar: '',
     agree: false,
   });
   const [signedIn, setSignedIn] = useState(true);
@@ -47,16 +48,17 @@ export default function Login() {
       .auth()
       .onAuthStateChanged((user) => {
         if (user) {
-          const email = firebase.auth().currentUser.email;
+          const currentUser = firebase.auth().currentUser;
           axios
-            .get(`/api/user/?email=${email}`)
+            .get(`/api/user/?email=${currentUser.email}`)
             .then((res) => {
               const user = res.data;
               if (res.data === null) {
                 setSignUp({
                   ...signUp,
                   showSignUp: true,
-                  email: email,
+                  email: currentUser.email,
+                  avatar: currentUser.photoURL,
                 });
               } else {
                 context[9]({
@@ -67,7 +69,7 @@ export default function Login() {
                   lastName: user.last_name,
                   email: user.email,
                   id_user: user.id_user,
-                  avatar: firebase.auth().currentUser.photoURL,
+                  avatar: user.avatar,
                 });
               }
             })
@@ -98,6 +100,7 @@ export default function Login() {
           first_name: signUp.firstName,
           last_name: signUp.lastName,
           email: signUp.email,
+          avatar: signUp.avatar
         })
         .then((res) => {
           // create default Personal team
@@ -115,6 +118,7 @@ export default function Login() {
                 firstName: signUp.firstName,
                 lastName: signUp.lastName,
                 email: signUp.email,
+                avatar: signUp.avatar,
                 id_user: res.data.id_user,
                 teams: context[8].teams.concat([res.data]),
               });
@@ -124,6 +128,7 @@ export default function Login() {
                 firstName: '',
                 lastName: '',
                 email: '',
+                avatar: '',
                 agree: false,
               });
             });

@@ -71,7 +71,7 @@ export default function InviteSearchModal(props) {
             <List.Item className="invite-item">
               <Image
                 avatar
-                src="https://react.semantic-ui.com/images/avatar/small/rachel.png"
+                src={selectedUser.avatar}
               />
               <List.Content>
                 {/* <div style={{ display: 'flex' }}> */}
@@ -105,6 +105,7 @@ export default function InviteSearchModal(props) {
                 id_user: data.result.id,
                 username: data.result.description,
                 name: data.result.title,
+                avatar: data.result.image
               })
             }
             results={users.map((user) => {
@@ -112,6 +113,7 @@ export default function InviteSearchModal(props) {
                 id: user.id_user,
                 title: `${user.first_name} ${user.last_name}`,
                 description: user.username,
+                image: user.avatar
               };
             })}
             onSearchChange={(e) => {
