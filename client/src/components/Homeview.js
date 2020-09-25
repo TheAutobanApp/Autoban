@@ -64,13 +64,16 @@ export default function Homeview(props) {
           <AddProject />
           {renderProjects()}
         </div>
-        <button
-          onClick={() =>
-            context[5]({ ...context[4], showSearch: true })
-          }
-        >
-          Add Collaborator
-        </button>
+        {context[8].team &&
+          context[8].team.team_name !== 'Personal' && (
+            <button
+              onClick={() =>
+                context[5]({ ...context[4], showSearch: true })
+              }
+            >
+              Add Collaborator
+            </button>
+          )}
       </div>
     </div>
   );

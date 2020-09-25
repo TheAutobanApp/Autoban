@@ -34,11 +34,11 @@ export default function TeamMenu() {
     teamName: '',
   });
 
-  const handleItemClick = (e, { id }) => {
+  const handleItemClick = (e, { id, name }) => {
     console.log(id)
     setTeam({ ...team, activeItem: id });
     if (e.target.id) {
-      context[9]({ ...context[8], team: parseInt(e.target.id) });
+      context[9]({ ...context[8], team: { id_team: id, team_name: name} });
     } else context[9]({ ...context[8], team: null });
   };
 
