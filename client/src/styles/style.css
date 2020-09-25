@@ -424,3 +424,8 @@ label {
 .invite-buttons {
   margin-left: auto !important;
 }
+
+.ui.search > .ui.input.icon {
+     width: 310px;
+     margin: 16px;
+}

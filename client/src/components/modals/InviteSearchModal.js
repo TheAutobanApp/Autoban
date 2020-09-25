@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Rodal from 'rodal';
 import { AutoContext } from '../../AutoContext';
 import 'rodal/lib/rodal.css';
-import { List, Button, Icon, Image, Search } from 'semantic-ui-react';
+import { List, Button, Icon, Image, Search, Input } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default function InviteSearchModal(props) {
@@ -16,19 +16,14 @@ export default function InviteSearchModal(props) {
 
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState('');
-  const [selectedUser, setSelectedUser] = useState({
-    selected: false,
-    username: '',
-    id_user: '',
-    name: '',
-  });
-
   const initialState = {
     selected: false,
     username: '',
     id_user: '',
     name: '',
   };
+  const [selectedUser, setSelectedUser] = useState(initialState);
+
   // hide modal, reset state and modal context
   const hideModal = () => {
     context[5]({ ...context[4], showSearch: false });
@@ -66,6 +61,7 @@ export default function InviteSearchModal(props) {
       customStyles={modalStyle}
     >
       <div className="invite-modal">
+        <Icon name="users" size="large" /><h5 style={{margin: 2}}>Invite Collaborator</h5>
         {selectedUser.selected ? (
           <List
             className="invite-list"
@@ -97,6 +93,8 @@ export default function InviteSearchModal(props) {
           </List>
         ) : (
           <Search
+            minCharacters={2}
+            fluid
             placeholder="Search"
             value={search}
             onResultSelect={(e, data) =>

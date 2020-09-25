@@ -27,6 +27,7 @@ export const initialUserState = {
   email: '',
   team: null,
   id_user: '',
+  avatar: '',
   teams: [],
   projects: [],
   invites: [],
@@ -38,8 +39,8 @@ function App() {
   const [labels, setLabels] = useState({
     projectLabels: [],
     // get both project labels and default labels and add to context state
-    getLabels: () => {
-      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
+    getLabels: (projId) => {
+      axios.get(`/api/label/?proj=${projId}`).then((res) => {
         const projLabels = [];
         res.data.forEach((label) => projLabels.push(label));
         axios.get(`/api/label/default`).then((res) => {
@@ -108,10 +109,10 @@ function App() {
       });
       // get labels for project
       // adjust to collect labels using function in label state
-      labels.getLabels();
+      labels.getLabels(view.project);
       // listen for label updates, on update refresh label state
       socket.on(`newLabel${view.project}`, (data) => {
-        labels.getLabels();
+        labels.getLabels(view.project);
       });
     }
   }, [view.type]);
@@ -134,7 +135,6 @@ function App() {
                   invites: invite.data,
                 });
               } else if (Array.isArray(response.data)) {
-                console.log(res.data);
                 setUser({
                   ...user,
                   teams: response.data,
@@ -154,7 +154,6 @@ function App() {
         id_team: data.id_team,
         id_inviter: data.id_inviter,
       };
-      console.log(data.id_team)
       axios
         .get(
           `/api/team/newinvite/?inviter=${data.id_inviter}&team=${data.id_team}`,
@@ -163,7 +162,6 @@ function App() {
           if (invite.data.inviter && invite.data.team) {
             newInvite.team = invite.data.team;
             newInvite.inviter = invite.data.inviter;
-            console.log(newInvite);
             setUser({
               ...user,
               invites: [...user.invites, newInvite],
