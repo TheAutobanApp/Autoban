@@ -68,9 +68,9 @@ export default function InviteModal(props) {
               No Invites
             </List.Item>
           ) : (
-            context[8].invites.map((invite) => {
+            context[8].invites.map((invite, index) => {
               return (
-                <List.Item className="invite-item">
+                <List.Item className="invite-item" key={index}>
                   <List.Content className="invite-content">
                     <List.Header>{invite.team}</List.Header>
                     Invited by {invite.inviter}
