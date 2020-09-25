@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
-import { List, Button, Icon } from 'semantic-ui-react';
+import { List, Icon, Button } from 'semantic-ui-react';
+import ModalButton from '../ModalButton';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -98,14 +99,14 @@ export default function InviteModal(props) {
             })
           )}
         </List>
-        <button
-          className="saveButton"
-          onClick={() => {
+        <ModalButton
+          class={true}
+          onclick={() => {
             hideModal();
           }}
         >
           Close
-        </button>
+        </ModalButton>
       </div>
     </Rodal>
   );

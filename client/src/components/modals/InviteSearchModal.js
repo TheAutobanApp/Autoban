@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import Rodal from 'rodal';
 import { AutoContext } from '../../AutoContext';
 import 'rodal/lib/rodal.css';
-import { List, Button, Icon, Image, Search, Input } from 'semantic-ui-react';
+import { List, Icon, Image, Search } from 'semantic-ui-react';
+import ModalButton from '../ModalButton';
 import axios from 'axios';
 
 export default function InviteSearchModal(props) {
@@ -119,18 +120,18 @@ export default function InviteSearchModal(props) {
             }}
           />
         )}
-        <Button
-          className={selectedUser.selected && 'saveButton'}
+        <ModalButton
+          class={selectedUser.selected}
           style={{ width: '90%', marginTop: 10 }}
-          onClick={() => {
+          onclick={() => {
             sendInvite();
           }}
           disabled={!selectedUser.selected}
-        >
+          >
           {selectedUser.selected
             ? `Add ${selectedUser.username} to team`
             : `Select user above`}
-        </Button>
+        </ModalButton>
       </div>
     </Rodal>
   );
