@@ -117,34 +117,39 @@ function App() {
     }
   }, [view.type]);
 
-  useEffect(() => {
+  const getTeamsProjects = (id_user) => {
     if (user.id_user) {
-      axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-        axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          axios
-            .get(`/api/team/invite/${user.id_user}`)
-            .then((invite) => {
-              if (
-                Array.isArray(res.data) &&
-                Array.isArray(response.data)
-              ) {
-                setUser({
-                  ...user,
-                  teams: response.data,
-                  projects: res.data,
-                  invites: invite.data,
-                });
-              } else if (Array.isArray(response.data)) {
-                setUser({
-                  ...user,
-                  teams: response.data,
-                  invites: invite.data,
-                });
-              }
-            });
+      axios.get(`/api/team/all/${id_user}`).then((response) => {
+        axios.get(`/api/project/all/${id_user}`).then((res) => {
+          axios.get(`/api/team/invite/${id_user}`).then((invite) => {
+            if (
+              Array.isArray(res.data) &&
+              Array.isArray(response.data)
+            ) {
+              setUser({
+                ...user,
+                teams: response.data,
+                projects: res.data,
+                invites: invite.data,
+              });
+            } else if (Array.isArray(response.data)) {
+              setUser({
+                ...user,
+                teams: response.data,
+                invites: invite.data,
+              });
+            }
+          });
         });
       });
     }
+  };
+
+  useEffect(() => {
+    getTeamsProjects(user.id_user);
+    socket.on(`inviteAccepted${user.id_user}`, (data) => {
+      getTeamsProjects(user.id_user);
+    });
   }, [user.id_user]);
 
   useEffect(() => {
