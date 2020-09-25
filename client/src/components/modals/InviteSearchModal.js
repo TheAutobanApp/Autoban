@@ -69,7 +69,7 @@ export default function InviteSearchModal(props) {
         {selectedUser.selected ? (
           <List
             className="invite-list"
-            style={{ backgroundColor: 'white' }}
+            style={{ backgroundColor: 'white', padding: '4px' }}
           >
             <List.Item className="invite-item">
               <Image

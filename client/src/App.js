@@ -149,24 +149,29 @@ function App() {
 
   useEffect(() => {
     socket.on(`newInvite${user.id_user}`, (data) => {
-      console.log(data);
       let newInvite = {
         id: data.id,
         id_team: data.id_team,
         id_inviter: data.id_inviter,
       };
+      console.log(data.id_team)
       axios
         .get(
-          `/api/team/invite/new/?inviter=${data.id_inviter}&team=${data.id_team}`,
+          `/api/team/newinvite/?inviter=${data.id_inviter}&team=${data.id_team}`,
         )
         .then((invite) => {
-          console.log(invite);
-          // if (Array.isArray(invite.data)) {
-          //   newInvite.team = invite.data.
-          //   user.invites.concat(invite.data)
-          // }
+          if (invite.data.inviter && invite.data.team) {
+            newInvite.team = invite.data.team;
+            newInvite.inviter = invite.data.inviter;
+            console.log(newInvite);
+            setUser({
+              ...user,
+              invites: [...user.invites, newInvite],
+            });
+          }
         });
     });
+    return () => socket.removeListener(`newInvite${user.id_user}`);
   }, [user.invites]);
 
   return (

@@ -92,26 +92,25 @@ router.get('/invite/:id_user', function (req, res) {
 });
 
 // get new invite team
-router.get('/invite/new/', function (req, res) {
-  let newInvite = {};
-  console.log(req.query)
+router.get('/newinvite', function (req, res) {
+  const newInvite = {};
   if (req.query.inviter && req.query.team) {
     db.User.findOne({
       where: {
         id_user: req.query.inviter,
       },
     }).then((inviter) => {
-      newInvite.inviter = inviter[0].dataValues.username;
+      newInvite.inviter = inviter.dataValues.username;
       db.Team.findOne({
         where: {
           id_team: req.query.team,
         },
       }).then((team) => {
-        newInvite.team = team[0].dataValues.team_name
+        newInvite.team = team.dataValues.team_name
         console.log(newInvite)
         res.send(newInvite);
-      });
-    });
+      }).catch((err) => res.status(401).json(err));
+    }).catch((err) => res.status(401).json(err));
   }
 });
 
