@@ -429,3 +429,10 @@ label {
      width: 310px;
      margin: 16px;
 }
+
+.ui.fluid.search .results {
+    width: 100%;
+    max-height: 287px;
+    overflow: auto;
+    top: 80%;
+}
