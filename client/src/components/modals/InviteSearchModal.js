@@ -46,7 +46,7 @@ export default function InviteSearchModal(props) {
       .post('/api/team/invite', {
         inviter: context[8].id_user,
         invitee: selectedUser.id_user,
-        team: context[8].team,
+        team: context[8].team.id_team,
       })
       .then((response) => {
         console.log(response.data);

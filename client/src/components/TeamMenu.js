@@ -29,7 +29,7 @@ export default function TeamMenu() {
   ];
 
   const [team, setTeam] = useState({
-    activeItem: context[8].team,
+    activeItem: context[8].team && context[8].team.id_team,
     teamAdd: false,
     teamName: '',
   });

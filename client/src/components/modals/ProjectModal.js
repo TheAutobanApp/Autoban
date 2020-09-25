@@ -11,7 +11,7 @@ export default function TaskModal(props) {
 
   // inital state for reseting state
   const initialState = {
-    id_team: context[8].team,
+    id_team: context[8].team.id_team,
     project_name: null,
     project_description: null,
     start_date: null,
@@ -114,7 +114,7 @@ export default function TaskModal(props) {
             error={!project.id_team}
             style={{ margin: '6px', width: '80%' }}
             placeholder="Team"
-            defaultValue={options.findIndex(team => team.id === context[8].team) + 1}
+            defaultValue={options.findIndex(team => team.id === context[8].team.id_team) + 1}
             search
             selection
             options={options}

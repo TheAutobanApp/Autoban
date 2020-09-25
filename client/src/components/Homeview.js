@@ -10,7 +10,7 @@ export default function Homeview(props) {
   const renderProjects = () => {
     if (context[8].projects.length > 0) {
       return context[8].projects.map((element, i) => {
-        if (element.id_team === context[8].team) {
+        if (context[8].team && element.id_team === context[8].team.id_team) {
           const foundIndex = context[8].teams.findIndex(
             (team) => team.id_team === element.id_team,
           );
