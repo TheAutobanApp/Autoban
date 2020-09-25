@@ -19,8 +19,16 @@ export default function InviteSearchModal(props) {
   const [selectedUser, setSelectedUser] = useState({
     selected: false,
     username: '',
+    id_user: '',
     name: '',
   });
+
+  const initialState = {
+    selected: false,
+    username: '',
+    id_user: '',
+    name: '',
+  };
   // hide modal, reset state and modal context
   const hideModal = () => {
     context[5]({ ...context[4], showSearch: false });
@@ -37,6 +45,20 @@ export default function InviteSearchModal(props) {
     }
   };
 
+  const sendInvite = () => {
+    axios
+      .post('/api/team/invite', {
+        inviter: context[8].id_user,
+        invitee: selectedUser.id_user,
+        team: context[8].team,
+      })
+      .then((response) => {
+        console.log(response.data);
+
+        hideModal();
+      });
+  };
+
   return (
     <Rodal
       visible={context[4].showSearch}
@@ -45,18 +67,32 @@ export default function InviteSearchModal(props) {
     >
       <div className="invite-modal">
         {selectedUser.selected ? (
-          <List>
-            <List.Item>
+          <List
+            className="invite-list"
+            style={{ backgroundColor: 'white' }}
+          >
+            <List.Item className="invite-item">
               <Image
                 avatar
                 src="https://react.semantic-ui.com/images/avatar/small/rachel.png"
               />
               <List.Content>
+                {/* <div style={{ display: 'flex' }}> */}
                 <List.Header as="a">{selectedUser.name}</List.Header>
+                {/* </div> */}
                 <List.Description>
                   {selectedUser.username}
                 </List.Description>
               </List.Content>
+              <Icon
+                className="invite-buttons"
+                name="x"
+                color="grey"
+                onClick={() => {
+                  setSearch('');
+                  setSelectedUser(initialState);
+                }}
+              />
             </List.Item>
           </List>
         ) : (
@@ -67,12 +103,14 @@ export default function InviteSearchModal(props) {
               setSelectedUser({
                 ...selectedUser,
                 selected: true,
+                id_user: data.result.id,
                 username: data.result.description,
                 name: data.result.title,
               })
             }
             results={users.map((user) => {
               return {
+                id: user.id_user,
                 title: `${user.first_name} ${user.last_name}`,
                 description: user.username,
               };
@@ -83,14 +121,18 @@ export default function InviteSearchModal(props) {
             }}
           />
         )}
-        <button
-          className="saveButton"
+        <Button
+          className={selectedUser.selected && 'saveButton'}
+          style={{ width: '90%', marginTop: 10 }}
           onClick={() => {
-            hideModal();
+            sendInvite();
           }}
+          disabled={!selectedUser.selected}
         >
-          Close
-        </button>
+          {selectedUser.selected
+            ? `Add ${selectedUser.username} to team`
+            : `Select user above`}
+        </Button>
       </div>
     </Rodal>
   );
