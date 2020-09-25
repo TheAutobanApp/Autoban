@@ -360,3 +360,41 @@ label {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+.saveButton {
+    border-radius: 5px;
+    color: white;
+    border: none;
+    padding: 10px;
+    background:
+      linear-gradient(to bottom, var(--nav-color), var(--nav-color2));
+}
+
+/* Invite modal */
+
+.invite-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.invite-list {
+    width: 90%;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    height: auto;
+    max-height: 159px;
+    overflow-y: auto;
+}
+
+.invite-item {
+    display: flex!important;
+    justify-content: space-between!important;
+    align-items: center;
+}
+
+.invite-buttons {
+    margin-left: auto!important;
+}

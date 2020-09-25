@@ -147,15 +147,16 @@ function App() {
 
   useEffect(() => {
     socket.on(`newInvite${user.id_user}`, (data) => {
+      console.log(data);
+      let newInvite = {id: data.id, id_team: data.id_team, id_inviter: data.id_inviter};
       axios
-        .get(`/api/team/invite/${user.id_user}`)
+        .get(`/api/team/invite/new/?inviter=${data.id_inviter}&team=${data.id_team}`)
         .then((invite) => {
-          if (Array.isArray(invite.data)) {
-            setUser({
-              ...user,
-              invites: invite.data,
-            });
-          }
+          console.log(invite)
+          // if (Array.isArray(invite.data)) {
+          //   newInvite.team = invite.data.
+          //   user.invites.concat(invite.data)
+          // }
         });
     });
   }, [user.invites])

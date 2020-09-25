@@ -91,6 +91,30 @@ router.get('/invite/:id_user', function (req, res) {
   }
 });
 
+// get new invite team
+router.get('/invite/new/', function (req, res) {
+  let newInvite = {};
+  console.log(req.query)
+  if (req.query.inviter && req.query.team) {
+    db.User.findOne({
+      where: {
+        id_user: req.query.inviter,
+      },
+    }).then((inviter) => {
+      newInvite.inviter = inviter[0].dataValues.username;
+      db.Team.findOne({
+        where: {
+          id_team: req.query.team,
+        },
+      }).then((team) => {
+        newInvite.team = team[0].dataValues.team_name
+        console.log(newInvite)
+        res.send(newInvite);
+      });
+    });
+  }
+});
+
 // create team
 router.post('/', function (req, res) {
   if (req.body.team_name) {
@@ -207,7 +231,7 @@ router.put('/invite/', (req, res) => {
                       req.io.sockets.emit(
                         `inviteAccepted${req.body.id_user}`,
                         team,
-                        assoc
+                        assoc,
                       );
                       res.status(200).send(team, assoc);
                     },
@@ -215,7 +239,7 @@ router.put('/invite/', (req, res) => {
                 } else {
                   req.io.sockets.emit(
                     `inviteAccepted${req.body.id_user}`,
-                    team
+                    team,
                   );
                   res.status(200).send(team);
                 }
