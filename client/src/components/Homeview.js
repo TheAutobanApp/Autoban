@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import TeamMenu from './TeamMenu';
+import TeamView from './TeamView';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
 import { AutoContext } from '../AutoContext';
@@ -64,13 +65,7 @@ export default function Homeview(props) {
           <AddProject />
           {renderProjects()}
         </div>
-        <button
-          onClick={() =>
-            context[5]({ ...context[4], showSearch: true })
-          }
-        >
-          Add Collaborator
-        </button>
+        <TeamView />
       </div>
     </div>
   );
