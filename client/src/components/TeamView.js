@@ -86,27 +86,36 @@ export default function TeamView(props) {
   return (
     <Menu vertical style={menu}>
       <Menu.Item>
-        <Menu.Header
-          onClick={() => {
-            setName({ ...name, setting: true });
-          }}
-          style={{ display: 'flex' }}
-        >
+        <Menu.Header style={{ display: 'flex' }}>
           {!name.setting ? (
-            team.name
+            <span
+              onClick={() => {
+                setName({ ...name, setting: true });
+              }}
+            >
+              {team.name}
+            </span>
           ) : (
-            <input
-              placeholder={team.name}
-              style={{ border: 0, width: 150 }}
-              onChange={(e) => {
-                setName({ ...name, name: e.target.value });
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  updateTeam(e.target.value, 'name');
-                }
-              }}
-            />
+            <div style={{ display: 'flex' }}>
+              <Icon
+                name="close"
+                onClick={() => {
+                  setName({ ...name, setting: false });
+                }}
+              />
+              <input
+                placeholder={team.name}
+                style={{ border: 0, width: 150 }}
+                onChange={(e) => {
+                  setName({ ...name, name: e.target.value });
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    updateTeam(e.target.value, 'name');
+                  }
+                }}
+              />
+            </div>
           )}{' '}
           <Label
             empty
