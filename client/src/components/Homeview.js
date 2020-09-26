@@ -65,7 +65,7 @@ export default function Homeview(props) {
           <AddProject />
           {renderProjects()}
         </div>
-        <TeamView />
+        {context[8].team !== null && <TeamView />}
       </div>
     </div>
   );

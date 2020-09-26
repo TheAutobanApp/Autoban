@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
-import { List, Icon, Image, Search, Menu } from 'semantic-ui-react';
+import { Icon, Image, Menu, Label, Input } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default function TeamView(props) {
@@ -11,6 +11,39 @@ export default function TeamView(props) {
     display: 'flex',
   };
 
+  const [team, setTeam] = useState({
+    name: '',
+    description: '',
+    color: '',
+  });
+
+  const [description, setDescription] = useState({
+    setting: false,
+    description: '',
+  });
+
+  useEffect(() => {
+    if (context[8].team !== 'null') {
+      axios
+        .get(`/api/team/?id_team=${context[8].team}`)
+        .then((response) => {
+          console.log(response.data);
+          const teamInfo = response.data;
+          setTeam({
+            ...team,
+            name: teamInfo.team_name,
+            description: teamInfo.team_description,
+            color: teamInfo.team_color,
+          });
+        });
+    }
+  }, [context[8].team]);
+
+  const updateDescription = () => {
+    console.log('finna update');
+    // axios.put(`/api/team`);
+  };
+
   return (
     <Menu
       vertical
@@ -19,11 +52,49 @@ export default function TeamView(props) {
         marginTop: 0,
         position: 'relative',
         overflow: 'hidden',
+        width: 300,
       }}
     >
       <Menu.Item>
-        <Menu.Header>Engineering</Menu.Header>
-        <p style={{ color: 'gray' }}>Kick butt team for Autoban</p>
+        <Menu.Header>
+          {team.name}{' '}
+          <Label
+            empty
+            size="mini"
+            circular
+            color={team.color}
+          ></Label>
+        </Menu.Header>
+
+        {team.description === null ? (
+          !description.setting ? (
+            <p
+              style={{ color: 'gray' }}
+              onClick={() => {
+                setDescription({ ...description, setting: true });
+              }}
+            >
+              Add description
+            </p>
+          ) : (
+            <Input
+              placeholder="Description"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  updateDescription();
+                }
+              }}
+              onChange={(e) => {
+                setDescription({
+                  ...description,
+                  description: e.target.value,
+                });
+              }}
+            />
+          )
+        ) : (
+          <p style={{ color: 'gray' }}>{team.description}</p>
+        )}
       </Menu.Item>
 
       <Menu.Item>
