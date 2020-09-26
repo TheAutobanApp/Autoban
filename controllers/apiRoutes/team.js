@@ -99,18 +99,22 @@ router.get('/newinvite', function (req, res) {
       where: {
         id_user: req.query.inviter,
       },
-    }).then((inviter) => {
-      newInvite.inviter = inviter.dataValues.username;
-      db.Team.findOne({
-        where: {
-          id_team: req.query.team,
-        },
-      }).then((team) => {
-        newInvite.team = team.dataValues.team_name
-        console.log(newInvite)
-        res.send(newInvite);
-      }).catch((err) => res.status(401).json(err));
-    }).catch((err) => res.status(401).json(err));
+    })
+      .then((inviter) => {
+        newInvite.inviter = inviter.dataValues.username;
+        db.Team.findOne({
+          where: {
+            id_team: req.query.team,
+          },
+        })
+          .then((team) => {
+            newInvite.team = team.dataValues.team_name;
+            console.log(newInvite);
+            res.send(newInvite);
+          })
+          .catch((err) => res.status(401).json(err));
+      })
+      .catch((err) => res.status(401).json(err));
   }
 });
 
@@ -156,18 +160,21 @@ router.post('/invite', (req, res) => {
 });
 
 // update user info
-router.put('/', function (req, res) {
-  // update team name
-  if (req.query.tn !== req.query.newtn) {
+router.put('/description', function (req, res) {
+  // update team description
+  if (req.body.description !== req.body.newdescription) {
     db.Team.findOne({
-      where: { team_name: req.query.tn },
+      where: {
+        team_description: req.body.description,
+        team_name: req.body.tm,
+      },
     })
       .then((team) => {
         if (team) {
           team
-            .update({ team_name: req.query.newtn })
-            .then(() => {
-              res.json(team);
+            .update({ team_description: req.body.newdescription })
+            .then((tm) => {
+              res.json(tm);
             })
             .catch((err) => {
               res.status(401).json(err);
@@ -175,27 +182,34 @@ router.put('/', function (req, res) {
         }
       })
       .catch((err) => {
+        console.log(err);
         res.status(401).json(err);
       });
   }
-  // update team description
-  if (req.query.description !== req.query.newdescription) {
+});
+
+router.put('/name', function (req, res) {
+  // update team name
+  console.log(req.body.tm);
+  if (req.body.tn !== req.body.newtm) {
     db.Team.findOne({
-      where: { team_description: req.query.description },
+      where: { team_name: req.body.tm },
     })
       .then((team) => {
         if (team) {
           team
-            .update({ team_description: req.query.newdescription })
-            .then(() => {
-              res.json(team);
+            .update({ team_name: req.body.newtm })
+            .then((tm) => {
+              res.json(tm);
             })
             .catch((err) => {
+              console.log(err);
               res.status(401).json(err);
             });
         }
       })
       .catch((err) => {
+        console.log(err);
         res.status(401).json(err);
       });
   }

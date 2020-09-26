@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
-import { Icon, Image, Menu, Label, Input } from 'semantic-ui-react';
+import { Icon, Image, Menu, Label } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default function TeamView(props) {
@@ -9,6 +9,14 @@ export default function TeamView(props) {
   const collabStyle = {
     margin: 8,
     display: 'flex',
+  };
+
+  const menu = {
+    marginLeft: 5,
+    marginTop: 0,
+    position: 'relative',
+    overflow: 'hidden',
+    width: 300,
   };
 
   const [team, setTeam] = useState({
@@ -20,6 +28,11 @@ export default function TeamView(props) {
   const [description, setDescription] = useState({
     setting: false,
     description: '',
+  });
+
+  const [name, setName] = useState({
+    setting: false,
+    name: '',
   });
 
   useEffect(() => {
@@ -39,25 +52,62 @@ export default function TeamView(props) {
     }
   }, [context[8].team]);
 
-  const updateDescription = () => {
-    console.log('finna update');
-    // axios.put(`/api/team`);
+  const updateTeam = (value, type) => {
+    if (type === 'description') {
+      axios
+        .put(`/api/team/description`, {
+          description: team.description,
+          newdescription: value,
+          tm: team.name,
+        })
+        .then((response) => {
+          setTeam({
+            ...team,
+            description: response.data.team_description,
+          });
+          setDescription({ ...description, setting: false });
+        });
+    } else {
+      axios
+        .put(`/api/team/name`, {
+          tm: team.name,
+          newtm: value,
+        })
+        .then((response) => {
+          setTeam({
+            ...team,
+            name: response.data.team_name,
+          });
+          setName({ ...name, setting: false });
+        });
+    }
   };
 
   return (
-    <Menu
-      vertical
-      style={{
-        marginLeft: 5,
-        marginTop: 0,
-        position: 'relative',
-        overflow: 'hidden',
-        width: 300,
-      }}
-    >
+    <Menu vertical style={menu}>
       <Menu.Item>
-        <Menu.Header>
-          {team.name}{' '}
+        <Menu.Header
+          onClick={() => {
+            setName({ ...name, setting: true });
+          }}
+          style={{ display: 'flex' }}
+        >
+          {!name.setting ? (
+            team.name
+          ) : (
+            <input
+              placeholder={team.name}
+              style={{ border: 0, width: 150 }}
+              onChange={(e) => {
+                setName({ ...name, name: e.target.value });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  updateTeam(e.target.value, 'name');
+                }
+              }}
+            />
+          )}{' '}
           <Label
             empty
             size="mini"
@@ -66,24 +116,33 @@ export default function TeamView(props) {
           ></Label>
         </Menu.Header>
 
-        {team.description === null ? (
-          !description.setting ? (
-            <p
-              style={{ color: 'gray' }}
+        {!description.setting ? (
+          <p
+            style={{ color: 'gray', fontStyle: 'italic' }}
+            onClick={() => {
+              setDescription({ ...description, setting: true });
+            }}
+          >
+            {team.description === null
+              ? `Add description`
+              : team.description}
+          </p>
+        ) : (
+          <div style={{ display: 'flex' }}>
+            <Icon
+              name="close"
               onClick={() => {
-                setDescription({ ...description, setting: true });
+                setDescription({ ...description, setting: false });
               }}
-            >
-              Add description
-            </p>
-          ) : (
-            <Input
-              placeholder="Description"
+            />
+            <textarea
+              placeholder={team.description}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  updateDescription();
+                  updateTeam(e.target.value, 'description');
                 }
               }}
+              style={{ border: 0, fontStyle: 'italic' }}
               onChange={(e) => {
                 setDescription({
                   ...description,
@@ -91,9 +150,7 @@ export default function TeamView(props) {
                 });
               }}
             />
-          )
-        ) : (
-          <p style={{ color: 'gray' }}>{team.description}</p>
+          </div>
         )}
       </Menu.Item>
 
