@@ -123,7 +123,6 @@ export default function InviteSearchModal(props) {
           />
         )}
         <ModalButton
-          class={selectedUser.selected}
           style={{ width: '90%', marginTop: 10 }}
           onclick={() => {
             sendInvite();
