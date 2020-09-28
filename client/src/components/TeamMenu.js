@@ -8,25 +8,10 @@ import {
 } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
+import colors from './utils/colors';
 
 export default function TeamMenu() {
   const context = useContext(AutoContext);
-
-  const colors = [
-    'red',
-    'blue',
-    'green',
-    'purple',
-    'orange',
-    'teal',
-    'pink',
-    'yellow',
-    'olive',
-    'violet',
-    'brown',
-    'grey',
-    'black',
-  ];
 
   const [team, setTeam] = useState({
     activeItem: context[8].team && context[8].team.id_team,

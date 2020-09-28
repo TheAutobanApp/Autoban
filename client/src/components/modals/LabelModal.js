@@ -3,27 +3,12 @@ import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { Input, Dropdown, Label } from 'semantic-ui-react';
+import ModalButton from '../ModalButton';
 import axios from 'axios';
+import colors from '../utils/colors';
 
-export default function TaskModal(props) {
+export default function TaskModal() {
   const context = useContext(AutoContext);
-
-  // color choices for new labels
-  const colors = [
-    'red',
-    'orange',
-    'yellow',
-    'olive',
-    'green',
-    'teal',
-    'blue',
-    'violet',
-    'purple',
-    'pink',
-    'brown',
-    'grey',
-    'black',
-  ];
 
   // create color objects for dropdown menu options
   const options = colors.map((color) => {
@@ -47,22 +32,6 @@ export default function TaskModal(props) {
   useEffect(() => {
     setLabel({ ...label, label_name: context[4].labelName });
   }, [context[4].labelName]);
-
-  const titleInput = {
-    width: '100%',
-    border: 'none',
-    height: 35,
-    borderRadius: 5,
-  };
-
-  const saveButton = {
-    borderRadius: 5,
-    color: 'white',
-    border: 'none',
-    padding: 10,
-    background:
-      'linear-gradient(to bottom, var(--nav-color), var(--nav-color2))',
-  };
 
   const modalStyle = {
     height: '250px',
@@ -89,35 +58,18 @@ export default function TaskModal(props) {
     });
   };
 
-  //   const editTask = () => {
-  //     axios
-  //       .put(`/api/task/edit/${context[4].card}/1`, {
-  //         task_title: task.task_title,
-  //         task_description: task.task_description,
-  //       })
-  //       .then((res) => context[7](res.data));
-  //   };
-
   return (
     <Rodal
       visible={context[4].showLabel}
       onClose={hideModal}
       customStyles={modalStyle}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          height: '100%',
-        }}
-      >
+      <div className="label-modal">
         <h5>Create Label</h5>
         <div>
           <Input
             icon="tag"
-            style={titleInput}
+            className="title-input"
             onChange={(e) => {
               setLabel({ ...label, label_name: e.target.value });
             }}
@@ -135,15 +87,7 @@ export default function TaskModal(props) {
               setLabel({ ...label, color: data.value });
             }}
           />
-          <div
-            className="flex-row"
-            style={{
-              height: 30,
-              width: '100%',
-              justifyContent: 'center',
-              margin: '5px',
-            }}
-          >
+          <div className="flex-row label-colors">
             {/* if a color is selected, render example */}
             {label.color && (
               <Label circular color={label.color}>
@@ -152,15 +96,15 @@ export default function TaskModal(props) {
             )}
           </div>
         </div>
-        <button
-          style={saveButton}
-          onClick={() => {
+        <ModalButton
+          disabled={false}
+          onclick={() => {
             postLabel();
             hideModal();
           }}
         >
           Save
-        </button>
+        </ModalButton>
       </div>
     </Rodal>
   );

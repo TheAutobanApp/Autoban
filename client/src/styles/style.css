@@ -447,7 +447,7 @@ label {
 .title-input {
   width: 100%;
   border: none;
-  height: 35;
+  height: 35px;
   border-radius: 5px;
 }
 
@@ -474,4 +474,21 @@ label {
   color: gray;
   padding: 8px;
   margin: 8px;
+}
+
+/* label modal */
+
+.label-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+.label-colors {
+  height: 30px;
+  width: '100%';
+  justify-content: 'center';
+  margin: '5px';
 }
