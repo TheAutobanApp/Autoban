@@ -226,6 +226,7 @@ function App() {
                             title={card.task_title}
                             description={card.task_description}
                             key={card.id_task}
+                            createdBy={card.created_by}
                           />
                         ),
                     )}

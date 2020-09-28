@@ -157,6 +157,7 @@ function CardComponent(props) {
           <DropMenu option="card" id={props.id} />
         </Card.Title>
         <Card.Text><ReactMarkdown source={props.description}/></Card.Text>
+      <Card.Text className="text-muted" style={{fontSize: '9px', minHeight: 0, height: '20px', padding: '0', textAlign: 'right'}}>Created by {props.createdBy}</Card.Text>
       </Card.Body>
       <Card.Footer
         className="flex-row card-footer"
