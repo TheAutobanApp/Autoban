@@ -192,7 +192,7 @@ export default function Login() {
   };
 
   return (
-    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }}>
+    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }} onClose={() => null}>
       <div>
         {!signUp.showSignUp ? (
           <StyledFirebaseAuth
