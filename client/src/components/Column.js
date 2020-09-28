@@ -20,7 +20,7 @@ export default function Column(props) {
         {/* header div */}
         <div className="column-header">
           {/* title and number of cards */}
-          <div style={{ display: 'flex' }}>
+          <div className="flex-row">
             <span className="card-counter">{numOfCards}</span>
             <h3 style={{ margin: '3px 0' }}>{props.title}</h3>
           </div>

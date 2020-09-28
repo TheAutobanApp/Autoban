@@ -66,7 +66,6 @@ function DropMenu(props) {
           icon="ellipsis vertical"
           direction="left"
           className="icon"
-          style={{ fontSize: '15px' }}
         >
           <Dropdown.Menu className="dropdown-menu">
             <Dropdown.Item onClick={editCard}>

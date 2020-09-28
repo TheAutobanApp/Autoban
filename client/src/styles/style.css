@@ -102,8 +102,10 @@ body {
 } */
 
 .navoptions {
-  width: 125px;
-  justify-content: space-between;
+  margin-left: auto;
+  width: 115px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 label {
@@ -307,10 +309,13 @@ label {
   display: flex;
   justify-content: space-between;
   position: relative;
+  padding-bottom: 4px;
+  border-bottom: 1px solid whitesmoke;
 }
 
 .card-body {
   padding: 14px;
+  display: inline-block;
 }
 
 .card-text {
@@ -539,4 +544,48 @@ label {
   border-radius: 5px;
   box-shadow: 1px 1px 5px grey;
   margin: 4px 4px 4px
+}
+
+.home-view-cont {
+  width: 80%;
+  height: 75%;
+  max-width: 870px;
+  max-height: 600px;
+  display: flex;
+}
+
+.error-text {
+  color: red;
+}
+
+.projcard {
+  position: relative;
+  height: 100px;
+  width: 160px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px grey;
+  margin: 4px 4px 4px!important;
+  font-weight: bold;
+  color: white;
+  padding: 0!important;
+}
+
+.projcard-overlay {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: inherit;
+  height: inherit;
+  padding: 5px;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, transparent, rgba(10, 10, 10, .4))
+}
+
+.projcard-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-60%, -50%);
+  padding: 4px;
+  color: rgba(255, 255, 255, .2);
 }

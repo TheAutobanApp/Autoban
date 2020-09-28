@@ -142,7 +142,7 @@ function CardComponent(props) {
 
   return (
     <Card className="card">
-      <Card.Body style={{ display: 'inline-block' }}>
+      <Card.Body>
         <Card.Title>
           {props.title}
           <DropMenu option="card" id={props.id} />

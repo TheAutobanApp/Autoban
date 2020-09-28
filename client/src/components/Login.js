@@ -138,7 +138,7 @@ export default function Login() {
             handleSignupError('taken');
           }
         });
-    } else if (!signUp.username) {
+    } else if (!signUp.username || signUp.username.length < 3) {
       handleSignupError('username');
     } else if (!signUp.firstName) {
       handleSignupError('firstName');
@@ -212,7 +212,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.username}>
-                <p style={{ color: 'red' }}>Must enter a username!</p>
+                <p className="error-text">Username must be at least 3 characters!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -224,7 +224,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.firstName}>
-                <p style={{ color: 'red' }}>Must enter first name!</p>
+                <p className="error-text">Must enter first name!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -236,7 +236,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.lastName}>
-                <p style={{ color: 'red' }}>Must enter last name!</p>
+                <p className="error-text">Must enter last name!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -250,20 +250,19 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.agree}>
-                <p style={{ color: 'red' }}>
+                <p className="error-text">
                   Must agree to continue!
                 </p>
               </Fade>
             </Form.Field>
             <div
-              className="flex-row"
-              style={{ justifyContent: 'space-between' }}
+              className="flex-row space-between"
             >
               <Button type="submit" onClick={handleSignUp}>
                 Submit
               </Button>
               <Fade bottom collapse when={error.taken}>
-                <p style={{ color: 'red' }}>
+                <p className="error-text">
                   Username is already taken!
                 </p>
               </Fade>

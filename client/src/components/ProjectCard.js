@@ -13,45 +13,15 @@ export default function ProjectCard(props) {
 
   return (
     <Label
-      className="clickable"
+      className="clickable projcard"
       color={props.color}
-      style={{
-        position: 'relative',
-        height: '100px',
-        width: '160px',
-        borderRadius: '5px',
-        boxShadow: '1px 1px 5px grey',
-        margin: '4px 4px 4px',
-        fontWeight: 'bold',
-        color: 'white',
-        padding: 0,
-      }}
       onClick={handleProjectSelect}
     >
-      <div className="flex-row" style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-60%, -50%)', padding: '4px'}}>
-          <RiMenu4Line
-            // color="lightblue"
-            style={{ fontSize: '20px', margin: '1px', color: 'rgba(255, 255, 255, .2)' }}
-          />
-          <h1 className="race-font" style={{ color: 'rgba(255, 255, 255, .2)'}}>
-            A
-          </h1>
-        </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-          width: 'inherit',
-          height: 'inherit',
-          padding: '5px',
-          borderRadius: '5px',
-          background: `linear-gradient(to bottom, transparent, rgba(10, 10, 10, .4))`,
-        }}
-      >
-        
-        {props.title}
+      <div className="flex-row projcard-logo">
+        <RiMenu4Line size={20} />
+        <h1 className="race-font">A</h1>
       </div>
+      <div className="projcard-overlay">{props.title}</div>
     </Label>
   );
 }

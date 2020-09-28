@@ -10,7 +10,10 @@ export default function Homeview(props) {
   const renderProjects = () => {
     if (context[8].projects.length > 0) {
       return context[8].projects.map((element, i) => {
-        if (context[8].team && element.id_team === context[8].team.id_team) {
+        if (
+          context[8].team &&
+          element.id_team === context[8].team.id_team
+        ) {
           const foundIndex = context[8].teams.findIndex(
             (team) => team.id_team === element.id_team,
           );
@@ -49,16 +52,7 @@ export default function Homeview(props) {
 
   return (
     <div className="project-view home-view">
-      <div
-        style={{
-          width: '80%',
-          height: '75%',
-          maxWidth: '870px',
-          maxHeight: '600px',
-          // overflow: 'hidden',
-          display: 'flex',
-        }}
-      >
+      <div className="home-view-cont">
         <TeamMenu />
         <div className="project-list">
           <AddProject />
