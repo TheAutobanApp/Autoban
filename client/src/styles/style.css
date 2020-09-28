@@ -589,3 +589,42 @@ label {
   padding: 4px;
   color: rgba(255, 255, 255, .2);
 }
+
+.team-menu {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100%;
+  height: calc((100vh - 50px) * .75);
+}
+
+/* Drawer views */
+
+.drawer-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.drawer-description {
+  padding: 10px;
+  text-align: center;
+  color: grey;
+}
+
+.linebreak {
+  margin: 20px;
+  border-bottom: 1px solid lightgrey;
+  width: 100%;
+}
+
+.label-column {
+  padding: 10;
+  font-size: 12px;
+  color: grey;
+}
+
+.label-column > p {
+  margin: 5px;
+}

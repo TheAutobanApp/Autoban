@@ -36,19 +36,11 @@ export default function ColumnDrawerView(props) {
 
   return (
     <div className="flex-column">
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: 5,
-          padding: 3,
-        }}
-      >
+      <div className="drawer-header">
         <p>Column Edit</p>
         <MdClose
           size="1.5em"
-          style={{ cursor: 'pointer' }}
+          className="clickable"
           onClick={() => {
             context[1]({ ...context[0], open: false });
           }}

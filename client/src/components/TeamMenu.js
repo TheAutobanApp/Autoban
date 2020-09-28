@@ -50,15 +50,7 @@ export default function TeamMenu() {
   return (
     // <Grid style={{ height: 'calc((100vh - 50px) * .75)' }}>
     // <Grid.Column width={2} style={{ height: 'calc((100vh - 50px) * .75)' }}>
-    <Menu
-      vertical
-      style={{
-        overflowX: 'hidden',
-        overflowY: 'auto',
-        maxHeight: '100%',
-        height: 'calc((100vh - 50px) * .75)',
-      }}
-    >
+    <Menu vertical className="team-menu">
       <Menu.Item
         name="All"
         id={null}
