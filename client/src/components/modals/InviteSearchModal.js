@@ -62,21 +62,14 @@ export default function InviteSearchModal(props) {
       customStyles={modalStyle}
     >
       <div className="invite-modal">
-        <Icon name="users" size="large" /><h5 style={{margin: 2}}>Invite Collaborator</h5>
+        <Icon name="users" size="large" />
+        <h5 style={{ margin: 2 }}>Invite Collaborator</h5>
         {selectedUser.selected ? (
-          <List
-            className="invite-list"
-            style={{ backgroundColor: 'white', padding: '4px' }}
-          >
+          <List className="invite-list">
             <List.Item className="invite-item">
-              <Image
-                avatar
-                src={selectedUser.avatar}
-              />
+              <Image avatar src={selectedUser.avatar} />
               <List.Content>
-                {/* <div style={{ display: 'flex' }}> */}
-                <List.Header as="a">{selectedUser.name}</List.Header>
-                {/* </div> */}
+                <List.Header>{selectedUser.name}</List.Header>
                 <List.Description>
                   {selectedUser.username}
                 </List.Description>
@@ -105,7 +98,7 @@ export default function InviteSearchModal(props) {
                 id_user: data.result.id,
                 username: data.result.description,
                 name: data.result.title,
-                avatar: data.result.image
+                avatar: data.result.image,
               })
             }
             results={users.map((user) => {
@@ -113,7 +106,7 @@ export default function InviteSearchModal(props) {
                 id: user.id_user,
                 title: `${user.first_name} ${user.last_name}`,
                 description: user.username,
-                image: user.avatar
+                image: user.avatar,
               };
             })}
             onSearchChange={(e) => {
@@ -128,7 +121,7 @@ export default function InviteSearchModal(props) {
             sendInvite();
           }}
           disabled={!selectedUser.selected}
-          >
+        >
           {selectedUser.selected
             ? `Add ${selectedUser.username} to team`
             : `Select user above`}

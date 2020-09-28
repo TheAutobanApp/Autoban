@@ -1,11 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  Grid,
-  Menu,
-  Input,
-  Label,
-  Dropdown,
-} from 'semantic-ui-react';
+import { Menu, Input, Label } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
 import colors from './utils/colors';
@@ -20,10 +14,13 @@ export default function TeamMenu() {
   });
 
   const handleItemClick = (e, { id, name }) => {
-    console.log(id)
+    console.log(id);
     setTeam({ ...team, activeItem: id });
     if (e.target.id) {
-      context[9]({ ...context[8], team: { id_team: id, team_name: name} });
+      context[9]({
+        ...context[8],
+        team: { id_team: id, team_name: name },
+      });
     } else context[9]({ ...context[8], team: null });
   };
 

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
 

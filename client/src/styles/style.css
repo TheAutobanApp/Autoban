@@ -436,6 +436,8 @@ label {
   height: auto;
   max-height: 159px;
   overflow-y: auto;
+  background-color: white;
+  padding: 4px!important;
 }
 
 .invite-item {

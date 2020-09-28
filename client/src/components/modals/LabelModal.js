@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
@@ -24,14 +24,9 @@ export default function TaskModal() {
   const initialState = {
     id_project: context[10].project,
     color: '',
-    label_name: '',
+    label_name: context[4].labelName,
   };
   const [label, setLabel] = useState(initialState);
-
-  // when modal is mounted, set local state label name from context
-  useEffect(() => {
-    setLabel({ ...label, label_name: context[4].labelName });
-  }, [context[4].labelName]);
 
   const modalStyle = {
     height: '250px',

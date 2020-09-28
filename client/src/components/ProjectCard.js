@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, Label } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 import { RiMenu4Line } from 'react-icons/ri';
 import { AutoContext } from '../AutoContext';
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { AutoContext } from '../../AutoContext';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
