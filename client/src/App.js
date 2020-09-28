@@ -53,7 +53,6 @@ function App() {
 
   const [drawer, setDrawer] = useState({
     open: false,
-    timeline: false,
     type: 'settings',
     edit: 0,
   });
@@ -209,9 +208,6 @@ function App() {
           <Homeview />
         ) : (
           <ProjectView>
-            {/* if toggle is set to project view
-            {!drawer.timeline ? (
-              <> */}
             {/* map through columns array and render each column with the title */}
             {columns.map((item, i) => {
               return (
@@ -234,10 +230,6 @@ function App() {
               );
             })}
             <AddColumn columns={columns} setcolumns={setColumns} />
-            {/* </>
-            ) : (
-              <Timeline />
-            )} */}
           </ProjectView>
         )}
         <OptionsDrawer />
