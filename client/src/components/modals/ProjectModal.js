@@ -114,7 +114,7 @@ export default function ProjectModal(props) {
             error={!project.id_team}
             style={{ margin: '6px', width: '80%' }}
             placeholder="Team"
-            defaultValue={context[8].team.id_team}
+            defaultValue={context[8].team && context[8].team.id_team}
             search
             selection
             options={options}

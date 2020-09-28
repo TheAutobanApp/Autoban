@@ -17,6 +17,7 @@ import {
   Form,
   TextArea,
 } from 'semantic-ui-react';
+import ModalButton from '../ModalButton';
 import ReactDOM from 'react-dom';
 
 export default function TaskModal(props) {
@@ -29,7 +30,7 @@ export default function TaskModal(props) {
     addLabel: '',
   });
   const [task, setTask] = useState({
-    id_user: 1,
+    id_user: context[8].id_user,
     id_column: null,
     column_place: 0,
     task_title: '',
@@ -186,42 +187,6 @@ export default function TaskModal(props) {
       labelName: menu.addLabel,
     });
   };
-  const titleInput = {
-    width: '100%',
-    border: 'none',
-    height: 35,
-    borderRadius: 5,
-  };
-
-  const descriptionInput = {
-    width: '100%!important',
-    border: 'none',
-    height: 200,
-    borderRadius: 5,
-  };
-
-  const functionContainer = {
-    width: 200,
-  };
-
-  const taskFunction = {
-    backgroundColor: 'lightgray',
-    borderRadius: 3,
-    border: 'none',
-    color: 'gray',
-    padding: 8,
-    margin: 8,
-  };
-
-  const saveButton = {
-    borderRadius: 5,
-    color: 'white',
-    border: 'none',
-    padding: 10,
-    marginTop: 10,
-    background:
-      'linear-gradient(to bottom, var(--nav-color), var(--nav-color2))',
-  };
 
   const hideModal = () => {
     context[5]({ ...context[4], show: false, edit: 0, card: null });
@@ -276,14 +241,9 @@ export default function TaskModal(props) {
       onClose={hideModal}
       customStyles={modalStyle}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div className="space-between">
         <Input
-          style={titleInput}
+          className="title-input"
           onChange={(e) => {
             setTask({ ...task, task_title: e.target.value });
           }}
@@ -291,40 +251,30 @@ export default function TaskModal(props) {
           placeholder="Title"
         />
       </div>
-      <div
-        style={{
-          marginTop: 20,
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Form style={{ width: '100%' }}>
-          <TextArea
-            style={descriptionInput}
-            onChange={(e) =>
-              setTask({ ...task, task_description: e.target.value })
-            }
-            value={task.task_description}
-            placeholder="Description"
-          />
-        </Form>
-        {/* <div style={functionContainer}>
-          <div style={taskFunction}>Labels</div>
-          <div style={taskFunction}>Assign</div>
+      <Form className="task-description">
+        <TextArea
+          className="task-textarea"
+          onChange={(e) =>
+            setTask({ ...task, task_description: e.target.value })
+          }
+          value={task.task_description}
+          placeholder="Description"
+        />
+      </Form>
+      {/* <div className="function-container">
+          <div className="task-function">Labels</div>
+          <div className="task-function">Assign</div>
         </div> */}
-      </div>
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-      >
-        <button
-          style={saveButton}
-          onClick={() => {
+      <div className="space-between">
+        <ModalButton
+          disabled={false}
+          onclick={() => {
             context[4].edit ? editTask() : postTask();
             hideModal();
           }}
         >
           Save
-        </button>
+        </ModalButton>
         <div style={{ margin: '5px' }}>
           {labels.map((item, i) => {
             return (

@@ -436,3 +436,42 @@ label {
     overflow: auto;
     top: 80%;
 }
+
+/* task modal */
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  height: 35;
+  border-radius: 5px;
+}
+
+.task-description {
+  width: 100%;
+  margin: 20px 0 10px;
+}
+
+.task-textarea {
+  width: 100%;
+  border: none;
+  height: 200px;
+  border-radius: 5px;
+}
+
+.function-container {
+  width: 200px,
+}
+
+.task-function {
+  background-color: lightgray;
+  border-radius: 3px;
+  border: none;
+  color: gray;
+  padding: 8px;
+  margin: 8px;
+}
