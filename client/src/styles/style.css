@@ -273,6 +273,7 @@ label {
   background: rgba(245, 245, 245, 0.438);
   box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.377);
   transition: all 0.2s ease-in-out;
+  justify-content: space-around;
 }
 
 .addhover:hover,
@@ -301,6 +302,13 @@ label {
   margin: 6px 0;
 }
 
+.card-title {
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
 .card-body {
   padding: 14px;
 }
@@ -310,10 +318,21 @@ label {
   white-space: pre-wrap;
 }
 
+.created-by {
+  font-size: 9px;
+  min-height: 0;
+  height: 14px;
+  padding: 0;
+  text-align: right;
+}
+
 .card-footer {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   padding: 8px 8px;
+  align-items: center;
+  height: fit-content;
+  flex-wrap: wrap;
 }
 
 .label {
@@ -510,4 +529,14 @@ label {
   width: 100%;
   justify-content: center;
   margin: 5px;
+}
+
+/* homeview */
+
+.add-project {
+  height: 100px;
+  width: 160px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px grey;
+  margin: 4px 4px 4px
 }
