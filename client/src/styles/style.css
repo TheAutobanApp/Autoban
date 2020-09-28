@@ -355,11 +355,10 @@ label {
   padding: 0;
   border: 0;
   margin: 2px;
-  width: 35%;
+  width: 32%;
 }
 
 .datepicker {
-  margin: 2px;
   max-width: 100%;
   -webkit-box-flex: 1;
   -ms-flex: 1 0 auto;
@@ -491,4 +490,24 @@ label {
   width: '100%';
   justify-content: 'center';
   margin: '5px';
+}
+
+/* project modal */
+
+.proj-title-input {
+  width: 80%;
+  height: 35px;
+  border-radius: 5px;
+}
+
+.proj-dropdown {
+  margin: 6px;
+  width: 80%;
+}
+
+.datepicker-cont {
+  height: 30px;
+  width: 100%;
+  justify-content: center;
+  margin: 5px;
 }
