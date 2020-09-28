@@ -3,7 +3,7 @@ import { RiMenu4Line } from 'react-icons/ri';
 import { FiSettings } from 'react-icons/fi';
 import { MdTimeline } from 'react-icons/md';
 import { GoProject } from 'react-icons/go';
-import { Checkbox, Button } from 'semantic-ui-react';
+import { Checkbox, Button, Image } from 'semantic-ui-react';
 import TeamDropdown from './TeamDropdown';
 import UserDropdown from './UserDropdown';
 // import TeamDropItem from './TeamDropItem';
@@ -36,6 +36,7 @@ function Navbar() {
         <TeamDropdown items={['Autoban', 'PubIO']} />
         {/* user dropdown */}
         <UserDropdown />
+        {context[8].avatar && <Image avatar src={context[8].avatar}/>}
       </div>
       <div className="flex-row">
         <RiMenu4Line

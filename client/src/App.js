@@ -11,31 +11,36 @@ import Login from './components/Login';
 import TaskModal from './components/modals/TaskModal';
 import LabelModal from './components/modals/LabelModal';
 import ProjectModal from './components/modals/ProjectModal';
+import InviteModal from './components/modals/InviteModal';
+import InviteSearchModal from './components/modals/InviteSearchModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 import socketIOClient from 'socket.io-client';
 
 const socket = socketIOClient();
 
-function App() {
-  const [user, setUser] = useState({
-    signedIn: false,
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    team: null,
-    id_user: '',
-    teams: [],
-    projects: [],
-  });
+export const initialUserState = {
+  signedIn: false,
+  username: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  team: null,
+  id_user: '',
+  avatar: '',
+  teams: [],
+  projects: [],
+  invites: [],
+};
 
+function App() {
+  const [user, setUser] = useState(initialUserState);
   const [tasks, setTasks] = useState(null);
   const [labels, setLabels] = useState({
     projectLabels: [],
     // get both project labels and default labels and add to context state
-    getLabels: () => {
-      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
+    getLabels: (projId) => {
+      axios.get(`/api/label/?proj=${projId}`).then((res) => {
         const projLabels = [];
         res.data.forEach((label) => projLabels.push(label));
         axios.get(`/api/label/default`).then((res) => {
@@ -62,12 +67,14 @@ function App() {
 
   const [modal, setModal] = useState({
     show: false,
+    showLabel: false,
+    showProject: false,
+    showInvite: false,
+    showSearch: false,
     column: null,
     card: null,
     edit: 0,
-    showLabel: false,
     labelName: '',
-    showProject: false,
   });
 
   useEffect(() => {
@@ -102,53 +109,73 @@ function App() {
       });
       // get labels for project
       // adjust to collect labels using function in label state
-      axios.get(`/api/label/?proj=${view.project}`).then((res) => {
-        const projLabels = [];
-        res.data.forEach((label) => projLabels.push(label));
-        axios.get(`/api/label/default`).then((res) => {
-          res.data.forEach((label) => projLabels.push(label));
-          setLabels({ ...labels, projectLabels: projLabels });
-        });
-      });
+      labels.getLabels(view.project);
       // listen for label updates, on update refresh label state
       socket.on(`newLabel${view.project}`, (data) => {
-        axios.get(`/api/label/?proj=${view.project}`).then((res) => {
-          const projLabels = [];
-          res.data.forEach((label) => projLabels.push(label));
-          axios.get(`/api/label/default`).then((res) => {
-            res.data.forEach((label) => projLabels.push(label));
-            setLabels({ ...labels, projectLabels: projLabels });
-          });
-        });
+        labels.getLabels(view.project);
       });
     }
   }, [view.type]);
 
-  useEffect(() => {
+  const getTeamsProjects = (id_user) => {
     if (user.id_user) {
-      axios.get(`/api/team/all/${user.id_user}`).then((response) => {
-        axios.get(`/api/project/all/${user.id_user}`).then((res) => {
-          if (
-            Array.isArray(res.data) &&
-            Array.isArray(response.data)
-          ) {
-            console.log('teams and projects');
-            setUser({
-              ...user,
-              teams: response.data,
-              projects: res.data,
-            });
-          } else if (Array.isArray(response.data)) {
-            console.log(res.data);
-            setUser({
-              ...user,
-              teams: response.data,
-            });
-          }
+      axios.get(`/api/team/all/${id_user}`).then((response) => {
+        axios.get(`/api/project/all/${id_user}`).then((res) => {
+          axios.get(`/api/team/invite/${id_user}`).then((invite) => {
+            if (
+              Array.isArray(res.data) &&
+              Array.isArray(response.data)
+            ) {
+              setUser({
+                ...user,
+                teams: response.data,
+                projects: res.data,
+                invites: invite.data,
+              });
+            } else if (Array.isArray(response.data)) {
+              setUser({
+                ...user,
+                teams: response.data,
+                invites: invite.data,
+              });
+            }
+          });
         });
       });
     }
+  };
+
+  useEffect(() => {
+    getTeamsProjects(user.id_user);
+    socket.on(`inviteAccepted${user.id_user}`, (data) => {
+      getTeamsProjects(user.id_user);
+    });
   }, [user.id_user]);
+
+  useEffect(() => {
+    socket.on(`newInvite${user.id_user}`, (data) => {
+      let newInvite = {
+        id: data.id,
+        id_team: data.id_team,
+        id_inviter: data.id_inviter,
+      };
+      axios
+        .get(
+          `/api/team/newinvite/?inviter=${data.id_inviter}&team=${data.id_team}`,
+        )
+        .then((invite) => {
+          if (invite.data.inviter && invite.data.team) {
+            newInvite.team = invite.data.team;
+            newInvite.inviter = invite.data.inviter;
+            setUser({
+              ...user,
+              invites: [...user.invites, newInvite],
+            });
+          }
+        });
+    });
+    return () => socket.removeListener(`newInvite${user.id_user}`);
+  }, [user.invites]);
 
   return (
     <AutoProvider
@@ -173,6 +200,8 @@ function App() {
         {modal.show && <TaskModal />}
         {modal.showLabel && <LabelModal />}
         {modal.showProject && <ProjectModal />}
+        {modal.showInvite && <InviteModal />}
+        {modal.showSearch && <InviteSearchModal />}
         <Navbar />
         {!user.signedIn ? (
           <Login />

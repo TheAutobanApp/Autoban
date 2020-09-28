@@ -19,6 +19,7 @@ export default function Login() {
     email: '',
     agree: false,
   });
+  const [signedIn, setSignedIn] = useState(true);
   const [error, setError] = useState({
     taken: false,
     username: false,
@@ -66,12 +67,15 @@ export default function Login() {
                   lastName: user.last_name,
                   email: user.email,
                   id_user: user.id_user,
+                  avatar: firebase.auth().currentUser.photoURL,
                 });
               }
             })
             .catch(function (error) {
               console.log(error);
             });
+        } else {
+          setSignedIn(false);
         }
       });
     // context[9](true);
@@ -183,7 +187,7 @@ export default function Login() {
   };
 
   return (
-    <Rodal visible={true} customStyles={{ height: 'fit-content' }}>
+    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }}>
       <div>
         {!signUp.showSignUp ? (
           <StyledFirebaseAuth

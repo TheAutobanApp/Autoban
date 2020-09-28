@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 var db = require('../../models');
 
 router.get('/', function (req, res) {
@@ -7,11 +8,46 @@ router.get('/', function (req, res) {
       where: {
         email: req.query.email,
       },
-    }).then((user) => {
-      res.json(user);
-    }).catch((err) => {
-      res.status(401).json(err);
-    });
+    })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  } else if (req.query.id_user) {
+    db.User.findOne({
+      where: {
+        id_user: req.query.id_user,
+      },
+    })
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  }
+});
+
+// user search
+router.get('/search', (req, res) => {
+  if (req.query.search) {
+    db.User.findAll({
+      limit: 10,
+      where: {
+        [Op.or]: [
+          { email: { [Op.substring]: req.query.search } },
+          { username: { [Op.substring]: req.query.search } },
+          { first_name: { [Op.substring]: req.query.search } },
+          { last_name: { [Op.substring]: req.query.search } },
+        ],
+      },
+    })
+      .then((users) => {
+        res.json(users);
+      })
+      .catch((err) => res.status(401).json(err));
   }
 });
 
@@ -28,7 +64,7 @@ router.post('/', function (req, res) {
         res.json(user);
       })
       .catch((err) => {
-        res.status(500).send(err.errors[0].path)
+        res.status(500).send(err.errors[0].path);
       });
   }
 });

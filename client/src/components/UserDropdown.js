@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Button, Dropdown } from 'semantic-ui-react';
+import { Button, Dropdown, Label } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
+import { initialUserState } from '../App';
 import firebase from '../Firebase';
 
 export default function UserDropdown() {
@@ -11,7 +12,11 @@ export default function UserDropdown() {
       .auth()
       .signOut()
       .then(() => {
-        context[9]({...context[8], signedIn: false});
+        context[9](initialUserState);
+        context[11]({
+          type: 'home',
+          project: null,
+        })
       });
   };
 
@@ -19,11 +24,28 @@ export default function UserDropdown() {
     console.log('Account View');
   };
 
+  const handleInvites = () => {
+    context[5]({...context[4], showInvite: true});
+  };
+
   return (
     <>
       {/* user dropdown */}
       <Dropdown
-        trigger={<Button icon="user" inverted compact basic />}
+        trigger={
+          <div>
+            <Button icon="user" inverted compact basic></Button>
+            {context[8].invites.length > 0 && (
+              <Label
+                color="red"
+                floating
+                empty
+                circular
+                className="invite-label"
+              />
+            )}
+          </div>
+        }
         options={[
           {
             key: 'user',
@@ -39,6 +61,12 @@ export default function UserDropdown() {
             text: 'Account',
             icon: 'user',
             onClick: handleAccount,
+          },
+          {
+            key: 'invites',
+            text: `Invites (${context[8].invites.length})`,
+            icon: 'user plus',
+            onClick: handleInvites,
           },
           {
             key: 'sign-out',
