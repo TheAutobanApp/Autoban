@@ -38,7 +38,7 @@ export default function TaskModal(props) {
     start_date: null,
     end_date: null,
     complete: false,
-    created_by: context[8].id_user,
+    created_by: context[8].username,
     id_label1: null,
     id_label2: null,
     id_label3: null,

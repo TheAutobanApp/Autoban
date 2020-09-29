@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      created_by: { type: DataTypes.INTEGER, allowNull: false },
+      created_by: { type: DataTypes.STRING(50), allowNull: false, len: [2,16] },
     },
     { freezeTableName: true },
   );
