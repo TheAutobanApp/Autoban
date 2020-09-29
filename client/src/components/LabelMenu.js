@@ -102,16 +102,18 @@ export default function LabelMenu(props) {
       onClick={(e) => {
         // manually set positioning in DOM using offset of parents and element
         // allows us to position the dropdown exactly where we want
-        const targ = ReactDOM.findDOMNode(target.current);
-        setMenu({
-          offsetTop:
-            targ.parentElement.offsetTop +
-            targ.parentElement.parentElement.offsetTop +
-            80,
-          offsetLeft:
-            targ.offsetLeft +
-            targ.parentElement.parentElement.offsetLeft,
-        });
+        if (!props.modal) {
+            const targ = ReactDOM.findDOMNode(target.current);
+            setMenu({
+              offsetTop:
+                targ.parentElement.offsetTop +
+                targ.parentElement.parentElement.offsetTop +
+                80,
+              offsetLeft:
+                targ.offsetLeft +
+                targ.parentElement.parentElement.offsetLeft,
+            });
+        }
       }}
     >
       <Dropdown.Menu
