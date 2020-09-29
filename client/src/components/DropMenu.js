@@ -6,7 +6,7 @@ import { AutoContext } from '../AutoContext';
 function DropMenu(props) {
   const context = useContext(AutoContext);
 
-  const cascadeDelete = () => {
+  const cascadeDelete = (c) => {
     // delete column from db
     axios
     .delete(`/api/columns/?proj=${context[10].project}`, {
@@ -14,13 +14,16 @@ function DropMenu(props) {
     })
     .then((res) => context[3](res.data));
     // delete tasks in column from db
-    axios
-    .delete(`/api/task/cdelete/${context[10].project}`, {
-      data: { id_column: props.id },
-    })
-    .then((response) => {
-      context[7](response.data);
-    });
+    if (c !== 'column') {
+      console.log('test')
+      axios
+      .delete(`/api/task/cdelete/${context[10].project}`, {
+        data: { id_column: props.id },
+      })
+      .then((response) => {
+        context[7](response.data);
+      });
+    }
   }
 
   const handleDeleteColumn = () => {
@@ -30,7 +33,7 @@ function DropMenu(props) {
         cascadeDelete();
       }
     } else {
-      cascadeDelete();
+      cascadeDelete('column');
     }
     
   };
