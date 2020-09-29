@@ -6,21 +6,33 @@ import { AutoContext } from '../AutoContext';
 function DropMenu(props) {
   const context = useContext(AutoContext);
 
+  const cascadeDelete = () => {
+    // delete column from db
+    axios
+    .delete(`/api/columns/?proj=${context[10].project}`, {
+      data: { id_column: props.id },
+    })
+    .then((res) => context[3](res.data));
+    // delete tasks in column from db
+    axios
+    .delete(`/api/task/cdelete/${context[10].project}`, {
+      data: { id_column: props.id },
+    })
+    .then((response) => {
+      context[7](response.data);
+    });
+  }
+
   const handleDeleteColumn = () => {
-    if (window.confirm('This will delete all tasks in this column. Are you sure?')) {
-      axios
-      .delete(`/api/columns/?proj=${context[10].project}`, {
-        data: { id_column: props.id },
-      })
-      .then((res) => context[3](res.data));
-      axios
-      .delete(`/api/task/cdelete/${context[10].project}`, {
-        data: { id_column: props.id },
-      })
-      .then((response) => {
-        context[7](response.data);
-      });
+    // if tasks are in column, confirm with user
+    if (context[6].filter((task) => task.id_column === props.id).length > 0) {
+      if (window.confirm('This will delete all tasks in this column. Are you sure?')) {
+        cascadeDelete();
+      }
+    } else {
+      cascadeDelete();
     }
+    
   };
 
   const handleDeleteCard = () => {
