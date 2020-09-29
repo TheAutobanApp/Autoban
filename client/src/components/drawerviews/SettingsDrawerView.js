@@ -3,6 +3,7 @@ import { FaPlus } from 'react-icons/fa';
 import { Label } from 'semantic-ui-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../../AutoContext';
+import axios from 'axios';
 
 export default function SettingsDrawerView(props) {
   const [project, setProject] = useState({
@@ -24,6 +25,36 @@ export default function SettingsDrawerView(props) {
     });
   }, [context[10].project]);
 
+  const updateProject = (value, type) => {
+    if (type === 'name') {
+      axios
+        .put('api/project/name', {
+          pn: project.name,
+          newpn: value,
+          pid: context[10].project,
+        })
+        .then((response) => {
+          setProject({
+            ...project,
+            name: response.data.project_name,
+          });
+        });
+    } else {
+      axios
+        .put('api/project/description', {
+          description: project.description,
+          newDescription: value,
+          pn: project.name,
+          pid: context[10].project,
+        })
+        .then((response) => {
+          setProject({
+            ...project,
+            description: response.data.project_description,
+          });
+        });
+    }
+  };
   return (
     <div className="flex-column">
       <div className="drawer-header">
@@ -37,11 +68,31 @@ export default function SettingsDrawerView(props) {
         />
       </div>
       {/* title */}
-      <h5>{project.name}</h5>
+      <input
+        placeholder={project.name}
+        onChange={(e) => {
+          setProject({ ...project, name: e.target.value });
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            updateProject(e.target.value, 'name');
+          }
+        }}
+      ></input>
       {/* description */}
 
       <div className="drawer-description">
-        <p>{project.description}</p>{' '}
+        <input
+          placeholder={project.description}
+          onChange={(e) => {
+            setProject({ ...project, description: e.target.value });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              updateProject(e.target.value, 'description');
+            }
+          }}
+        ></input>
         {/* <input
           defaultValue="https://autobanprod.herokuapp.com/autobanproj"
           style={{
