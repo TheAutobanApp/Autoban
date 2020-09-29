@@ -32,7 +32,15 @@ router.get('/all/:id_user', function (req, res) {
             where: { id_team: { [Op.or]: teamIds } },
           })
             .then((teams) => {
-              res.json(teams);
+              let foundIndex = teams.findIndex(team => team.dataValues.team_name === 'Personal')
+              // console.log(foundIndex);
+              if (foundIndex > 0) {
+                let newTeams = teams.sort(function(x,y){ return x.dataValues.team_name == 'Personal' ? -1 : y.dataValues.team_name == 'Personal' ? 1 : 0; });
+                console.log(newTeams);
+                res.json(newTeams);
+              } else {
+                res.json(teams);
+              }
             })
             .catch((err) => res.status(401).json(err));
         } else res.status(200).send('No teams found');

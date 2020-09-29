@@ -47,30 +47,9 @@ function Navbar() {
           {window.innerWidth > 600 ? 'Autoban' : 'A'}
         </h1>
       </div>
-      {/* <div className="flex-row navoptions"> */}
-      {/* {context[0].timeline ? (
-          <MdTimeline size={22} />
-        ) : (
-          <GoProject size={22} />
-        )}
-        <Checkbox
-          toggle
-          onChange={() => {
-            context[1]({
-              ...context[0],
-              timeline: !context[0].timeline,
-            });
-          }}
-        /> */}
       {context[10].project !== null && (
         <div
-          style={{
-            marginLeft: 'auto',
-            width: '115px',
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-          className="clickable"
+          className="clickable navoptions"
           onClick={() => {
             context[1]({
               ...context[0],

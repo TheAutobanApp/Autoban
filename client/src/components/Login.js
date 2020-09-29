@@ -17,6 +17,7 @@ export default function Login() {
     firstName: '',
     lastName: '',
     email: '',
+    avatar: '',
     agree: false,
   });
   const [signedIn, setSignedIn] = useState(true);
@@ -47,16 +48,17 @@ export default function Login() {
       .auth()
       .onAuthStateChanged((user) => {
         if (user) {
-          const email = firebase.auth().currentUser.email;
+          const currentUser = firebase.auth().currentUser;
           axios
-            .get(`/api/user/?email=${email}`)
+            .get(`/api/user/?email=${currentUser.email}`)
             .then((res) => {
               const user = res.data;
               if (res.data === null) {
                 setSignUp({
                   ...signUp,
                   showSignUp: true,
-                  email: email,
+                  email: currentUser.email,
+                  avatar: currentUser.photoURL,
                 });
               } else {
                 context[9]({
@@ -67,7 +69,7 @@ export default function Login() {
                   lastName: user.last_name,
                   email: user.email,
                   id_user: user.id_user,
-                  avatar: firebase.auth().currentUser.photoURL,
+                  avatar: user.avatar,
                 });
               }
             })
@@ -98,6 +100,7 @@ export default function Login() {
           first_name: signUp.firstName,
           last_name: signUp.lastName,
           email: signUp.email,
+          avatar: signUp.avatar
         })
         .then((res) => {
           // create default Personal team
@@ -115,6 +118,7 @@ export default function Login() {
                 firstName: signUp.firstName,
                 lastName: signUp.lastName,
                 email: signUp.email,
+                avatar: signUp.avatar,
                 id_user: res.data.id_user,
                 teams: context[8].teams.concat([res.data]),
               });
@@ -124,6 +128,7 @@ export default function Login() {
                 firstName: '',
                 lastName: '',
                 email: '',
+                avatar: '',
                 agree: false,
               });
             });
@@ -133,7 +138,7 @@ export default function Login() {
             handleSignupError('taken');
           }
         });
-    } else if (!signUp.username) {
+    } else if (!signUp.username || signUp.username.length < 3) {
       handleSignupError('username');
     } else if (!signUp.firstName) {
       handleSignupError('firstName');
@@ -187,7 +192,7 @@ export default function Login() {
   };
 
   return (
-    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }}>
+    <Rodal visible={!signedIn} customStyles={{ height: 'fit-content' }} onClose={() => null}>
       <div>
         {!signUp.showSignUp ? (
           <StyledFirebaseAuth
@@ -207,7 +212,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.username}>
-                <p style={{ color: 'red' }}>Must enter a username!</p>
+                <p className="error-text">Username must be at least 3 characters!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -219,7 +224,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.firstName}>
-                <p style={{ color: 'red' }}>Must enter first name!</p>
+                <p className="error-text">Must enter first name!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -231,7 +236,7 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.lastName}>
-                <p style={{ color: 'red' }}>Must enter last name!</p>
+                <p className="error-text">Must enter last name!</p>
               </Fade>
             </Form.Field>
             <Form.Field>
@@ -245,20 +250,19 @@ export default function Login() {
                 }
               />
               <Fade bottom collapse when={error.agree}>
-                <p style={{ color: 'red' }}>
+                <p className="error-text">
                   Must agree to continue!
                 </p>
               </Fade>
             </Form.Field>
             <div
-              className="flex-row"
-              style={{ justifyContent: 'space-between' }}
+              className="flex-row space-between"
             >
               <Button type="submit" onClick={handleSignUp}>
                 Submit
               </Button>
               <Fade bottom collapse when={error.taken}>
-                <p style={{ color: 'red' }}>
+                <p className="error-text">
                   Username is already taken!
                 </p>
               </Fade>

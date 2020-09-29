@@ -51,10 +51,7 @@ export default function AddColumn(props) {
           <h5>Add Column</h5>
         </div>
       ) : (
-        <div
-          className="flex-row column add-column addform"
-          style={{ justifyContent: 'space-around' }}
-        >
+        <div className="flex-row column add-column addform">
           <Input
             action={{ icon: 'add', onClick: addColumn }}
             placeholder="Column Name..."

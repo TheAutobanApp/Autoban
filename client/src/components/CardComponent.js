@@ -37,30 +37,28 @@ function CardComponent(props) {
     // get task label ids
     // axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
     // });
-      const foundIndex = context[6].findIndex(task => task.id_task === props.id);
-      const task = context[6][foundIndex];
-      let cardLabels = [
-        task.id_label1,
-        task.id_label2,
-        task.id_label3,
-      ];
-      const taskLabels = [];
-      // create a copy of project labels from context and find matching ids from task
-      const projLabels = Array.from(context[12].projectLabels);
-      cardLabels.forEach((label) => {
-        if (label !== null) {
-          let foundIndex = projLabels.findIndex(
-            (item) => item.id_label === label,
-          );
-          const newLabel = projLabels[foundIndex];
-          if (newLabel) {
-            taskLabels.push(newLabel);
-            projLabels.splice(foundIndex, 1);
-          }
+    const foundIndex = context[6].findIndex(
+      (task) => task.id_task === props.id,
+    );
+    const task = context[6][foundIndex];
+    let cardLabels = [task.id_label1, task.id_label2, task.id_label3];
+    const taskLabels = [];
+    // create a copy of project labels from context and find matching ids from task
+    const projLabels = Array.from(context[12].projectLabels);
+    cardLabels.forEach((label) => {
+      if (label !== null) {
+        let foundIndex = projLabels.findIndex(
+          (item) => item.id_label === label,
+        );
+        const newLabel = projLabels[foundIndex];
+        if (newLabel) {
+          taskLabels.push(newLabel);
+          projLabels.splice(foundIndex, 1);
         }
-      });
-      setLabels(taskLabels);
-      setAvailLabels(projLabels);
+      }
+    });
+    setLabels(taskLabels);
+    setAvailLabels(projLabels);
   }, [context[12].projectLabels, context[6]]);
 
   // move added card label to available state and remove from it's label state
@@ -144,28 +142,19 @@ function CardComponent(props) {
 
   return (
     <Card className="card">
-      <Card.Body style={{ display: 'inline-block' }}>
-        <Card.Title
-          style={{
-            fontSize: '16px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            position: 'relative',
-          }}
-        >
+      <Card.Body>
+        <Card.Title>
           {props.title}
           <DropMenu option="card" id={props.id} />
         </Card.Title>
-        <Card.Text><ReactMarkdown source={props.description}/></Card.Text>
+        <Card.Text>
+          <ReactMarkdown source={props.description} />
+        </Card.Text>
+        <Card.Text className="text-muted created-by">
+          Created by {props.createdBy}
+        </Card.Text>
       </Card.Body>
-      <Card.Footer
-        className="flex-row card-footer"
-        style={{
-          alignItems: 'center',
-          height: 'fit-content',
-          flexWrap: 'wrap',
-        }}
-      >
+      <Card.Footer className="flex-row card-footer">
         {/* map through task labels array and render each */}
         {labels.map((item, i) => {
           return (
