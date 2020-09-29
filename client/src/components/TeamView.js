@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
-import { Icon, Image, Menu, Label } from 'semantic-ui-react';
+import { Icon, Image, Menu, Label, Popup } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default function TeamView(props) {
   const context = useContext(AutoContext);
 
   const collabStyle = {
-    margin: 8,
-    display: 'flex',
+    // margin: 8,
+    // display: 'flex',
   };
 
   const menu = {
@@ -79,7 +79,7 @@ export default function TeamView(props) {
           description: team.description,
           newdescription: value,
           tm: team.name,
-          tmid: context[8].team,
+          tmid: context[8].team.id_team,
         })
         .then((response) => {
           setTeam({
@@ -93,7 +93,7 @@ export default function TeamView(props) {
         .put(`/api/team/name`, {
           tm: team.name,
           newtm: value,
-          tmid: context[8].team,
+          tmid: context[8].team.id_team,
         })
         .then((response) => {
           setTeam({
@@ -185,34 +185,43 @@ export default function TeamView(props) {
         )}
       </Menu.Item>
 
-      <Menu.Item>
+      <Menu.Item style={{ height: '30%' }}>
         <Menu.Header>Collaborators</Menu.Header>
 
-        <Menu.Menu>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Menu.Menu style={{}}>
+          <div
+            style={{
+              display: 'flex',
+              padding: '5px',
+              height: '100%',
+            }}
+          >
             {collabs.map((collab, index) => {
               return (
-                <div style={collabStyle}>
+                <>
                   {collab.avatar === null ? (
-                    <Image
-                      avatar
-                      src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                    <Popup
+                      position="bottom center"
+                      content={collab.username}
+                      key={index}
+                      header={`${collab.first_name} ${collab.last_name}`}
+                      trigger={
+                        <Image
+                          avatar
+                          src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                        />
+                      }
                     />
                   ) : (
-                    <Image avatar src={collab.avatar} />
+                    <Popup
+                      position="bottom left"
+                      content={collab.username}
+                      key={index}
+                      header={`${collab.first_name} ${collab.last_name}`}
+                      trigger={<Image avatar src={collab.avatar} />}
+                    />
                   )}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <span
-                      style={{ color: 'gray' }}
-                    >{`${collab.first_name} ${collab.last_name}`}</span>
-                    <span>{collab.username}</span>
-                  </div>
-                </div>
+                </>
               );
             })}
           </div>
@@ -220,13 +229,19 @@ export default function TeamView(props) {
       </Menu.Item>
 
       {pending.length > 0 && (
-        <Menu.Item>
+        <Menu.Item style={{ height: '30%', overflow: 'hidden' }}>
           <Menu.Header>Pending</Menu.Header>
-          <Menu.Menu style={{ opacity: 0.5 }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Menu.Menu style={{ opacity: 0.5, overflow: 'auto' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                padding: '5px',
+              }}
+            >
               {pending.map((collab, index) => {
                 return (
-                  <div style={collabStyle}>
+                  <>
                     {collab.avatar === null ? (
                       <Image
                         avatar
@@ -235,18 +250,7 @@ export default function TeamView(props) {
                     ) : (
                       <Image avatar src={collab.avatar} />
                     )}
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <span
-                        style={{ color: 'gray' }}
-                      >{`${collab.first_name} ${collab.last_name}`}</span>
-                      <span>{collab.username}</span>
-                    </div>
-                  </div>
+                  </>
                 );
               })}
             </div>
