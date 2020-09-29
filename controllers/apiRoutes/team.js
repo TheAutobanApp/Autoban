@@ -14,24 +14,52 @@ router.get('/', function (req, res) {
   }
 });
 
-router.get('/teamusers', function (req, res) {
+router.get('/acceptedusers', function (req, res) {
   if (req.query.id_team) {
     db.TeamUser.findAll({
       where: {
         id_team: req.query.id_team,
+        accepted: true,
       },
     }).then((team) => {
-      // res.json(team);
-      console.log();
-      db.User.findAll({
-        where: {
-          id_user: {
-            [Op.or]: team.map((user) => user.dataValues.id_user),
+      if (team.length > 0) {
+        db.User.findAll({
+          where: {
+            id_user: {
+              [Op.or]: team.map((user) => user.dataValues.id_user),
+            },
           },
-        },
-      }).then((users) => {
-        res.json(users);
-      });
+        }).then((users) => {
+          res.json(users);
+        });
+      } else {
+        res.json([]);
+      }
+    });
+  }
+});
+
+router.get('/pendingusers', function (req, res) {
+  if (req.query.id_team) {
+    db.TeamUser.findAll({
+      where: {
+        id_team: req.query.id_team,
+        accepted: false,
+      },
+    }).then((team) => {
+      if (team.length > 0) {
+        db.User.findAll({
+          where: {
+            id_user: {
+              [Op.or]: team.map((user) => user.dataValues.id_user),
+            },
+          },
+        }).then((users) => {
+          res.json(users);
+        });
+      } else {
+        res.json([]);
+      }
     });
   }
 });

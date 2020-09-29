@@ -31,6 +31,7 @@ export default function TeamView(props) {
   });
 
   const [collabs, setCollabs] = useState([]);
+  const [pending, setPending] = useState([]);
 
   const [name, setName] = useState({
     setting: false,
@@ -51,12 +52,22 @@ export default function TeamView(props) {
           });
         });
 
+      // get accepted users
       axios
         .get(
-          `/api/team/teamusers/?id_team=${context[8].team.id_team}`,
+          `/api/team/acceptedusers/?id_team=${context[8].team.id_team}`,
         )
         .then((response) => {
           setCollabs(response.data);
+        });
+
+      // get pending users
+      axios
+        .get(
+          `/api/team/pendingusers/?id_team=${context[8].team.id_team}`,
+        )
+        .then((response) => {
+          setPending(response.data);
         });
     }
   }, [context[8].team]);
@@ -96,7 +107,7 @@ export default function TeamView(props) {
 
   return (
     <Menu vertical style={menu}>
-      <Menu.Item>
+      <Menu.Item style={{ height: '20%' }}>
         <Menu.Header style={{ display: 'flex' }}>
           {!name.setting ? (
             <span
@@ -180,7 +191,40 @@ export default function TeamView(props) {
         <Menu.Menu>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {collabs.map((collab, index) => {
-              if (collab.accepted) {
+              return (
+                <div style={collabStyle}>
+                  {collab.avatar === null ? (
+                    <Image
+                      avatar
+                      src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                    />
+                  ) : (
+                    <Image avatar src={collab.avatar} />
+                  )}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <span
+                      style={{ color: 'gray' }}
+                    >{`${collab.first_name} ${collab.last_name}`}</span>
+                    <span>{collab.username}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Menu.Menu>
+      </Menu.Item>
+
+      {pending.length > 0 && (
+        <Menu.Item>
+          <Menu.Header>Pending</Menu.Header>
+          <Menu.Menu style={{ opacity: 0.5 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {pending.map((collab, index) => {
                 return (
                   <div style={collabStyle}>
                     {collab.avatar === null ? (
@@ -204,107 +248,11 @@ export default function TeamView(props) {
                     </div>
                   </div>
                 );
-              }
-            })}
-          </div>
-
-          {/* <div style={collabStyle}>
-              {context[8].avatar && (
-                <Image avatar src={context[8].avatar} />
-              )}{' '}
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <span style={{ color: 'gray' }}>John Jones</span>
-                <span>jjones</span>
-              </div>
+              })}
             </div>
-            <div style={collabStyle}>
-              {context[8].avatar && (
-                <Image
-                  avatar
-                  src={
-                    'https://avatarfiles.alphacoders.com/916/91685.jpg'
-                  }
-                />
-              )}{' '}
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <span style={{ color: 'gray' }}>Sally Sanders</span>
-                <span>sallysoo</span>
-              </div>
-            </div>
-            <div style={collabStyle}>
-              {context[8].avatar && (
-                <Image
-                  avatar
-                  src={
-                    'https://blog.orangecarton.com/wp-content/uploads/2013/05/mona_lisa_iphone.jpg'
-                  }
-                />
-              )}{' '}
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <span style={{ color: 'gray' }}>Patty Potts</span>
-                <span>ppotts</span>
-              </div>
-            </div>
-            <div style={collabStyle}>
-              {context[8].avatar && (
-                <Image
-                  avatar
-                  src={
-                    'https://www.pngkey.com/png/detail/468-4685836_funny-avatar-png-graphic-transparent-library-dream-league.png'
-                  }
-                />
-              )}{' '}
-              <div
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <span style={{ color: 'gray' }}>Pooty Booty</span>
-                <span>pootboots</span>
-              </div>
-            </div>
-          </div> */}
-        </Menu.Menu>
-      </Menu.Item>
-
-      <Menu.Item>
-        <Menu.Header>Pending</Menu.Header>
-        <Menu.Menu style={{ opacity: 0.5 }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {collabs.map((collab, index) => {
-              if (!collab.accepted) {
-                return (
-                  <div style={collabStyle}>
-                    {collab.avatar === null ? (
-                      <Image
-                        avatar
-                        src="https://avatarfiles.alphacoders.com/916/91685.jpg"
-                      />
-                    ) : (
-                      <Image avatar src={collab.avatar} />
-                    )}
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <span
-                        style={{ color: 'gray' }}
-                      >{`${collab.first_name} ${collab.last_name}`}</span>
-                      <span>{collab.username}</span>
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-        </Menu.Menu>
-      </Menu.Item>
+          </Menu.Menu>
+        </Menu.Item>
+      )}
       <Icon
         style={{
           position: 'absolute',
