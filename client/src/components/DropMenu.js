@@ -36,13 +36,15 @@ function DropMenu(props) {
   };
 
   const handleDeleteCard = () => {
-    axios
-      .delete(`/api/task/delete/${context[10].project}`, {
-        data: { id_task: props.id },
-      })
-      .then((response) => {
-        context[7](response.data);
-      });
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      axios
+        .delete(`/api/task/delete/${context[10].project}`, {
+          data: { id_task: props.id },
+        })
+        .then((response) => {
+          context[7](response.data);
+        });
+    }
   };
 
   const editCard = () => {
