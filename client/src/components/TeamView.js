@@ -30,6 +30,8 @@ export default function TeamView(props) {
     description: '',
   });
 
+  const [collabs, setCollabs] = useState([]);
+
   const [name, setName] = useState({
     setting: false,
     name: '',
@@ -59,6 +61,7 @@ export default function TeamView(props) {
           description: team.description,
           newdescription: value,
           tm: team.name,
+          tmid: context[8].team,
         })
         .then((response) => {
           setTeam({
@@ -72,6 +75,7 @@ export default function TeamView(props) {
         .put(`/api/team/name`, {
           tm: team.name,
           newtm: value,
+          tmid: context[8].team,
         })
         .then((response) => {
           setTeam({
@@ -105,7 +109,7 @@ export default function TeamView(props) {
               />
               <input
                 placeholder={team.name}
-                style={{ border: 0, width: 150 }}
+                style={{ border: 0, width: 125 }}
                 onChange={(e) => {
                   setName({ ...name, name: e.target.value });
                 }}

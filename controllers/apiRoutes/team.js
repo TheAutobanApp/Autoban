@@ -166,7 +166,7 @@ router.put('/description', function (req, res) {
     db.Team.findOne({
       where: {
         team_description: req.body.description,
-        team_name: req.body.tm,
+        id_team: req.body.tmid,
       },
     })
       .then((team) => {
@@ -193,7 +193,7 @@ router.put('/name', function (req, res) {
   console.log(req.body.tm);
   if (req.body.tn !== req.body.newtm) {
     db.Team.findOne({
-      where: { team_name: req.body.tm },
+      where: { id_team: req.body.tmid },
     })
       .then((team) => {
         if (team) {
