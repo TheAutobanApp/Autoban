@@ -70,98 +70,18 @@ router.post('/', function (req, res) {
   }
 });
 
-router.put('/', function (req, res) {
+router.put('/name', function (req, res) {
   // update project name
-  if (req.body.project_name) {
+  if (req.body.pn !== req.body.newpn) {
     db.Project.findOne({
       where: {
-        id_project: req.query.id,
+        id_project: req.body.pid,
       },
     })
       .then(function (results) {
         if (results) {
           results
-            .update({ project_name: req.body.project_name })
-            .then(() => {
-              res.json(results);
-            })
-            .catch((err) => {
-              res.status(401).json(err);
-            });
-        }
-      })
-      .catch((err) => {
-        res.status(401).json(err);
-      });
-  } else {
-    res.status(401).json(err);
-  }
-  // update project description
-
-  if (req.body.project_description) {
-    db.Project.findOne({
-      where: {
-        id_project: req.query.id,
-      },
-    })
-      .then(function (results) {
-        if (results) {
-          results
-            .update({
-              project_description: req.body.project_description,
-            })
-            .then(() => {
-              res.json(results);
-            })
-            .catch((err) => {
-              res.status(401).json(err);
-            });
-        }
-      })
-      .catch((err) => {
-        res.status(401).json(err);
-      });
-  } else {
-    res.status(401).json(err);
-  }
-  // update project start date
-
-  if (req.body.start_date) {
-    db.Project.findOne({
-      where: {
-        id_project: req.query.id,
-      },
-    })
-      .then(function (results) {
-        if (results) {
-          results
-            .update({ start_date: req.body.start_date })
-            .then(() => {
-              res.json(results);
-            })
-            .catch((err) => {
-              res.status(401).json(err);
-            });
-        }
-      })
-      .catch((err) => {
-        res.status(401).json(err);
-      });
-  } else {
-    res.status(401).json(err);
-  }
-  // update project end date
-
-  if (req.body.end_date) {
-    db.Project.findOne({
-      where: {
-        id_project: req.query.id,
-      },
-    })
-      .then(function (results) {
-        if (results) {
-          results
-            .update({ end_date: req.body.end_date })
+            .update({ project_name: req.body.newpn })
             .then(() => {
               res.json(results);
             })
@@ -177,6 +97,88 @@ router.put('/', function (req, res) {
     res.status(401).json(err);
   }
 });
+
+// update project description
+
+//   if (req.body.project_description) {
+//     db.Project.findOne({
+//       where: {
+//         id_project: req.query.id,
+//       },
+//     })
+//       .then(function (results) {
+//         if (results) {
+//           results
+//             .update({
+//               project_description: req.body.project_description,
+//             })
+//             .then(() => {
+//               res.json(results);
+//             })
+//             .catch((err) => {
+//               res.status(401).json(err);
+//             });
+//         }
+//       })
+//       .catch((err) => {
+//         res.status(401).json(err);
+//       });
+//   } else {
+//     res.status(401).json(err);
+//   }
+//   // update project start date
+
+//   if (req.body.start_date) {
+//     db.Project.findOne({
+//       where: {
+//         id_project: req.query.id,
+//       },
+//     })
+//       .then(function (results) {
+//         if (results) {
+//           results
+//             .update({ start_date: req.body.start_date })
+//             .then(() => {
+//               res.json(results);
+//             })
+//             .catch((err) => {
+//               res.status(401).json(err);
+//             });
+//         }
+//       })
+//       .catch((err) => {
+//         res.status(401).json(err);
+//       });
+//   } else {
+//     res.status(401).json(err);
+//   }
+//   // update project end date
+
+//   if (req.body.end_date) {
+//     db.Project.findOne({
+//       where: {
+//         id_project: req.query.id,
+//       },
+//     })
+//       .then(function (results) {
+//         if (results) {
+//           results
+//             .update({ end_date: req.body.end_date })
+//             .then(() => {
+//               res.json(results);
+//             })
+//             .catch((err) => {
+//               res.status(401).json(err);
+//             });
+//         }
+//       })
+//       .catch((err) => {
+//         res.status(401).json(err);
+//       });
+//   } else {
+//     res.status(401).json(err);
+//   }
+// });
 // figure out how to cascade delete all associated tasks, columns, and labels
 router.delete('/', function (req, res) {
   //delete project
