@@ -7,11 +7,20 @@ function DropMenu(props) {
   const context = useContext(AutoContext);
 
   const handleDeleteColumn = () => {
-    axios
+    if (window.confirm('This will delete all tasks in this column. Are you sure?')) {
+      axios
       .delete(`/api/columns/?proj=${context[10].project}`, {
-        data: { id_place: props.id },
+        data: { id_column: props.id },
       })
       .then((res) => context[3](res.data));
+      axios
+      .delete(`/api/task/cdelete/${context[10].project}`, {
+        data: { id_column: props.id },
+      })
+      .then((response) => {
+        context[7](response.data);
+      });
+    }
   };
 
   const handleDeleteCard = () => {

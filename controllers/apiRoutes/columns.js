@@ -146,7 +146,7 @@ router.delete('/', function (req, res) {
     db.Columns.destroy({
       where: {
         id_project: req.query.proj,
-        id_place: req.body.id_place,
+        id_column: req.body.id_column,
       },
     })
       // update place ids
