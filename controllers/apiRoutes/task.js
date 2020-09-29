@@ -7,22 +7,7 @@ router.get('/get/all/:proj_id', function (req, res) {
   db.Task.findAll({
     where: { id_project: req.params.proj_id },
   }).then((allTasks) => {
-    // const createdBys = allTasks.map(
-    //   (user) => user.dataValues.created_by,
-    // );
-    // db.User.findAll({
-    //   where: { id_user: { [Op.in]: createdBys } },
-    // }).then((users) => {
-    //   users.forEach((user) => {
-    //     allTasks.forEach((task) => {
-    //       if (task.dataValues.created_by === user.dataValues.id_user) {
-    //         task.dataValues.created_by = user.dataValues.username
-    //       }
-    //     });
-    //   });
-    //   console.log(allTasks);
     res.json(allTasks);
-    // });
   });
 });
 // find task to render in task modal
