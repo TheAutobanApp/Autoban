@@ -97,35 +97,37 @@ router.put('/name', function (req, res) {
     res.status(401).json(err);
   }
 });
+router.put('/description', function (req, res) {
+  // update project description
 
-// update project description
-
-//   if (req.body.project_description) {
-//     db.Project.findOne({
-//       where: {
-//         id_project: req.query.id,
-//       },
-//     })
-//       .then(function (results) {
-//         if (results) {
-//           results
-//             .update({
-//               project_description: req.body.project_description,
-//             })
-//             .then(() => {
-//               res.json(results);
-//             })
-//             .catch((err) => {
-//               res.status(401).json(err);
-//             });
-//         }
-//       })
-//       .catch((err) => {
-//         res.status(401).json(err);
-//       });
-//   } else {
-//     res.status(401).json(err);
-//   }
+  if (req.body.description !== req.body.newDescription) {
+    db.Project.findOne({
+      where: {
+        id_project: req.query.id,
+        project_description: req.body.description,
+      },
+    })
+      .then(function (results) {
+        if (results) {
+          results
+            .update({
+              project_description: req.body.newDescription,
+            })
+            .then(() => {
+              res.json(results);
+            })
+            .catch((err) => {
+              res.status(401).json(err);
+            });
+        }
+      })
+      .catch((err) => {
+        res.status(401).json(err);
+      });
+  } else {
+    res.status(401).json(err);
+  }
+});
 //   // update project start date
 
 //   if (req.body.start_date) {
