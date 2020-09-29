@@ -100,7 +100,7 @@ export default function InviteModal(props) {
           )}
         </List>
         <ModalButton
-          class={true}
+          disabled={false}
           onclick={() => {
             hideModal();
           }}

@@ -1,44 +1,26 @@
 import React, { useState, useContext } from 'react';
-import {
-  Grid,
-  Menu,
-  Input,
-  Label,
-  Dropdown,
-} from 'semantic-ui-react';
+import { Menu, Input, Label } from 'semantic-ui-react';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
+import colors from './utils/colors';
 
 export default function TeamMenu() {
   const context = useContext(AutoContext);
 
-  const colors = [
-    'red',
-    'blue',
-    'green',
-    'purple',
-    'orange',
-    'teal',
-    'pink',
-    'yellow',
-    'olive',
-    'violet',
-    'brown',
-    'grey',
-    'black',
-  ];
-
   const [team, setTeam] = useState({
-    activeItem: context[8].team,
+    activeItem: context[8].team && context[8].team.id_team,
     teamAdd: false,
     teamName: '',
   });
 
-  const handleItemClick = (e, { id }) => {
-    console.log(id)
+  const handleItemClick = (e, { id, name }) => {
+    console.log(id);
     setTeam({ ...team, activeItem: id });
     if (e.target.id) {
-      context[9]({ ...context[8], team: parseInt(e.target.id) });
+      context[9]({
+        ...context[8],
+        team: { id_team: id, team_name: name },
+      });
     } else context[9]({ ...context[8], team: null });
   };
 
@@ -65,15 +47,7 @@ export default function TeamMenu() {
   return (
     // <Grid style={{ height: 'calc((100vh - 50px) * .75)' }}>
     // <Grid.Column width={2} style={{ height: 'calc((100vh - 50px) * .75)' }}>
-    <Menu
-      vertical
-      style={{
-        overflowX: 'hidden',
-        overflowY: 'auto',
-        maxHeight: '100%',
-        height: 'calc((100vh - 50px) * .75)',
-      }}
-    >
+    <Menu vertical className="team-menu">
       <Menu.Item
         name="All"
         id={null}

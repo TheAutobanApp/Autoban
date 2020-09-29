@@ -40,9 +40,8 @@ export default function TeamView(props) {
   useEffect(() => {
     if (context[8].team !== 'null') {
       axios
-        .get(`/api/team/?id_team=${context[8].team}`)
+        .get(`/api/team/?id_team=${context[8].team.id_team}`)
         .then((response) => {
-          console.log(response.data);
           const teamInfo = response.data;
           setTeam({
             ...team,
@@ -50,6 +49,14 @@ export default function TeamView(props) {
             description: teamInfo.team_description,
             color: teamInfo.team_color,
           });
+        });
+
+      axios
+        .get(
+          `/api/team/teamusers/?id_team=${context[8].team.id_team}`,
+        )
+        .then((response) => {
+          setCollabs(response.data);
         });
     }
   }, [context[8].team]);
@@ -172,7 +179,36 @@ export default function TeamView(props) {
 
         <Menu.Menu>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={collabStyle}>
+            {collabs.map((collab, index) => {
+              if (collab.accepted) {
+                return (
+                  <div style={collabStyle}>
+                    {collab.avatar === null ? (
+                      <Image
+                        avatar
+                        src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                      />
+                    ) : (
+                      <Image avatar src={collab.avatar} />
+                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <span
+                        style={{ color: 'gray' }}
+                      >{`${collab.first_name} ${collab.last_name}`}</span>
+                      <span>{collab.username}</span>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+
+          {/* <div style={collabStyle}>
               {context[8].avatar && (
                 <Image avatar src={context[8].avatar} />
               )}{' '}
@@ -231,45 +267,41 @@ export default function TeamView(props) {
                 <span>pootboots</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </Menu.Menu>
       </Menu.Item>
 
       <Menu.Item>
         <Menu.Header>Pending</Menu.Header>
         <Menu.Menu style={{ opacity: 0.5 }}>
-          <div style={collabStyle}>
-            {context[8].avatar && (
-              <Image
-                avatar
-                src={
-                  'https://www.funnyjunksite.com/pictures/wp-content/uploads/2015/08/Funny-Avatar-Photo.jpg'
-                }
-              />
-            )}{' '}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ color: 'gray' }}>Pending Pops</span>
-              <span>ppops</span>
-            </div>
-          </div>
-          <div style={collabStyle}>
-            {context[8].avatar && (
-              <Image
-                avatar
-                src={
-                  'https://image.freepik.com/free-vector/cartoon-funny-monkey-face-avatar_6996-1147.jpg'
-                }
-              />
-            )}{' '}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <span style={{ color: 'gray' }}>Hey Hey Hey</span>
-              <span>fatalbert</span>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {collabs.map((collab, index) => {
+              if (!collab.accepted) {
+                return (
+                  <div style={collabStyle}>
+                    {collab.avatar === null ? (
+                      <Image
+                        avatar
+                        src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                      />
+                    ) : (
+                      <Image avatar src={collab.avatar} />
+                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <span
+                        style={{ color: 'gray' }}
+                      >{`${collab.first_name} ${collab.last_name}`}</span>
+                      <span>{collab.username}</span>
+                    </div>
+                  </div>
+                );
+              }
+            })}
           </div>
         </Menu.Menu>
       </Menu.Item>

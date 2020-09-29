@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 var db = require('../../models');
 
 // find all project tasks
@@ -6,7 +7,20 @@ router.get('/get/all/:proj_id', function (req, res) {
   db.Task.findAll({
     where: { id_project: req.params.proj_id },
   }).then((allTasks) => {
-    res.json(allTasks);
+    const createdBys = allTasks.map(
+      (user) => user.dataValues.created_by,
+    );
+    db.User.findAll({
+      where: { id_user: { [Op.in]: createdBys } },
+    }).then((users) => {
+      users.forEach((user) => {
+        allTasks.forEach(
+          (task) =>
+            (task.dataValues.created_by = user.dataValues.username),
+        );
+      });
+      res.json(allTasks);
+    });
   });
 });
 // find task to render in task modal

@@ -14,6 +14,28 @@ router.get('/', function (req, res) {
   }
 });
 
+router.get('/teamusers', function (req, res) {
+  if (req.query.id_team) {
+    db.TeamUser.findAll({
+      where: {
+        id_team: req.query.id_team,
+      },
+    }).then((team) => {
+      // res.json(team);
+      console.log();
+      db.User.findAll({
+        where: {
+          id_user: {
+            [Op.or]: team.map((user) => user.dataValues.id_user),
+          },
+        },
+      }).then((users) => {
+        res.json(users);
+      });
+    });
+  }
+});
+
 // get accepted teams
 router.get('/all/:id_user', function (req, res) {
   if (req.params.id_user) {
@@ -32,7 +54,23 @@ router.get('/all/:id_user', function (req, res) {
             where: { id_team: { [Op.or]: teamIds } },
           })
             .then((teams) => {
-              res.json(teams);
+              let foundIndex = teams.findIndex(
+                (team) => team.dataValues.team_name === 'Personal',
+              );
+              // console.log(foundIndex);
+              if (foundIndex > 0) {
+                let newTeams = teams.sort(function (x, y) {
+                  return x.dataValues.team_name == 'Personal'
+                    ? -1
+                    : y.dataValues.team_name == 'Personal'
+                    ? 1
+                    : 0;
+                });
+                console.log(newTeams);
+                res.json(newTeams);
+              } else {
+                res.json(teams);
+              }
             })
             .catch((err) => res.status(401).json(err));
         } else res.status(200).send('No teams found');

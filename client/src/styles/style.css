@@ -102,8 +102,10 @@ body {
 } */
 
 .navoptions {
-  width: 125px;
-  justify-content: space-between;
+  margin-left: auto;
+  width: 115px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 label {
@@ -273,6 +275,7 @@ label {
   background: rgba(245, 245, 245, 0.438);
   box-shadow: 1px 1px 5px rgba(173, 173, 173, 0.377);
   transition: all 0.2s ease-in-out;
+  justify-content: space-around;
 }
 
 .addhover:hover,
@@ -301,8 +304,18 @@ label {
   margin: 6px 0;
 }
 
+.card-title {
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 4px;
+  border-bottom: 1px solid whitesmoke;
+}
+
 .card-body {
   padding: 14px;
+  display: inline-block;
 }
 
 .card-text {
@@ -310,10 +323,21 @@ label {
   white-space: pre-wrap;
 }
 
+.created-by {
+  font-size: 9px;
+  min-height: 0;
+  height: 14px;
+  padding: 0;
+  text-align: right;
+}
+
 .card-footer {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   padding: 8px 8px;
+  align-items: center;
+  height: fit-content;
+  flex-wrap: wrap;
 }
 
 .label {
@@ -355,11 +379,10 @@ label {
   padding: 0;
   border: 0;
   margin: 2px;
-  width: 35%;
+  width: 32%;
 }
 
 .datepicker {
-  margin: 2px;
   max-width: 100%;
   -webkit-box-flex: 1;
   -ms-flex: 1 0 auto;
@@ -413,6 +436,8 @@ label {
   height: auto;
   max-height: 159px;
   overflow-y: auto;
+  background-color: white;
+  padding: 4px!important;
 }
 
 .invite-item {
@@ -435,4 +460,173 @@ label {
     max-height: 287px;
     overflow: auto;
     top: 80%;
+}
+
+/* task modal */
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  height: 35px;
+  border-radius: 5px;
+}
+
+.task-description {
+  width: 100%;
+  margin: 20px 0 10px;
+}
+
+.task-textarea {
+  width: 100%;
+  border: none;
+  height: 200px;
+  border-radius: 5px;
+}
+
+.function-container {
+  width: 200px,
+}
+
+.task-function {
+  background-color: lightgray;
+  border-radius: 3px;
+  border: none;
+  color: gray;
+  padding: 8px;
+  margin: 8px;
+}
+
+/* label modal */
+
+.label-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+.label-colors {
+  height: 30px;
+  width: '100%';
+  justify-content: 'center';
+  margin: '5px';
+}
+
+/* project modal */
+
+.proj-title-input {
+  width: 80%;
+  height: 35px;
+  border-radius: 5px;
+}
+
+.proj-dropdown {
+  margin: 6px;
+  width: 80%;
+}
+
+.datepicker-cont {
+  height: 30px;
+  width: 100%;
+  justify-content: center;
+  margin: 5px;
+}
+
+/* homeview */
+
+.add-project {
+  height: 100px;
+  width: 160px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px grey;
+  margin: 4px 4px 4px
+}
+
+.home-view-cont {
+  width: 80%;
+  height: 75%;
+  max-width: 870px;
+  max-height: 600px;
+  display: flex;
+}
+
+.error-text {
+  color: red;
+}
+
+.projcard {
+  position: relative;
+  height: 100px;
+  width: 160px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px grey;
+  margin: 4px 4px 4px!important;
+  font-weight: bold;
+  color: white;
+  padding: 0!important;
+}
+
+.projcard-overlay {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: inherit;
+  height: inherit;
+  padding: 5px;
+  border-radius: 5px;
+  background: linear-gradient(to bottom, transparent, rgba(10, 10, 10, .4))
+}
+
+.projcard-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-60%, -50%);
+  padding: 4px;
+  color: rgba(255, 255, 255, .2);
+}
+
+.team-menu {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100%;
+  height: calc((100vh - 50px) * .75);
+}
+
+/* Drawer views */
+
+.drawer-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.drawer-description {
+  padding: 10px;
+  text-align: center;
+  color: grey;
+}
+
+.linebreak {
+  margin: 20px;
+  border-bottom: 1px solid lightgrey;
+  width: 100%;
+}
+
+.label-column {
+  padding: 10;
+  font-size: 12px;
+  color: grey;
+}
+
+.label-column > p {
+  margin: 5px;
 }
