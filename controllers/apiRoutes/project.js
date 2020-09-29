@@ -93,8 +93,6 @@ router.put('/name', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else {
-    res.status(401).json(err);
   }
 });
 router.put('/description', function (req, res) {
@@ -103,7 +101,7 @@ router.put('/description', function (req, res) {
   if (req.body.description !== req.body.newDescription) {
     db.Project.findOne({
       where: {
-        id_project: req.query.id,
+        id_project: req.body.pid,
         project_description: req.body.description,
       },
     })
@@ -124,8 +122,6 @@ router.put('/description', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else {
-    res.status(401).json(err);
   }
 });
 //   // update project start date

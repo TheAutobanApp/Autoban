@@ -10,7 +10,14 @@ export default function SettingsDrawerView(props) {
     description: '',
     name: '',
   });
-
+  const [name, setName] = useState({
+    name: '',
+    setting: false,
+  });
+  const [description, setDescription] = useState({
+    description: '',
+    setting: false,
+  });
   const context = useContext(AutoContext);
 
   useEffect(() => {
@@ -38,6 +45,7 @@ export default function SettingsDrawerView(props) {
             ...project,
             name: response.data.project_name,
           });
+          setName({ ...name, setting: false });
         });
     } else {
       axios
@@ -52,6 +60,7 @@ export default function SettingsDrawerView(props) {
             ...project,
             description: response.data.project_description,
           });
+          setDescription({ ...description, setting: false });
         });
     }
   };
@@ -70,8 +79,10 @@ export default function SettingsDrawerView(props) {
       {/* title */}
       <input
         placeholder={project.name}
+        style={{ border: 0, width: 150 }}
         onChange={(e) => {
-          setProject({ ...project, name: e.target.value });
+          console.log('test');
+          setName({ ...project, name: e.target.value });
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -84,8 +95,12 @@ export default function SettingsDrawerView(props) {
       <div className="drawer-description">
         <input
           placeholder={project.description}
+          style={{ border: 0, width: 150 }}
           onChange={(e) => {
-            setProject({ ...project, description: e.target.value });
+            setDescription({
+              ...project,
+              description: e.target.value,
+            });
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
