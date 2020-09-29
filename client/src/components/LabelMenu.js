@@ -1,4 +1,8 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, {
+  useContext,
+  useState,
+  useRef,
+} from 'react';
 import ReactDOM from 'react-dom';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
@@ -38,7 +42,6 @@ export default function LabelMenu(props) {
             id_project: context[10].project,
             id_label1: newLabel.id_label,
           })
-          .then((res) => console.log(res));
         break;
       case 1:
         axios
@@ -46,7 +49,6 @@ export default function LabelMenu(props) {
             id_project: context[10].project,
             id_label2: newLabel.id_label,
           })
-          .then((res) => console.log(res));
         break;
       case 2:
         axios
@@ -54,7 +56,6 @@ export default function LabelMenu(props) {
             id_project: context[10].project,
             id_label3: newLabel.id_label,
           })
-          .then((res) => console.log(res));
         break;
       default:
         console.log('Label length is invalid');
@@ -114,13 +115,17 @@ export default function LabelMenu(props) {
       }}
     >
       <Dropdown.Menu
-        style={{
-          position: 'fixed',
-          top: menu.offsetTop,
-          left: menu.offsetLeft,
-          minWidth: 'fit-content',
-          zIndex: 1000,
-        }}
+        style={
+          props.modal
+            ? { minWidth: 'fit-content', zIndex: 1000 }
+            : {
+                position: 'fixed',
+                top: menu.offsetTop,
+                left: menu.offsetLeft,
+                minWidth: 'fit-content',
+                zIndex: 1000,
+              }
+        }
       >
         {/* input for adding a label */}
         <Input
