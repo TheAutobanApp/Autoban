@@ -17,28 +17,44 @@ router.get('/', function (req, res) {
   }
 });
 
-router.get('/all/:id_user', function (req, res) {
-  if (req.params.id_user) {
-    db.ProjectUser.findAll({
-      where: {
-        id_user: req.params.id_user,
-      },
-    })
-      .then((project) => {
-        const projectIds = project.map(
-          (tm, index) => tm.dataValues.id_project,
-        );
-        if (projectIds.length > 0) {
-          db.Project.findAll({
-            where: { id_project: { [Op.or]: projectIds } },
-          })
-            .then((projects) => {
-              res.json(projects);
-            })
-            .catch((err) => res.status(401).json(err));
-        } else res.status(200).send('No projects found');
-      })
-      .catch((err) => res.status(401).json(err));
+// router.get('/all/:id_user', function (req, res) {
+//   if (req.params.id_user) {
+//     db.ProjectUser.findAll({
+//       where: {
+//         id_user: req.params.id_user,
+//       },
+//     })
+//       .then((project) => {
+//         const projectIds = project.map(
+//           (tm, index) => tm.dataValues.id_project,
+//         );
+//         if (projectIds.length > 0) {
+//           db.Project.findAll({
+//             where: { id_project: { [Op.or]: projectIds } },
+//           })
+//             .then((projects) => {
+//               res.json(projects);
+//             })
+//             .catch((err) => res.status(401).json(err));
+//         } else res.status(200).send('No projects found');
+//       })
+//       .catch((err) => res.status(401).json(err));
+//   }
+// });
+
+router.get('/all/', function (req, res) {
+  console.log(
+    Object.entries(req.query).map((item) => parseInt(item[1])),
+  );
+  const teams = Object.entries(req.query).map((item) =>
+    parseInt(item[1]),
+  );
+  if (req.query !== {}) {
+    db.Project.findAll({
+      where: { id_team: { [Op.or]: teams } },
+    }).then((projects) => {
+      res.json(projects);
+    });
   }
 });
 

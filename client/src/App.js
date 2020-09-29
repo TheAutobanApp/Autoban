@@ -119,27 +119,36 @@ function App() {
   const getTeamsProjects = (id_user) => {
     if (user.id_user) {
       axios.get(`/api/team/all/${id_user}`).then((response) => {
-        axios.get(`/api/project/all/${id_user}`).then((res) => {
-          axios.get(`/api/team/invite/${id_user}`).then((invite) => {
-            if (
-              Array.isArray(res.data) &&
-              Array.isArray(response.data)
-            ) {
-              setUser({
-                ...user,
-                teams: response.data,
-                projects: res.data,
-                invites: invite.data,
+        // map through teams from response and create query params for each team to get each teams projects
+        axios
+          .get(
+            `/api/project/all/?${response.data
+              .map((n, index) => `team${index}=${n.id_team}`)
+              .join('&')}`,
+          )
+          .then((res) => {
+            axios
+              .get(`/api/team/invite/${id_user}`)
+              .then((invite) => {
+                if (
+                  Array.isArray(res.data) &&
+                  Array.isArray(response.data)
+                ) {
+                  setUser({
+                    ...user,
+                    teams: response.data,
+                    projects: res.data,
+                    invites: invite.data,
+                  });
+                } else if (Array.isArray(response.data)) {
+                  setUser({
+                    ...user,
+                    teams: response.data,
+                    invites: invite.data,
+                  });
+                }
               });
-            } else if (Array.isArray(response.data)) {
-              setUser({
-                ...user,
-                teams: response.data,
-                invites: invite.data,
-              });
-            }
           });
-        });
       });
     }
   };
@@ -211,7 +220,11 @@ function App() {
             {/* map through columns array and render each column with the title */}
             {columns.map((item, i) => {
               return (
-                <Column title={item.column_name} key={i} id={item.id_column}>
+                <Column
+                  title={item.column_name}
+                  key={i}
+                  id={item.id_column}
+                >
                   {/* inside each column, map through the cards and render each one that matches the column index */}
                   {tasks !== null &&
                     tasks.map(
