@@ -15,8 +15,7 @@ import {
   Input,
 } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
-// import { IoIosArrowDropright } from 'react-icons/io';
-// import { FaEllipsisV } from 'react-icons/fa';
+import Fade from 'react-reveal/Fade';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
 
@@ -141,6 +140,7 @@ function CardComponent(props) {
   };
 
   return (
+    <Fade bottom>
     <Card className="card">
       <Card.Body>
         <Card.Title>
@@ -291,6 +291,7 @@ function CardComponent(props) {
         )}
       </Card.Footer>
     </Card>
+    </Fade>
   );
 }
 export default CardComponent;

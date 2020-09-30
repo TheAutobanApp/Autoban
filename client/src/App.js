@@ -211,12 +211,12 @@ function App() {
             {/* map through columns array and render each column with the title */}
             {columns.map((item, i) => {
               return (
-                <Column title={item.column_name} key={i} id={i}>
+                <Column title={item.column_name} key={i} id={item.id_column}>
                   {/* inside each column, map through the cards and render each one that matches the column index */}
                   {tasks !== null &&
                     tasks.map(
                       (card) =>
-                        card.id_column === i && (
+                        card.id_column === item.id_column && (
                           <CardComponent
                             id={card.id_task}
                             title={card.task_title}
