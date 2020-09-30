@@ -14,6 +14,56 @@ router.get('/', function (req, res) {
   }
 });
 
+router.get('/acceptedusers', function (req, res) {
+  if (req.query.id_team) {
+    db.TeamUser.findAll({
+      where: {
+        id_team: req.query.id_team,
+        accepted: true,
+      },
+    }).then((team) => {
+      if (team.length > 0) {
+        db.User.findAll({
+          where: {
+            id_user: {
+              [Op.or]: team.map((user) => user.dataValues.id_user),
+            },
+          },
+        }).then((users) => {
+          res.json(users);
+        });
+      } else {
+        res.json([]);
+      }
+    });
+  }
+});
+
+router.get('/pendingusers', function (req, res) {
+  if (req.query.id_team) {
+    db.TeamUser.findAll({
+      where: {
+        id_team: req.query.id_team,
+        accepted: false,
+      },
+    }).then((team) => {
+      if (team.length > 0) {
+        db.User.findAll({
+          where: {
+            id_user: {
+              [Op.or]: team.map((user) => user.dataValues.id_user),
+            },
+          },
+        }).then((users) => {
+          res.json(users);
+        });
+      } else {
+        res.json([]);
+      }
+    });
+  }
+});
+
 // get accepted teams
 router.get('/all/:id_user', function (req, res) {
   if (req.params.id_user) {
@@ -32,10 +82,18 @@ router.get('/all/:id_user', function (req, res) {
             where: { id_team: { [Op.or]: teamIds } },
           })
             .then((teams) => {
-              let foundIndex = teams.findIndex(team => team.dataValues.team_name === 'Personal')
+              let foundIndex = teams.findIndex(
+                (team) => team.dataValues.team_name === 'Personal',
+              );
               // console.log(foundIndex);
               if (foundIndex > 0) {
-                let newTeams = teams.sort(function(x,y){ return x.dataValues.team_name == 'Personal' ? -1 : y.dataValues.team_name == 'Personal' ? 1 : 0; });
+                let newTeams = teams.sort(function (x, y) {
+                  return x.dataValues.team_name == 'Personal'
+                    ? -1
+                    : y.dataValues.team_name == 'Personal'
+                    ? 1
+                    : 0;
+                });
                 console.log(newTeams);
                 res.json(newTeams);
               } else {
@@ -107,18 +165,22 @@ router.get('/newinvite', function (req, res) {
       where: {
         id_user: req.query.inviter,
       },
-    }).then((inviter) => {
-      newInvite.inviter = inviter.dataValues.username;
-      db.Team.findOne({
-        where: {
-          id_team: req.query.team,
-        },
-      }).then((team) => {
-        newInvite.team = team.dataValues.team_name
-        console.log(newInvite)
-        res.send(newInvite);
-      }).catch((err) => res.status(401).json(err));
-    }).catch((err) => res.status(401).json(err));
+    })
+      .then((inviter) => {
+        newInvite.inviter = inviter.dataValues.username;
+        db.Team.findOne({
+          where: {
+            id_team: req.query.team,
+          },
+        })
+          .then((team) => {
+            newInvite.team = team.dataValues.team_name;
+            console.log(newInvite);
+            res.send(newInvite);
+          })
+          .catch((err) => res.status(401).json(err));
+      })
+      .catch((err) => res.status(401).json(err));
   }
 });
 
@@ -164,18 +226,20 @@ router.post('/invite', (req, res) => {
 });
 
 // update user info
-router.put('/', function (req, res) {
-  // update team name
-  if (req.query.tn !== req.query.newtn) {
+router.put('/description', function (req, res) {
+  // update team description
+  if (req.body.newdescription) {
     db.Team.findOne({
-      where: { team_name: req.query.tn },
+      where: {
+        id_team: req.body.tmid,
+      },
     })
       .then((team) => {
         if (team) {
           team
-            .update({ team_name: req.query.newtn })
-            .then(() => {
-              res.json(team);
+            .update({ team_description: req.body.newdescription })
+            .then((tm) => {
+              res.json(tm);
             })
             .catch((err) => {
               res.status(401).json(err);
@@ -183,27 +247,34 @@ router.put('/', function (req, res) {
         }
       })
       .catch((err) => {
+        console.log(err);
         res.status(401).json(err);
       });
   }
-  // update team description
-  if (req.query.description !== req.query.newdescription) {
+});
+
+router.put('/name', function (req, res) {
+  // update team name
+  console.log(req.body.tm);
+  if (req.body.newtm) {
     db.Team.findOne({
-      where: { team_description: req.query.description },
+      where: { id_team: req.body.tmid },
     })
       .then((team) => {
         if (team) {
           team
-            .update({ team_description: req.query.newdescription })
-            .then(() => {
-              res.json(team);
+            .update({ team_name: req.body.newtm })
+            .then((tm) => {
+              res.json(tm);
             })
             .catch((err) => {
+              console.log(err);
               res.status(401).json(err);
             });
         }
       })
       .catch((err) => {
+        console.log(err);
         res.status(401).json(err);
       });
   }
