@@ -1,15 +1,23 @@
 import { MdClose } from 'react-icons/md';
 import { FaPlus } from 'react-icons/fa';
-import { Label } from 'semantic-ui-react';
+import { Label, Input, TextArea } from 'semantic-ui-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../../AutoContext';
+import axios from 'axios';
 
 export default function SettingsDrawerView(props) {
   const [project, setProject] = useState({
     description: '',
     name: '',
   });
-
+  const [name, setName] = useState({
+    name: '',
+    setting: false,
+  });
+  const [description, setDescription] = useState({
+    description: '',
+    setting: false,
+  });
   const context = useContext(AutoContext);
 
   useEffect(() => {
@@ -24,6 +32,38 @@ export default function SettingsDrawerView(props) {
     });
   }, [context[10].project]);
 
+  const updateProject = (value, type) => {
+    if (type === 'name') {
+      axios
+        .put('api/project/name', {
+          pn: project.name,
+          newpn: value,
+          pid: context[10].project,
+        })
+        .then((response) => {
+          setProject({
+            ...project,
+            name: response.data.project_name,
+          });
+          setName({ ...name, setting: false });
+        });
+    } else {
+      axios
+        .put('api/project/description', {
+          description: project.description,
+          newDescription: value,
+          pn: project.name,
+          pid: context[10].project,
+        })
+        .then((response) => {
+          setProject({
+            ...project,
+            description: response.data.project_description,
+          });
+          setDescription({ ...description, setting: false });
+        });
+    }
+  };
   return (
     <div className="flex-column">
       <div className="drawer-header">
@@ -37,11 +77,42 @@ export default function SettingsDrawerView(props) {
         />
       </div>
       {/* title */}
-      <h5>{project.name}</h5>
+      <Input
+        onBlur={(e) => {
+          updateProject(e.target.value, 'name');
+        }}
+        placeholder={project.name}
+        style={{ border: 0, width: 150 }}
+        onChange={(e) => {
+          setName({ ...project, name: e.target.value });
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            updateProject(e.target.value, 'name');
+          }
+        }}
+      />
       {/* description */}
 
       <div className="drawer-description">
-        <p>{project.description}</p>{' '}
+        <TextArea
+          onBlur={(e) => {
+            updateProject(e.target.value, 'description');
+          }}
+          placeholder={project.description}
+          style={{ border: 0, width: 150 }}
+          onChange={(e) => {
+            setDescription({
+              ...project,
+              description: e.target.value,
+            });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              updateProject(e.target.value, 'description');
+            }
+          }}
+        />
         {/* <input
           defaultValue="https://autobanprod.herokuapp.com/autobanproj"
           style={{
