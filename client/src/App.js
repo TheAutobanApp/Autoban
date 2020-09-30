@@ -154,11 +154,13 @@ function App() {
   };
 
   useEffect(() => {
-    getTeamsProjects(user.id_user);
-    socket.on(`inviteAccepted${user.id_user}`, (data) => {
+    if (view.type === 'home') {
       getTeamsProjects(user.id_user);
-    });
-  }, [user.id_user]);
+      socket.on(`inviteAccepted${user.id_user}`, (data) => {
+        getTeamsProjects(user.id_user);
+      });
+    }
+  }, [user.id_user, view.type]);
 
   useEffect(() => {
     socket.on(`newInvite${user.id_user}`, (data) => {

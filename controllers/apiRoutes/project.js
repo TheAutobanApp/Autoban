@@ -88,7 +88,7 @@ router.post('/', function (req, res) {
 
 router.put('/name', function (req, res) {
   // update project name
-  if (req.body.pn !== req.body.newpn) {
+  if (req.body.newpn) {
     db.Project.findOne({
       where: {
         id_project: req.body.pid,
@@ -109,16 +109,15 @@ router.put('/name', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  }
+  } else res.status(401).json(err);
 });
 router.put('/description', function (req, res) {
   // update project description
 
-  if (req.body.description !== req.body.newDescription) {
+  if (req.body.newDescription) {
     db.Project.findOne({
       where: {
         id_project: req.body.pid,
-        project_description: req.body.description,
       },
     })
       .then(function (results) {
@@ -138,7 +137,7 @@ router.put('/description', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  }
+  } else res.status(401).json(err);
 });
 //   // update project start date
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
 import SettingsDrawerView from './drawerviews/SettingsDrawerView';
 import CardDrawerView from './drawerviews/CardDrawerView';
@@ -21,9 +21,26 @@ export default function OptionsDrawer(props) {
     zIndex: 999,
   };
 
+  const closeClick = (e) => {
+    // console.log(e.path)
+    if (!e.path.some(el => el.id === 'drawer' || el.id === 'settings')) {
+      context[1]({ ...context[0], open: false})
+    }
+  }
+
+  useEffect(() => {
+    if (context[0].open) {
+      document.addEventListener('mousedown', closeClick)
+
+      return (() => {
+        document.removeEventListener('mousedown', closeClick)
+      })
+    }
+  }, [context[0].open])
+
   return (
     <Fade right when={context[0].open} collapse duration={400}>
-      <div style={drawerStyle}>
+      <div style={drawerStyle} id="drawer">
         {context[0].type === 'settings' ? (
           <SettingsDrawerView />
         ) : context[0].type === 'card' ? (

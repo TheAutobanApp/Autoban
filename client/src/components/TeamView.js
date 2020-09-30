@@ -137,7 +137,7 @@ export default function TeamView(props) {
                 error={team.name.length < 3}
                 value={team.name}
                 onBlur={(e) => {
-                  updateTeam(e.target.value, 'name');
+                  updateTeam(e.target.value.trim(), 'name');
                 }}
                 size="mini"
                 placeholder={team.name}
@@ -147,7 +147,7 @@ export default function TeamView(props) {
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    updateTeam(e.target.value, 'name');
+                    updateTeam(e.target.value.trim(), 'name');
                   }
                 }}
               />
@@ -176,14 +176,14 @@ export default function TeamView(props) {
           <TextArea
             value={team.description}
             onBlur={(e) => {
-              updateTeam(e.target.value, 'description');
+              updateTeam(e.target.value.trim(), 'description');
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                updateTeam(e.target.value, 'description');
+                updateTeam(e.target.value.trim(), 'description');
               }
             }}
-            style={{ border: 0, fontStyle: 'italic' }}
+            // style={{ border: 0, fontStyle: 'italic' }}
             onChange={(e) => {
               setTeam({
                 ...team,
