@@ -228,10 +228,9 @@ router.post('/invite', (req, res) => {
 // update user info
 router.put('/description', function (req, res) {
   // update team description
-  if (req.body.description !== req.body.newdescription) {
+  if (req.body.newdescription) {
     db.Team.findOne({
       where: {
-        team_description: req.body.description,
         id_team: req.body.tmid,
       },
     })

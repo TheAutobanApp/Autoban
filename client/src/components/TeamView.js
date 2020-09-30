@@ -1,6 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../AutoContext';
-import { Icon, Image, Menu, Label, Popup } from 'semantic-ui-react';
+import {
+  Icon,
+  Image,
+  Menu,
+  Label,
+  Popup,
+  Input,
+} from 'semantic-ui-react';
 import axios from 'axios';
 
 export default function TeamView(props) {
@@ -30,8 +37,10 @@ export default function TeamView(props) {
     description: '',
   });
 
-  const [collabs, setCollabs] = useState([]);
-  const [pending, setPending] = useState([]);
+  const [collabs, setCollabs] = useState({
+    active: [],
+    pending: [],
+  });
 
   const [name, setName] = useState({
     setting: false,
@@ -58,30 +67,34 @@ export default function TeamView(props) {
           `/api/team/acceptedusers/?id_team=${context[8].team.id_team}`,
         )
         .then((response) => {
-          setCollabs(response.data);
+          axios
+            .get(
+              `/api/team/pendingusers/?id_team=${context[8].team.id_team}`,
+            )
+            .then((res) => {
+              setCollabs({
+                ...collabs,
+                active: response.data,
+                pending: res.data,
+              });
+            });
         });
-
       // get pending users
-      axios
-        .get(
-          `/api/team/pendingusers/?id_team=${context[8].team.id_team}`,
-        )
-        .then((response) => {
-          setPending(response.data);
-        });
     }
   }, [context[8].team]);
 
   const updateTeam = (value, type) => {
     if (type === 'description') {
+      console.log(team.description, value);
       axios
         .put(`/api/team/description`, {
-          description: team.description,
           newdescription: value,
           tm: team.name,
           tmid: context[8].team.id_team,
         })
         .then((response) => {
+          console.log(response);
+
           setTeam({
             ...team,
             description: response.data.team_description,
@@ -119,13 +132,15 @@ export default function TeamView(props) {
             </span>
           ) : (
             <div style={{ display: 'flex' }}>
-              <Icon
-                name="close"
-                onClick={() => {
-                  setName({ ...name, setting: false });
+              <Input
+                action={{
+                  icon: 'close',
+                  size: 'mini',
+                  onClick: () => {
+                    setName({ ...name, setting: false });
+                  },
                 }}
-              />
-              <input
+                size="mini"
                 placeholder={team.name}
                 style={{ border: 0, width: 125 }}
                 onChange={(e) => {
@@ -154,20 +169,17 @@ export default function TeamView(props) {
               setDescription({ ...description, setting: true });
             }}
           >
-            {team.description === null
+            {team.description === null || team.description === ''
               ? `Add description`
               : team.description}
           </p>
         ) : (
           <div style={{ display: 'flex' }}>
-            <Icon
-              name="close"
-              onClick={() => {
-                setDescription({ ...description, setting: false });
-              }}
-            />
             <textarea
-              placeholder={team.description}
+              value={team.description}
+              onBlur={(e) => {
+                updateTeam(e.target.value, 'description');
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   updateTeam(e.target.value, 'description');
@@ -175,8 +187,8 @@ export default function TeamView(props) {
               }}
               style={{ border: 0, fontStyle: 'italic' }}
               onChange={(e) => {
-                setDescription({
-                  ...description,
+                setTeam({
+                  ...team,
                   description: e.target.value,
                 });
               }}
@@ -196,7 +208,7 @@ export default function TeamView(props) {
               height: '100%',
             }}
           >
-            {collabs.map((collab, index) => {
+            {collabs.active.map((collab, index) => {
               return (
                 <>
                   {collab.avatar === null ? (
@@ -228,7 +240,7 @@ export default function TeamView(props) {
         </Menu.Menu>
       </Menu.Item>
 
-      {pending.length > 0 && (
+      {collabs.pending.length > 0 && (
         <Menu.Item style={{ height: '30%', overflow: 'hidden' }}>
           <Menu.Header>Pending</Menu.Header>
           <Menu.Menu style={{ opacity: 0.5, overflow: 'auto' }}>
@@ -239,7 +251,7 @@ export default function TeamView(props) {
                 padding: '5px',
               }}
             >
-              {pending.map((collab, index) => {
+              {collabs.pending.map((collab, index) => {
                 return (
                   <>
                     {collab.avatar === null ? (
