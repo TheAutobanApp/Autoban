@@ -1,6 +1,6 @@
 import { MdClose } from 'react-icons/md';
 import { FaPlus } from 'react-icons/fa';
-import { Label } from 'semantic-ui-react';
+import { Label, Input, TextArea } from 'semantic-ui-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../../AutoContext';
 import axios from 'axios';
@@ -77,11 +77,13 @@ export default function SettingsDrawerView(props) {
         />
       </div>
       {/* title */}
-      <input
+      <Input
+        onBlur={(e) => {
+          updateProject(e.target.value, 'name');
+        }}
         placeholder={project.name}
         style={{ border: 0, width: 150 }}
         onChange={(e) => {
-          console.log('test');
           setName({ ...project, name: e.target.value });
         }}
         onKeyDown={(e) => {
@@ -89,11 +91,14 @@ export default function SettingsDrawerView(props) {
             updateProject(e.target.value, 'name');
           }
         }}
-      ></input>
+      />
       {/* description */}
 
       <div className="drawer-description">
-        <input
+        <TextArea
+          onBlur={(e) => {
+            updateProject(e.target.value, 'description');
+          }}
           placeholder={project.description}
           style={{ border: 0, width: 150 }}
           onChange={(e) => {
@@ -107,7 +112,7 @@ export default function SettingsDrawerView(props) {
               updateProject(e.target.value, 'description');
             }
           }}
-        ></input>
+        />
         {/* <input
           defaultValue="https://autobanprod.herokuapp.com/autobanproj"
           style={{

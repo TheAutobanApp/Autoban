@@ -7,6 +7,7 @@ import {
   Label,
   Popup,
   Input,
+  TextArea,
 } from 'semantic-ui-react';
 import axios from 'axios';
 
@@ -101,7 +102,7 @@ export default function TeamView(props) {
           });
           setDescription({ ...description, setting: false });
         });
-    } else {
+    } else if (type === 'name' && value.length > 2) {
       axios
         .put(`/api/team/name`, {
           tm: team.name,
@@ -133,18 +134,16 @@ export default function TeamView(props) {
           ) : (
             <div style={{ display: 'flex' }}>
               <Input
-                action={{
-                  icon: 'close',
-                  size: 'mini',
-                  onClick: () => {
-                    setName({ ...name, setting: false });
-                  },
+                error={team.name.length < 3}
+                value={team.name}
+                onBlur={(e) => {
+                  updateTeam(e.target.value, 'name');
                 }}
                 size="mini"
                 placeholder={team.name}
                 style={{ border: 0, width: 125 }}
                 onChange={(e) => {
-                  setName({ ...name, name: e.target.value });
+                  setTeam({ ...team, name: e.target.value });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -174,26 +173,24 @@ export default function TeamView(props) {
               : team.description}
           </p>
         ) : (
-          <div style={{ display: 'flex' }}>
-            <textarea
-              value={team.description}
-              onBlur={(e) => {
+          <TextArea
+            value={team.description}
+            onBlur={(e) => {
+              updateTeam(e.target.value, 'description');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
                 updateTeam(e.target.value, 'description');
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  updateTeam(e.target.value, 'description');
-                }
-              }}
-              style={{ border: 0, fontStyle: 'italic' }}
-              onChange={(e) => {
-                setTeam({
-                  ...team,
-                  description: e.target.value,
-                });
-              }}
-            />
-          </div>
+              }
+            }}
+            style={{ border: 0, fontStyle: 'italic' }}
+            onChange={(e) => {
+              setTeam({
+                ...team,
+                description: e.target.value,
+              });
+            }}
+          />
         )}
       </Menu.Item>
 

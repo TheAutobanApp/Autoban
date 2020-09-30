@@ -256,7 +256,7 @@ router.put('/description', function (req, res) {
 router.put('/name', function (req, res) {
   // update team name
   console.log(req.body.tm);
-  if (req.body.tn !== req.body.newtm) {
+  if (req.body.newtm) {
     db.Team.findOne({
       where: { id_team: req.body.tmid },
     })
