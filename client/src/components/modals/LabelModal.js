@@ -59,7 +59,7 @@ export default function TaskModal() {
       onClose={hideModal}
       customStyles={modalStyle}
     >
-      <div className="label-modal">
+      <div className="label-modal" id="label-modal">
         <h5>Create Label</h5>
         <div>
           <Input

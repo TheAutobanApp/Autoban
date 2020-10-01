@@ -561,7 +561,7 @@ code {
 .home-view-cont {
   width: 80%;
   height: 75%;
-  max-width: 870px;
+  max-width: 950px;
   max-height: 600px;
   display: flex;
 }
@@ -639,4 +639,11 @@ code {
 
 .label-column > p {
   margin: 5px;
+}
+
+/* transition */
+
+.transition-size {
+  transition: all 1.5s linear;
+  transition: height 0.5s linear;
 }

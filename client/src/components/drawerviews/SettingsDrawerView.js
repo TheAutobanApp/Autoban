@@ -1,6 +1,12 @@
 import { MdClose } from 'react-icons/md';
 import { FaPlus } from 'react-icons/fa';
-import { Label, Input, TextArea, Form } from 'semantic-ui-react';
+import {
+  Label,
+  Input,
+  TextArea,
+  Form,
+  Message,
+} from 'semantic-ui-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../../AutoContext';
 import axios from 'axios';
@@ -8,18 +14,11 @@ import axios from 'axios';
 export default function SettingsDrawerView(props) {
   const [project, setProject] = useState({
     description: '',
+    newDescription: '',
     descSetting: false,
     name: '',
+    newName: '',
     nameSetting: false,
-
-  });
-  const [name, setName] = useState({
-    name: '',
-    setting: false,
-  });
-  const [description, setDescription] = useState({
-    description: '',
-    setting: false,
   });
   const context = useContext(AutoContext);
 
@@ -29,14 +28,16 @@ export default function SettingsDrawerView(props) {
         setProject({
           ...project,
           name: proj.project_name,
+          newName: proj.project_name,
           description: proj.project_description,
+          newDescription: proj.project_description,
         });
       }
     });
   }, [context[10].project]);
 
   const updateProject = (value, type) => {
-    if (type === 'name') {
+    if (type === 'name' && project.name !== project.newName) {
       axios
         .put('api/project/name', {
           newpn: value,
@@ -45,11 +46,15 @@ export default function SettingsDrawerView(props) {
         .then((response) => {
           setProject({
             ...project,
+            nameSetting: false,
             name: response.data.project_name,
+            newName: response.data.project_name,
           });
-          // setName({ ...name, setting: false });
         });
-    } else {
+    } else if (
+      type === 'description' &&
+      project.description !== project.newDescription
+    ) {
       axios
         .put('api/project/description', {
           newDescription: value,
@@ -59,10 +64,17 @@ export default function SettingsDrawerView(props) {
         .then((response) => {
           setProject({
             ...project,
+            descSetting: false,
             description: response.data.project_description,
+            newDescription: response.data.project_description,
           });
-          // setDescription({ ...description, setting: false });
         });
+    } else {
+      setProject({
+        ...project,
+        nameSetting: false,
+        descSetting: false,
+      });
     }
   };
   return (
@@ -78,45 +90,82 @@ export default function SettingsDrawerView(props) {
         />
       </div>
       {/* title */}
-      <Form className="flex-column">
-      <Input
-        value={project.name}
-        onBlur={(e) => {
-          updateProject(e.target.value, 'name');
-        }}
-        // placeholder={project.name}
-        style={{ width: '100%', margin: 4 }}
-        onChange={(e) => {
-          setProject({ ...project, name: e.target.value });
-        }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            updateProject(e.target.value, 'name');
-          }
-        }}
-      />
-      {/* description */}
+      <Form
+        className="flex-column"
+        style={{ width: '90%' }}
+        error={project.newName.length === 0}
+      >
+        {!project.nameSetting ? (
+          <span
+            onClick={() => {
+              setProject({ ...project, nameSetting: true });
+            }}
+          >
+            {project.name}
+          </span>
+        ) : (
+          <Input
+            autoFocus
+            value={project.newName}
+            onBlur={(e) => {
+              updateProject(e.target.value.trim(), 'name');
+            }}
+            style={{ width: '100%', margin: 4 }}
+            onChange={(e) => {
+              setProject({ ...project, newName: e.target.value });
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                updateProject(e.target.value.trim(), 'name');
+              }
+            }}
+          />
+        )}
+        <Message error size="mini" content="Project name required." />
+        {/* description */}
 
-      {/* <div className="drawer-description"> */}
-        <TextArea
-          onBlur={(e) => {
-            updateProject(e.target.value, 'description');
-          }}
-          // placeholder={project.description}
-          value={project.description}
-          style={{ width: '100%', margin: 4 }}
-          onChange={(e) => {
-            setProject({
-              ...project,
-              description: e.target.value,
-            });
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              updateProject(e.target.value, 'description');
-            }
-          }}
-        />
+        {/* <div className="drawer-description"> */}
+        {!project.descSetting ? (
+          <p
+            style={{
+              color: 'gray',
+              fontStyle: 'italic',
+              width: '100%',
+              minHeight: 40,
+              textAlign: 'center',
+              whiteSpace: 'pre-wrap',
+            }}
+            onClick={() => {
+              setProject({ ...project, descSetting: true });
+            }}
+          >
+            {project.description === null ||
+            project.description === ''
+              ? `Add description`
+              : project.description}
+          </p>
+        ) : (
+          <TextArea
+            autoFocus
+            onBlur={(e) => {
+              console.log('test');
+              updateProject(e.target.value.trim(), 'description');
+            }}
+            value={project.newDescription}
+            style={{ width: '100%', margin: 4 }}
+            onChange={(e) => {
+              setProject({
+                ...project,
+                newDescription: e.target.value,
+              });
+            }}
+            // onKeyDown={(e) => {
+            //   if (e.key === 'Enter') {
+            //     updateProject(e.target.value.trim(), 'description');
+            //   }
+            // }}
+          />
+        )}
         {/* <input
           defaultValue="https://autobanprod.herokuapp.com/autobanproj"
           style={{
@@ -127,7 +176,7 @@ export default function SettingsDrawerView(props) {
         {/* <span style={{ fontSize: 10, color: 'lightgray' }}>
           project url
         </span> */}
-      {/* </div> */}
+        {/* </div> */}
       </Form>
       {/* <div style={linebreak}></div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>

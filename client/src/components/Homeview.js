@@ -4,6 +4,7 @@ import TeamView from './TeamView';
 import ProjectCard from './ProjectCard';
 import AddProject from './AddProject';
 import { AutoContext } from '../AutoContext';
+import Fade from 'react-reveal/Fade';
 
 export default function Homeview(props) {
   const context = useContext(AutoContext);
@@ -53,14 +54,34 @@ export default function Homeview(props) {
 
   return (
     <div className="project-view home-view">
-      <div className="home-view-cont">
+      <div className="home-view-cont transition-size">
         <TeamMenu />
         <div className="project-list">
           <AddProject />
           {renderProjects()}
         </div>
-        {context[8].team &&
-          context[8].team.team_name !== 'Personal' && <TeamView />}
+        {/* {context[8].team &&
+          context[8].team.team_name !== 'Personal' && <TeamView />} */}
+
+        <Fade
+          right
+          unmountOnExit
+          mountOnEnter
+          when={
+            context[8].team &&
+            context[8].team.team_name !== 'Personal'
+          }
+        >
+          <div
+            style={{
+              width: 300,
+              height: '100%',
+              maxHeight: '600px',
+            }}
+          >
+            <TeamView />
+          </div>
+        </Fade>
       </div>
     </div>
   );

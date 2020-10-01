@@ -109,7 +109,7 @@ router.put('/name', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else res.status(401).json(err);
+  } else res.status(401)
 });
 router.put('/description', function (req, res) {
   // update project description
@@ -137,7 +137,7 @@ router.put('/description', function (req, res) {
       .catch((err) => {
         res.status(401).json(err);
       });
-  } else res.status(401).json(err);
+  } else res.status(401);
 });
 //   // update project start date
 

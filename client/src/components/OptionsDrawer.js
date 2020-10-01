@@ -22,21 +22,28 @@ export default function OptionsDrawer(props) {
   };
 
   const closeClick = (e) => {
-    // console.log(e.path)
-    if (!e.path.some(el => el.id === 'drawer' || el.id === 'settings')) {
-      context[1]({ ...context[0], open: false})
+    // console.log(e.path);
+    if (
+      !e.path.some(
+        (el) =>
+          el.id === 'drawer' ||
+          el.id === 'settings' ||
+          el.id === 'label-modal',
+      )
+    ) {
+      context[1]({ ...context[0], open: false });
     }
-  }
+  };
 
   useEffect(() => {
     if (context[0].open) {
-      document.addEventListener('mousedown', closeClick)
+      document.addEventListener('mousedown', closeClick);
 
-      return (() => {
-        document.removeEventListener('mousedown', closeClick)
-      })
+      return () => {
+        document.removeEventListener('mousedown', closeClick);
+      };
     }
-  }, [context[0].open])
+  }, [context[0].open]);
 
   return (
     <Fade right when={context[0].open} collapse duration={400}>
