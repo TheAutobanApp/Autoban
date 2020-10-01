@@ -11,24 +11,15 @@ import axios from 'axios';
 import {
   Icon,
   Label,
-  Dropdown,
-  DropdownDivider,
   Input,
   Form,
   TextArea,
 } from 'semantic-ui-react';
 import ModalButton from '../ModalButton';
-import ReactDOM from 'react-dom';
+import LabelMenu from '../LabelMenu';
 
 export default function TaskModal(props) {
   const context = useContext(AutoContext);
-
-  const target = useRef(null);
-  const [menu, setMenu] = useState({
-    offsetTop: 0,
-    offsetLeft: 0,
-    addLabel: '',
-  });
   const [task, setTask] = useState({
     id_user: context[8].id_user,
     id_column: null,
@@ -43,6 +34,8 @@ export default function TaskModal(props) {
     id_label2: null,
     id_label3: null,
   });
+  const [labels, setLabels] = useState([]);
+  const [availLabels, setAvailLabels] = useState([]);
   // if user is editing task in modal search for the task that they are editing else create new task
   useEffect(() => {
     if (context[4].edit) {
@@ -62,10 +55,6 @@ export default function TaskModal(props) {
       setTask({ ...task, id_column: context[4].column });
     }
   }, [context[4]]);
-
-  const [labels, setLabels] = useState([]);
-  const [availLabels, setAvailLabels] = useState([]);
-
   // on mount and when project label context is updated,
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
@@ -103,7 +92,6 @@ export default function TaskModal(props) {
       setAvailLabels(context[12].projectLabels);
     }
   }, [context[12].projectLabels]);
-
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
     // create copies of state arrays
@@ -143,49 +131,6 @@ export default function TaskModal(props) {
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
-  };
-
-  // move label to card's label state and remove from available label state
-  const handleAddLabel = (i) => {
-    // create copies of state arrays
-    const availCopy = Array.from(availLabels);
-    const labelsCopy = Array.from(labels);
-    // find the index of the label to be added using the label id
-    const foundIndex = availCopy.findIndex(
-      (item) => item.id_label === i,
-    );
-    // copy of added label object, update task with the id label from that object
-    const newLabel = availCopy[foundIndex];
-    // use label array length to determine which column to update
-    switch (labels.length) {
-      case 0:
-        setTask({ ...task, id_label1: i });
-        break;
-      case 1:
-        setTask({ ...task, id_label2: i });
-        break;
-      case 2:
-        setTask({ ...task, id_label3: i });
-        break;
-      default:
-        console.log('Label length is invalid');
-    }
-    // push added label into task label array and remove from available array
-    labelsCopy.push(newLabel);
-    availCopy.splice(foundIndex, 1);
-    // update state with new copies
-    setLabels(labelsCopy);
-    setAvailLabels(availCopy);
-  };
-
-  // update modal context when selecting to create a label from dropdown
-  // remove styles and put into stylesheet
-  const handleCreateLabel = () => {
-    context[5]({
-      ...context[4],
-      showLabel: true,
-      labelName: menu.addLabel,
-    });
   };
 
   const hideModal = () => {
@@ -295,109 +240,16 @@ export default function TaskModal(props) {
           })}
           {/* only allow 3 labels by rendering add button when task label array length is less than 3*/}
           {labels.length < 3 && (
-            <Dropdown
-              compact
-              ref={target}
-              pointing="top left"
-              trigger={
-                <Label
-                  size="mini"
-                  color="blue"
-                  circular
-                  basic
-                  className="clickable"
-                >
-                  <Icon name="add" />
-                  Label
-                </Label>
-              }
-              icon={null}
-              labeled
-              id={`add${props.id}`}
-              onClose={() => {
-                setMenu({ ...menu, addLabel: '' });
-              }}
-              onClick={(e) => {
-                // manually set positioning in DOM using offset of parents and element
-                // allows us to position the dropdown exactly where we want
-                const targ = ReactDOM.findDOMNode(target.current);
-                setMenu({
-                  offsetTop:
-                    targ.parentElement.offsetTop +
-                    targ.parentElement.parentElement.offsetTop +
-                    80,
-                  offsetLeft:
-                    targ.offsetLeft +
-                    targ.parentElement.parentElement.offsetLeft,
-                });
-              }}
-            >
-              <Dropdown.Menu
-                style={{
-                  minWidth: 'fit-content',
-                  zIndex: 1000,
-                }}
-              >
-                {/* input for adding a label */}
-                <Input
-                  maxLength={16}
-                  scrolling
-                  size="mini"
-                  className="search"
-                  value={menu.addLabel}
-                  // prevents closing of dropdown when selecting input
-                  onClick={(e) => e.stopPropagation()}
-                  // prevents closing of dropdown when hitting space bar
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 32) {
-                      e.stopPropagation();
-                    }
-                  }}
-                  onChange={(e) =>
-                    context[5]({
-                      ...context[4],
-                      labelName: e.target.value,
-                    })
-                  }
-                />
-                <Dropdown.Divider />
-                <Dropdown.Menu scrolling>
-                  {/* if input has more than 1 character, show the add label item */}
-                  {context[4].labelName &&
-                    context[4].labelName.length > 1 && (
-                      <>
-                        <Dropdown.Item onClick={handleCreateLabel}>
-                          <div className="flex-row">
-                            <Icon name="add circle" size="small" />
-                            <p style={{ fontSize: 13 }}>
-                              New label "{menu.addLabel}"
-                            </p>
-                          </div>
-                        </Dropdown.Item>
-                        <DropdownDivider />
-                      </>
-                    )}
-                  {availLabels.map((option, i) => {
-                    return (
-                      <Dropdown.Item
-                        key={option.label_name}
-                        text={option.label_name}
-                        value={option.label_name}
-                        onClick={() =>
-                          handleAddLabel(option.id_label)
-                        }
-                        label={{
-                          color: option.color,
-                          empty: true,
-                          circular: true,
-                        }}
-                      />
-                    );
-                  })}
-                  {/* if input is more than 1 letter, show create label selection */}
-                </Dropdown.Menu>
-              </Dropdown.Menu>
-            </Dropdown>
+            <LabelMenu
+              modal={true}
+              id={context[4].card}
+              labels={[
+                labels,
+                setLabels,
+                availLabels,
+                setAvailLabels,
+              ]}
+            />
           )}
         </div>
       </div>
