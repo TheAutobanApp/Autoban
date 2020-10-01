@@ -656,12 +656,12 @@ code {
   transform: translateX(95px)
 }
 
-.avatar {
+.avatars {
   margin-bottom: .25em; 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.349);
   transition: transform 0.3s ease
 }
 
-.avatar:hover {
+.avatars:hover {
   transform: scale(1.1)
 }

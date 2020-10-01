@@ -7,6 +7,7 @@ import {
   Form,
   Message,
 } from 'semantic-ui-react';
+import ReactMarkdown from 'react-markdown';
 import React, { useContext, useState, useEffect } from 'react';
 import { AutoContext } from '../../AutoContext';
 import axios from 'axios';
@@ -97,6 +98,15 @@ export default function SettingsDrawerView(props) {
       >
         {!project.nameSetting ? (
           <span
+            style={{
+              fontSize: 18,
+              marginLeft: 2,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              height: 29,
+              display: 'flex',
+              alignItems: 'center',
+            }}
             onClick={() => {
               setProject({ ...project, nameSetting: true });
             }}
@@ -105,12 +115,18 @@ export default function SettingsDrawerView(props) {
           </span>
         ) : (
           <Input
+            maxLength={50}
             autoFocus
             value={project.newName}
             onBlur={(e) => {
               updateProject(e.target.value.trim(), 'name');
             }}
-            style={{ width: '100%', margin: 4 }}
+            style={{
+              width: '100%',
+              height: 29,
+              fontSize: 15,
+              marginLeft: 2,
+            }}
             onChange={(e) => {
               setProject({ ...project, newName: e.target.value });
             }}
@@ -129,10 +145,10 @@ export default function SettingsDrawerView(props) {
           <p
             style={{
               color: 'gray',
-              fontStyle: 'italic',
+              // fontStyle: 'italic',
               width: '100%',
               minHeight: 40,
-              textAlign: 'center',
+              // textAlign: 'center',
               whiteSpace: 'pre-wrap',
             }}
             onClick={() => {
@@ -140,12 +156,16 @@ export default function SettingsDrawerView(props) {
             }}
           >
             {project.description === null ||
-            project.description === ''
-              ? `Add description`
-              : project.description}
+            project.description === '' ? (
+              `Add description`
+            ) : (
+              <ReactMarkdown source={project.description} />
+            )}
           </p>
         ) : (
           <TextArea
+            maxLength={200}
+            rows={5}
             autoFocus
             onBlur={(e) => {
               console.log('test');

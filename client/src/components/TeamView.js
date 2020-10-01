@@ -27,7 +27,7 @@ export default function TeamView(props) {
     position: 'absolute',
     overflow: 'hidden',
     width: 190,
-    height: '100%',
+    height: 'calc(75vh - 46px)',
     maxHeight: '600px',
   };
 
@@ -132,8 +132,8 @@ export default function TeamView(props) {
   return (
     <Menu vertical style={menu} className={team - menu}>
       {team.name && (
-        <Fade cascade >
-          <Menu.Item style={{minHeight: 140}}>
+        <Fade cascade>
+          <Menu.Item style={{ minHeight: 140 }}>
             <Menu.Header
               style={{
                 display: 'flex',
@@ -142,24 +142,25 @@ export default function TeamView(props) {
                 flexWrap: 'wrap',
               }}
             >
-              
               {!name.setting ? (
                 <span
                   style={{ fontSize: 18, marginLeft: 2 }}
                   onClick={() => {
                     setName({ ...name, setting: true });
                   }}
-                ><Label
-                empty
-                size="mini"
-                circular
-                color={team.color}
-              ></Label>
+                >
+                  <Label
+                    empty
+                    size="mini"
+                    circular
+                    color={team.color}
+                  ></Label>
                   {team.name}
                 </span>
               ) : (
                 <div style={{ display: 'flex' }}>
                   <Input
+                    maxLength={50}
                     autoFocus
                     error={team.name.length < 3}
                     value={team.name}
@@ -205,6 +206,7 @@ export default function TeamView(props) {
             ) : (
               <Form>
                 <TextArea
+                  maxLength={200}
                   rows={3}
                   autoFocus
                   value={team.description}
@@ -234,7 +236,6 @@ export default function TeamView(props) {
         <Fade cascade>
           <Menu.Item>
             <Menu.Header>Collaborators</Menu.Header>
-
             <Menu.Menu style={{}}>
               <div
                 style={{
@@ -248,14 +249,14 @@ export default function TeamView(props) {
                     <>
                       {collab.avatar === null ? (
                         <Popup
-                        size="mini"
+                          size="mini"
                           position="bottom left"
                           content={collab.username}
                           key={index}
                           header={`${collab.first_name} ${collab.last_name}`}
                           trigger={
                             <Image
-                              className="avatar"
+                              className="avatars"
                               avatar
                               src="/default.png"
                             />
@@ -263,14 +264,14 @@ export default function TeamView(props) {
                         />
                       ) : (
                         <Popup
-                        size="mini"
+                          size="mini"
                           position="bottom left"
                           content={collab.username}
                           key={index}
                           header={`${collab.first_name} ${collab.last_name}`}
                           trigger={
                             <Image
-                              className="avatar"
+                              className="avatars"
                               avatar
                               src={collab.avatar}
                             />
@@ -303,13 +304,13 @@ export default function TeamView(props) {
                     <>
                       {collab.avatar === null ? (
                         <Popup
-                        size="mini"
+                          size="mini"
                           position="bottom left"
                           content={collab.username}
                           key={index}
                           trigger={
                             <Image
-                              className="avatar"
+                              className="avatars"
                               avatar
                               src="/default.png"
                             />
@@ -317,13 +318,13 @@ export default function TeamView(props) {
                         />
                       ) : (
                         <Popup
-                        size="mini"
+                          size="mini"
                           position="bottom left"
                           content={collab.username}
                           key={index}
                           trigger={
                             <Image
-                              className="avatar"
+                              className="avatars"
                               avatar
                               src={collab.avatar}
                             />
