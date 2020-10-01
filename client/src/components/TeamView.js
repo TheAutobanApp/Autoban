@@ -24,10 +24,9 @@ export default function TeamView(props) {
 
   const menu = {
     marginLeft: 5,
-    // marginTop: '20%',
     position: 'absolute',
     overflow: 'hidden',
-    width: 200,
+    width: 190,
     height: '100%',
     maxHeight: '600px',
   };
@@ -133,37 +132,35 @@ export default function TeamView(props) {
   return (
     <Menu vertical style={menu} className={team - menu}>
       {team.name && (
-        <Fade cascade>
-          <Menu.Item style={{ minHeight: '25%' }}>
+        <Fade cascade >
+          <Menu.Item style={{minHeight: 140}}>
             <Menu.Header
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                height: 30,
+                minHeight: 30,
                 flexWrap: 'wrap',
               }}
             >
-              <Label
-                empty
-                size="mini"
-                circular
-                color={team.color}
-              ></Label>
+              
               {!name.setting ? (
                 <span
                   style={{ fontSize: 18, marginLeft: 2 }}
                   onClick={() => {
                     setName({ ...name, setting: true });
-                    // document.getElementById('team-name').focus();
                   }}
-                >
+                ><Label
+                empty
+                size="mini"
+                circular
+                color={team.color}
+              ></Label>
                   {team.name}
                 </span>
               ) : (
                 <div style={{ display: 'flex' }}>
                   <Input
                     autoFocus
-                    id="team-name"
                     error={team.name.length < 3}
                     value={team.name}
                     onBlur={(e) => {
@@ -235,15 +232,15 @@ export default function TeamView(props) {
       )}
       {collabs.active.length > 0 && (
         <Fade cascade>
-          <Menu.Item style={{ maxHeight: '35%' }}>
+          <Menu.Item>
             <Menu.Header>Collaborators</Menu.Header>
 
             <Menu.Menu style={{}}>
               <div
                 style={{
                   display: 'flex',
+                  flexWrap: 'wrap',
                   padding: '5px 15px',
-                  height: '100%',
                 }}
               >
                 {collabs.active.map((collab, index) => {
@@ -291,7 +288,7 @@ export default function TeamView(props) {
 
       {collabs.pending.length > 0 && (
         <Fade cascade>
-          <Menu.Item style={{ maxHeight: '35%' }}>
+          <Menu.Item>
             <Menu.Header>Pending</Menu.Header>
             <Menu.Menu style={{ opacity: 0.5 }}>
               <div
@@ -346,7 +343,7 @@ export default function TeamView(props) {
           position: 'absolute',
           bottom: 3,
           margin: '4px 6px',
-          width: '187px',
+          width: '176px',
         }}
         disabled={false}
         onclick={() =>

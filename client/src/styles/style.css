@@ -582,6 +582,11 @@ code {
   padding: 0!important;
 }
 
+.projcard:hover {
+  transform: scale(1.02);
+  transition: transform .3s ease-in-out;
+}
+
 .projcard-overlay {
   display: flex;
   justify-content: flex-end;
@@ -648,10 +653,11 @@ code {
 }
 
 .offset {
-  transform: translateX(100px)
+  transform: translateX(95px)
 }
 
 .avatar {
+  margin-bottom: .25em; 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.349);
   transition: transform 0.3s ease
 }
