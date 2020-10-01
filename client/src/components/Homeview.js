@@ -54,7 +54,8 @@ export default function Homeview(props) {
 
   return (
     <div className="project-view home-view">
-      <div className="home-view-cont transition-size">
+      <div className={context[8].team &&
+          context[8].team.team_name !== 'Personal' ? "home-view-cont home-transition" : 'home-view-cont home-transition offset'}>
         <TeamMenu />
         <div className="project-list">
           <AddProject />
@@ -64,6 +65,7 @@ export default function Homeview(props) {
           context[8].team.team_name !== 'Personal' && <TeamView />} */}
 
         <Fade
+          duration={500}
           right
           unmountOnExit
           mountOnEnter

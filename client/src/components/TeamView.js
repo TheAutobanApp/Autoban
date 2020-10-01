@@ -22,8 +22,6 @@ export default function TeamView(props) {
     // display: 'flex',
   };
 
-  const [height, setHeight] = useState('')
-
   const menu = {
     marginLeft: 5,
     // marginTop: '20%',
@@ -34,11 +32,13 @@ export default function TeamView(props) {
     maxHeight: '600px',
   };
 
-  const [team, setTeam] = useState({
+  const initialTeamState = {
     name: '',
     description: '',
     color: '',
-  });
+  };
+
+  const [team, setTeam] = useState(initialTeamState);
 
   const [description, setDescription] = useState({
     setting: false,
@@ -89,8 +89,13 @@ export default function TeamView(props) {
         });
       // get pending users
     }
-    setHeight('75%')
-    console.log(height)
+    return () => {
+      setTeam(initialTeamState);
+      setCollabs({
+        active: [],
+        pending: [],
+      });
+    };
   }, [context[8].team]);
 
   const updateTeam = (value, type) => {
@@ -126,190 +131,215 @@ export default function TeamView(props) {
   };
 
   return (
-    <Menu vertical style={menu} className={team-menu}>
-      <Menu.Item style={{ minHeight: '25%' }}>
-        <Menu.Header
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: 30,
-            flexWrap: 'wrap',
-          }}
-        >
-          <Label
-            empty
-            size="mini"
-            circular
-            color={team.color}
-          ></Label>
-          {!name.setting ? (
-            <span
-              style={{ fontSize: 18, marginLeft: 2 }}
-              onClick={() => {
-                setName({ ...name, setting: true });
-                // document.getElementById('team-name').focus();
-              }}
-            >
-              {team.name}
-            </span>
-          ) : (
-            <div style={{ display: 'flex' }}>
-              <Input
-                autoFocus
-                id="team-name"
-                error={team.name.length < 3}
-                value={team.name}
-                onBlur={(e) => {
-                  updateTeam(e.target.value.trim(), 'name');
-                }}
-                size="mini"
-                placeholder={team.name}
-                style={{
-                  width: 125,
-                  height: 29,
-                  fontSize: 15,
-                  marginLeft: 2,
-                }}
-                onChange={(e) => {
-                  setTeam({ ...team, name: e.target.value });
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    updateTeam(e.target.value.trim(), 'name');
-                  }
-                }}
-              />
-            </div>
-          )}{' '}
-        </Menu.Header>
-
-        {!description.setting ? (
-          <p
-            style={{
-              color: 'gray',
-              fontStyle: 'italic',
-              whiteSpace: 'pre-wrap',
-            }}
-            onClick={() => {
-              setDescription({ ...description, setting: true });
-            }}
-          >
-            {team.description === null || team.description === ''
-              ? `Add description`
-              : team.description}
-          </p>
-        ) : (
-          <Form>
-            <TextArea
-              rows={3}
-              autoFocus
-              value={team.description}
-              onBlur={(e) => {
-                updateTeam(e.target.value.trim(), 'description');
-              }}
-              // onKeyDown={(e) => {
-              //   if (e.key === 'Enter') {
-              //     updateTeam(e.target.value.trim(), 'description');
-              //   }
-              // }}
-              style={{ fontStyle: 'italic' }}
-              placeholder="Add a description"
-              onChange={(e) => {
-                setTeam({
-                  ...team,
-                  description: e.target.value,
-                });
-              }}
-            />
-          </Form>
-        )}
-      </Menu.Item>
-
-      <Menu.Item style={{ maxHeight: '35%' }}>
-        <Menu.Header>Collaborators</Menu.Header>
-
-        <Menu.Menu style={{}}>
-          <div
-            style={{
-              display: 'flex',
-              padding: '5px 15px',
-              height: '100%',
-            }}
-          >
-            {collabs.active.map((collab, index) => {
-              return (
-                <>
-                  {collab.avatar === null ? (
-                    <Popup
-                      position="bottom left"
-                      content={collab.username}
-                      key={index}
-                      header={`${collab.first_name} ${collab.last_name}`}
-                      trigger={
-                        <Image
-                        className="avatar"
-                          avatar
-                          src="/default.png"
-                        />
-                      }
-                    />
-                  ) : (
-                    <Popup
-                      position="bottom left"
-                      content={collab.username}
-                      key={index}
-                      header={`${collab.first_name} ${collab.last_name}`}
-                      trigger={<Image className="avatar" avatar src={collab.avatar} />}
-                    />
-                  )}
-                </>
-              );
-            })}
-          </div>
-        </Menu.Menu>
-      </Menu.Item>
-
-      {collabs.pending.length > 0 && (
-        <Menu.Item style={{ maxHeight: '35%' }}>
-          <Menu.Header>Pending</Menu.Header>
-          <Menu.Menu style={{ opacity: 0.5 }}>
-            <div
+    <Menu vertical style={menu} className={team - menu}>
+      {team.name && (
+        <Fade cascade>
+          <Menu.Item style={{ minHeight: '25%' }}>
+            <Menu.Header
               style={{
                 display: 'flex',
+                alignItems: 'center',
+                height: 30,
                 flexWrap: 'wrap',
-                padding: '5px 15px',
               }}
             >
-              {collabs.pending.map((collab, index) => {
-                return (
-                  <>
-                    {collab.avatar === null ? (
-                    <Popup
-                      position="bottom left"
-                      content={collab.username}
-                      key={index}
-                      trigger={
-                        <Image
-                        className="avatar"
-                          avatar
-                          src="/default.png"
-                        />
+              <Label
+                empty
+                size="mini"
+                circular
+                color={team.color}
+              ></Label>
+              {!name.setting ? (
+                <span
+                  style={{ fontSize: 18, marginLeft: 2 }}
+                  onClick={() => {
+                    setName({ ...name, setting: true });
+                    // document.getElementById('team-name').focus();
+                  }}
+                >
+                  {team.name}
+                </span>
+              ) : (
+                <div style={{ display: 'flex' }}>
+                  <Input
+                    autoFocus
+                    id="team-name"
+                    error={team.name.length < 3}
+                    value={team.name}
+                    onBlur={(e) => {
+                      updateTeam(e.target.value.trim(), 'name');
+                    }}
+                    size="mini"
+                    placeholder={team.name}
+                    style={{
+                      width: 125,
+                      height: 29,
+                      fontSize: 15,
+                      marginLeft: 2,
+                    }}
+                    onChange={(e) => {
+                      setTeam({ ...team, name: e.target.value });
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        updateTeam(e.target.value.trim(), 'name');
                       }
-                    />
-                  ) : (
-                    <Popup
-                      position="bottom left"
-                      content={collab.username}
-                      key={index}
-                      trigger={<Image className="avatar" avatar src={collab.avatar} />}
-                    />
-                  )}
-                  </>
-                );
-              })}
-            </div>
-          </Menu.Menu>
-        </Menu.Item>
+                    }}
+                  />
+                </div>
+              )}{' '}
+            </Menu.Header>
+
+            {!description.setting ? (
+              <p
+                style={{
+                  color: 'gray',
+                  fontStyle: 'italic',
+                  whiteSpace: 'pre-wrap',
+                }}
+                onClick={() => {
+                  setDescription({ ...description, setting: true });
+                }}
+              >
+                {team.description === null || team.description === ''
+                  ? `Add description`
+                  : team.description}
+              </p>
+            ) : (
+              <Form>
+                <TextArea
+                  rows={3}
+                  autoFocus
+                  value={team.description}
+                  onBlur={(e) => {
+                    updateTeam(e.target.value.trim(), 'description');
+                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Enter') {
+                  //     updateTeam(e.target.value.trim(), 'description');
+                  //   }
+                  // }}
+                  style={{ fontStyle: 'italic' }}
+                  placeholder="Add a description"
+                  onChange={(e) => {
+                    setTeam({
+                      ...team,
+                      description: e.target.value,
+                    });
+                  }}
+                />
+              </Form>
+            )}
+          </Menu.Item>
+        </Fade>
+      )}
+      {collabs.active.length > 0 && (
+        <Fade cascade>
+          <Menu.Item style={{ maxHeight: '35%' }}>
+            <Menu.Header>Collaborators</Menu.Header>
+
+            <Menu.Menu style={{}}>
+              <div
+                style={{
+                  display: 'flex',
+                  padding: '5px 15px',
+                  height: '100%',
+                }}
+              >
+                {collabs.active.map((collab, index) => {
+                  return (
+                    <>
+                      {collab.avatar === null ? (
+                        <Popup
+                        size="mini"
+                          position="bottom left"
+                          content={collab.username}
+                          key={index}
+                          header={`${collab.first_name} ${collab.last_name}`}
+                          trigger={
+                            <Image
+                              className="avatar"
+                              avatar
+                              src="/default.png"
+                            />
+                          }
+                        />
+                      ) : (
+                        <Popup
+                        size="mini"
+                          position="bottom left"
+                          content={collab.username}
+                          key={index}
+                          header={`${collab.first_name} ${collab.last_name}`}
+                          trigger={
+                            <Image
+                              className="avatar"
+                              avatar
+                              src={collab.avatar}
+                            />
+                          }
+                        />
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+            </Menu.Menu>
+          </Menu.Item>
+        </Fade>
+      )}
+
+      {collabs.pending.length > 0 && (
+        <Fade cascade>
+          <Menu.Item style={{ maxHeight: '35%' }}>
+            <Menu.Header>Pending</Menu.Header>
+            <Menu.Menu style={{ opacity: 0.5 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  padding: '5px 15px',
+                }}
+              >
+                {collabs.pending.map((collab, index) => {
+                  return (
+                    <>
+                      {collab.avatar === null ? (
+                        <Popup
+                        size="mini"
+                          position="bottom left"
+                          content={collab.username}
+                          key={index}
+                          trigger={
+                            <Image
+                              className="avatar"
+                              avatar
+                              src="/default.png"
+                            />
+                          }
+                        />
+                      ) : (
+                        <Popup
+                        size="mini"
+                          position="bottom left"
+                          content={collab.username}
+                          key={index}
+                          trigger={
+                            <Image
+                              className="avatar"
+                              avatar
+                              src={collab.avatar}
+                            />
+                          }
+                        />
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+            </Menu.Menu>
+          </Menu.Item>
+        </Fade>
       )}
       <ModalButton
         style={{
