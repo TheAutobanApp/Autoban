@@ -247,8 +247,9 @@ export default function TeamView(props) {
                       header={`${collab.first_name} ${collab.last_name}`}
                       trigger={
                         <Image
+                        className="avatar"
                           avatar
-                          src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                          src="/default.png"
                         />
                       }
                     />
@@ -258,7 +259,7 @@ export default function TeamView(props) {
                       content={collab.username}
                       key={index}
                       header={`${collab.first_name} ${collab.last_name}`}
-                      trigger={<Image avatar src={collab.avatar} />}
+                      trigger={<Image className="avatar" avatar src={collab.avatar} />}
                     />
                   )}
                 </>
@@ -289,8 +290,9 @@ export default function TeamView(props) {
                       key={index}
                       trigger={
                         <Image
+                        className="avatar"
                           avatar
-                          src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                          src="/default.png"
                         />
                       }
                     />
@@ -299,7 +301,7 @@ export default function TeamView(props) {
                       position="bottom left"
                       content={collab.username}
                       key={index}
-                      trigger={<Image avatar src={collab.avatar} />}
+                      trigger={<Image className="avatar" avatar src={collab.avatar} />}
                     />
                   )}
                   </>

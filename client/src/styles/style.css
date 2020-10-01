@@ -590,7 +590,7 @@ code {
   height: inherit;
   padding: 5px;
   border-radius: 5px;
-  background: linear-gradient(to bottom, transparent, rgba(10, 10, 10, .4))
+  background: linear-gradient(to bottom, transparent, rgba(10, 10, 10, .3))
 }
 
 .projcard-logo {
@@ -646,4 +646,8 @@ code {
 .transition-size {
   transition: all 1.5s linear;
   transition: height 0.5s linear;
+}
+
+.avatar {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.349)
 }
