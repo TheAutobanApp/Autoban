@@ -241,7 +241,7 @@ export default function TeamView(props) {
                 <>
                   {collab.avatar === null ? (
                     <Popup
-                      position="bottom center"
+                      position="bottom left"
                       content={collab.username}
                       key={index}
                       header={`${collab.first_name} ${collab.last_name}`}
@@ -269,9 +269,9 @@ export default function TeamView(props) {
       </Menu.Item>
 
       {collabs.pending.length > 0 && (
-        <Menu.Item style={{ maxHeight: '35%', overflow: 'hidden' }}>
+        <Menu.Item style={{ maxHeight: '35%' }}>
           <Menu.Header>Pending</Menu.Header>
-          <Menu.Menu style={{ opacity: 0.5, overflow: 'auto' }}>
+          <Menu.Menu style={{ opacity: 0.5 }}>
             <div
               style={{
                 display: 'flex',
@@ -283,13 +283,25 @@ export default function TeamView(props) {
                 return (
                   <>
                     {collab.avatar === null ? (
-                      <Image
-                        avatar
-                        src="https://avatarfiles.alphacoders.com/916/91685.jpg"
-                      />
-                    ) : (
-                      <Image avatar src={collab.avatar} />
-                    )}
+                    <Popup
+                      position="bottom left"
+                      content={collab.username}
+                      key={index}
+                      trigger={
+                        <Image
+                          avatar
+                          src="https://avatarfiles.alphacoders.com/916/91685.jpg"
+                        />
+                      }
+                    />
+                  ) : (
+                    <Popup
+                      position="bottom left"
+                      content={collab.username}
+                      key={index}
+                      trigger={<Image avatar src={collab.avatar} />}
+                    />
+                  )}
                   </>
                 );
               })}
