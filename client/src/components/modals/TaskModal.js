@@ -22,6 +22,7 @@ export default function TaskModal(props) {
   const context = useContext(AutoContext);
   const [task, setTask] = useState({
     id_user: context[8].id_user,
+    id_project: context[10].project,
     id_column: null,
     column_place: 0,
     task_title: '',
@@ -30,9 +31,7 @@ export default function TaskModal(props) {
     end_date: null,
     complete: false,
     created_by: context[8].username,
-    id_label1: null,
-    id_label2: null,
-    id_label3: null,
+    labels: []
   });
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
@@ -61,15 +60,11 @@ export default function TaskModal(props) {
     // get task label ids
     if (context[4].card) {
       axios
-        .get(`/api/task/?task_id=${context[4].card}`)
+        .get(`/api/mdb/${context[4].card}`)
         .then((res) => {
           console.log(context[4].card);
           const task = res.data;
-          let cardLabels = [
-            task.id_label1,
-            task.id_label2,
-            task.id_label3,
-          ];
+          let cardLabels = task.labels;
           const taskLabels = [];
           // create a copy of project labels from context and find matching ids from task
           const projLabels = Array.from(context[12].projectLabels);
@@ -145,7 +140,7 @@ export default function TaskModal(props) {
 
   const postTask = () => {
     axios
-      .post(`/api/task/create/${context[10].project}`, task)
+      .post(`/api/mdb/create/`, task)
       .then((res) => {
         context[7](context[6].concat(res.data));
         setTask({

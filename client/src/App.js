@@ -95,13 +95,14 @@ function App() {
         setColumns(data);
       });
       // get tasks for project
-      axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
+      axios.get(`/api/mdb/all/${view.project}`).then((tasks) => {
         setTasks(tasks.data);
+        console.log(tasks.data)
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
         axios
-          .get(`/api/task/get/all/${view.project}`)
+          .get(`/api/mdb/all/${view.project}`)
           .then((tasks) => {
             setTasks(tasks.data);
           });
