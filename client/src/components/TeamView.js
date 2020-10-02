@@ -125,6 +125,14 @@ export default function TeamView(props) {
             name: response.data.team_name,
           });
           setName({ ...name, setting: false });
+          // update team's name in context
+          const newTeams = Array.from(context[8].teams);
+          newTeams[
+            newTeams.findIndex(
+              (i) => i.id_team === context[8].team.id_team,
+            )
+          ].team_name = team.name;
+          context[9]({ ...context[8], teams: newTeams });
         });
     }
   };
