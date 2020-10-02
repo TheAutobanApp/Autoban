@@ -1,8 +1,4 @@
-import React, {
-  useContext,
-  useState,
-  useRef,
-} from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
@@ -34,35 +30,40 @@ export default function LabelMenu(props) {
     );
     // copy of added label object, update task with the id label from that object
     const newLabel = availCopy[foundIndex];
-    // use label array length to determine which column to update
-    switch (props.labels[0].length) {
-      case 0:
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_project: context[10].project,
-            id_label1: newLabel.id_label,
-          })
-        break;
-      case 1:
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_project: context[10].project,
-            id_label2: newLabel.id_label,
-          })
-        break;
-      case 2:
-        axios
-          .put(`/api/task/?id_task=${props.id}`, {
-            id_project: context[10].project,
-            id_label3: newLabel.id_label,
-          })
-        break;
-      default:
-        console.log('Label length is invalid');
-    }
+
+    // // use label array length to determine which column to update
+    // switch (props.labels[0].length) {
+    //   case 0:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_project: context[10].project,
+    //         id_label1: newLabel.id_label,
+    //       })
+    //     break;
+    //   case 1:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_project: context[10].project,
+    //         id_label2: newLabel.id_label,
+    //       })
+    //     break;
+    //   case 2:
+    //     axios
+    //       .put(`/api/task/?id_task=${props.id}`, {
+    //         id_project: context[10].project,
+    //         id_label3: newLabel.id_label,
+    //       })
+    //     break;
+    //   default:
+    //     console.log('Label length is invalid');
+    // }
     // push added label into task label array and remove from available array
     labelsCopy.push(newLabel);
     availCopy.splice(foundIndex, 1);
+    axios.put(
+      `/api/mdb/?_id=${props.id}&id_project=${context[10].project}`,
+      { labels: labelsCopy.map((item) => item.id_label) },
+    );
     // update state with new copies
     props.labels[1](labelsCopy);
     props.labels[3](availCopy);
@@ -103,16 +104,16 @@ export default function LabelMenu(props) {
         // manually set positioning in DOM using offset of parents and element
         // allows us to position the dropdown exactly where we want
         if (!props.modal) {
-            const targ = ReactDOM.findDOMNode(target.current);
-            setMenu({
-              offsetTop:
-                targ.parentElement.offsetTop +
-                targ.parentElement.parentElement.offsetTop +
-                80,
-              offsetLeft:
-                targ.offsetLeft +
-                targ.parentElement.parentElement.offsetLeft,
-            });
+          const targ = ReactDOM.findDOMNode(target.current);
+          setMenu({
+            offsetTop:
+              targ.parentElement.offsetTop +
+              targ.parentElement.parentElement.offsetTop +
+              80,
+            offsetLeft:
+              targ.offsetLeft +
+              targ.parentElement.parentElement.offsetLeft,
+          });
         }
       }}
     >

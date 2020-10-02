@@ -43,9 +43,10 @@ router.put('/edit/:_id', ({ body, params, io }, res) => {
     .catch((err) => res.status(401).json(err));
 });
 
-// add id_label to a task
-router.put('/', function ({ body, query, params, io }, res) {
-  db.findOneAndUpdate(query, body, { new: true })
+// add/remove id_label to a task
+router.put('/', function ({ body, query, io }, res) {
+    console.log(body, query)
+  db.findByIdAndUpdate(query._id, body, { new: true })
     .then((task) => {
       io.sockets.emit(`newTask${query.id_project}`, task);
     })

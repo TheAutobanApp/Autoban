@@ -97,7 +97,6 @@ function App() {
       // get tasks for project
       axios.get(`/api/mdb/all/${view.project}`).then((tasks) => {
         setTasks(tasks.data);
-        console.log(tasks.data)
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
