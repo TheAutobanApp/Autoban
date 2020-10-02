@@ -31,7 +31,8 @@ export default function TaskModal(props) {
     end_date: null,
     complete: false,
     created_by: context[8].username,
-    labels: []
+    labels: [],
+    _id: context[4].card
   });
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
@@ -99,28 +100,9 @@ export default function TaskModal(props) {
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
     // send id_label to be removed from task
-    switch (foundIndex) {
-      case 0:
-        setTask({
-          ...task,
-          id_label1: task.id_label2,
-          id_label2: task.id_label3,
-          id_label3: null,
-        });
-        break;
-      case 1:
-        setTask({
-          ...task,
-          id_label2: task.id_label3,
-          id_label3: null,
-        });
-        break;
-      case 2:
-        setTask({ ...task, id_label3: null });
-        break;
-      default:
-        console.log('Label length is invalid');
-    }
+    axios.put(`/api/mdb/?_id=${task._id}&id_project=${context[10].project}`, {
+      labels: labelsCopy.map((item) => item.id_label),
+    });
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
@@ -229,7 +211,7 @@ export default function TaskModal(props) {
             );
           })}
           {/* only allow 3 labels by rendering add button when task label array length is less than 3*/}
-          {labels.length < 3 && (
+          {labels.length < 5 && (
             <LabelMenu
               modal={true}
               id={context[4].card}

@@ -30,33 +30,6 @@ export default function LabelMenu(props) {
     );
     // copy of added label object, update task with the id label from that object
     const newLabel = availCopy[foundIndex];
-
-    // // use label array length to determine which column to update
-    // switch (props.labels[0].length) {
-    //   case 0:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_project: context[10].project,
-    //         id_label1: newLabel.id_label,
-    //       })
-    //     break;
-    //   case 1:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_project: context[10].project,
-    //         id_label2: newLabel.id_label,
-    //       })
-    //     break;
-    //   case 2:
-    //     axios
-    //       .put(`/api/task/?id_task=${props.id}`, {
-    //         id_project: context[10].project,
-    //         id_label3: newLabel.id_label,
-    //       })
-    //     break;
-    //   default:
-    //     console.log('Label length is invalid');
-    // }
     // push added label into task label array and remove from available array
     labelsCopy.push(newLabel);
     availCopy.splice(foundIndex, 1);

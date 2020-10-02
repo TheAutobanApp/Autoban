@@ -17,13 +17,10 @@ function CardComponent(props) {
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    // axios.get(`/api/mdb/${props.id}`).then((res) => {
-    // });
     const foundIndex = context[6].findIndex(
       (task) => task._id === props.id,
     );
     let cardLabels = context[6][foundIndex].labels;
-    console.log(cardLabels, 'test', props.id);
     const taskLabels = [];
     // create a copy of project labels from context and find matching ids from task
     const projLabels = Array.from(context[12].projectLabels);
@@ -45,7 +42,6 @@ function CardComponent(props) {
 
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
-    console.log(i)
     // create copies of state arrays
     const availCopy = Array.from(availLabels);
     const labelsCopy = Array.from(labels);
@@ -58,9 +54,10 @@ function CardComponent(props) {
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
     // send id_label to be removed from task
+    console.log('pretest')
     axios.put(`/api/mdb/?_id=${props.id}&id_project=${context[10].project}`, {
       labels: labelsCopy.map((item) => item.id_label),
-    });
+    }).then((result) => {console.log(result, 'sent')});
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);

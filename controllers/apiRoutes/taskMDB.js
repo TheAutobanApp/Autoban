@@ -49,6 +49,7 @@ router.put('/', function ({ body, query, io }, res) {
   db.findByIdAndUpdate(query._id, body, { new: true })
     .then((task) => {
       io.sockets.emit(`newTask${query.id_project}`, task);
+      res.json(task);
     })
     .catch((err) => {
       res.json(err);
