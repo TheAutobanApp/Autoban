@@ -33,7 +33,9 @@ export default function InviteSearchModal(props) {
   const searchUser = (searchTxt) => {
     if (searchTxt.length > 1) {
       axios
-        .get(`/api/user/search/?search=${searchTxt}`)
+        .get(
+          `/api/user/search/?search=${searchTxt}&id_team=${context[8].team.id_team}`,
+        )
         .then((response) => {
           console.log(response.data);
           setUsers(response.data);
