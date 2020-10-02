@@ -32,22 +32,34 @@ router.get('/', function (req, res) {
 
 // user search
 router.get('/search', (req, res) => {
-  if (req.query.search) {
-    db.User.findAll({
-      limit: 10,
+  if (req.query.search && req.query.id_team) {
+    db.TeamUser.findAll({
       where: {
-        [Op.or]: [
-          { email: { [Op.substring]: req.query.search } },
-          { username: { [Op.substring]: req.query.search } },
-          { first_name: { [Op.substring]: req.query.search } },
-          { last_name: { [Op.substring]: req.query.search } },
-        ],
+        id_team: req.query.id_team,
       },
-    })
-      .then((users) => {
-        res.json(users);
+    }).then((team) => {
+      const filterIds = team.map((item) => {
+        return item.dataValues.id_user;
+      });
+      db.User.findAll({
+        limit: 10,
+        where: {
+          [Op.or]: [
+            { email: { [Op.substring]: req.query.search } },
+            { username: { [Op.substring]: req.query.search } },
+            { first_name: { [Op.substring]: req.query.search } },
+            { last_name: { [Op.substring]: req.query.search } },
+          ],
+          id_user: {
+            [Op.notIn]: filterIds,
+          },
+        },
       })
-      .catch((err) => res.status(401).json(err));
+        .then((users) => {
+          res.json(users);
+        })
+        .catch((err) => res.status(401).json(err));
+    });
   }
 });
 
