@@ -39,14 +39,13 @@ export default function TaskModal(props) {
   useEffect(() => {
     if (context[4].edit) {
       context[6].filter((tsk, index) => {
-        if (tsk.id_task === context[4].card) {
+        if (tsk._id === context[4].card) {
           setTask({
             ...task,
             task_title: tsk.task_title,
             task_description: tsk.task_description,
-            id_label1: tsk.id_label1,
-            id_label2: tsk.id_label2,
-            id_label3: tsk.id_label3,
+            labels: [tsk.labels],
+            id_column: context[4].column
           });
         }
       });
@@ -62,7 +61,6 @@ export default function TaskModal(props) {
       axios
         .get(`/api/mdb/${context[4].card}`)
         .then((res) => {
-          console.log(context[4].card);
           const task = res.data;
           let cardLabels = task.labels;
           const taskLabels = [];
@@ -155,13 +153,10 @@ export default function TaskModal(props) {
   const editTask = () => {
     axios
       .put(
-        `/api/task/edit/${context[4].card}/${context[10].project}`,
+        `/api/mdb/edit/${context[4].card}`,
         {
           task_title: task.task_title,
           task_description: task.task_description,
-          id_label1: task.id_label1,
-          id_label2: task.id_label2,
-          id_label3: task.id_label3,
         },
       )
       .then((res) => context[7](res.data));

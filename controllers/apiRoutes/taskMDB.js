@@ -3,16 +3,15 @@ var db = require('../../models/TaskMDB.js');
 
 // find all project tasks
 router.get('/all/:id_project', function ({params}, res) {
-    console.log(params.id_project)
   if (params.id_project) {
-    db.find(params.body).then((allTasks) => {
+    db.find(params).then((allTasks) => {
       res.json(allTasks);
     });
   }
 });
 // find task to render in task modal
-router.get('/:id_task', function ({params}, res) {
-  if (params.id_task)
+router.get('/:_id', function ({params}, res) {
+  if (params._id)
     db.findOne(params).then((task) => {
       res.json(task);
     });
@@ -31,13 +30,15 @@ router.post('/create', ({ body, io }, res) => {
     });
 });
 
-// add exercises to a already existing Task
-router.put('/edit/:id_task/:id_project', ({ body, params }, res) => {
-  console.log(params);
-  db.findOneAndUpdate(params, body, { new: true })
+// update a task
+router.put('/edit/:_id', ({ body, params, io }, res) => {
+  db.findByIdAndUpdate(params._id, body, { new: true })
     .then((dbTask) => {
-      console.log(dbTask);
-      res.json(dbTask);
+        console.log(dbTask);
+        db.find({ id_project: dbTask.id_project }).then((tasks) => {
+            res.json(tasks);
+            io.sockets.emit(`newTask${dbTask.id_project}`, tasks);
+          });;
     })
     .catch((err) => res.status(401).json(err));
 });
@@ -47,7 +48,6 @@ router.put('/', function ({ body, query, params, io }, res) {
   db.findOneAndUpdate(query, body, { new: true })
     .then((task) => {
       io.sockets.emit(`newTask${query.id_project}`, task);
-      res.json(task);
     })
     .catch((err) => {
       res.json(err);
@@ -56,10 +56,10 @@ router.put('/', function ({ body, query, params, io }, res) {
 
 router.delete('/delete', ({ body, query, io }, res) => {
   console.log(body);
-  if (body.id_project && body.id_task) {
+  if (body.id_project && body._id) {
     db.findOneAndDelete({
       id_project: body.id_project,
-      id_task: body.id_task,
+      _id: body._id,
     })
       .then((task) => {
         db.find({ id_project: body.id_project }).then((tasks) => {

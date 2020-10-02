@@ -50,12 +50,14 @@ function DropMenu(props) {
     }
   };
 
-  const editCard = () => {
+  const editCard = (e) => {
+    console.log(e.id)
     context[5]({
       ...context[4],
       show: true,
       edit: 1,
       card: props.id,
+      column: props.column
     });
   };
 

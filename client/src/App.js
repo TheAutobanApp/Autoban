@@ -234,10 +234,11 @@ function App() {
                       (card) =>
                         card.id_column === item.id_column && (
                           <CardComponent
-                            id={card.id_task}
+                            column={item.id_column}
+                            id={card._id}
                             title={card.task_title}
                             description={card.task_description}
-                            key={card.id_task}
+                            key={card._id}
                             createdBy={card.created_by}
                           />
                         ),
