@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card } from 'react-bootstrap';
 import { Icon, Label } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
-import Fade from 'react-reveal/Fade';
+import Slide from 'react-reveal/Slide';
 import DropMenu from './DropMenu';
 import LabelMenu from './LabelMenu';
 import { AutoContext } from '../AutoContext';
@@ -64,7 +64,7 @@ function CardComponent(props) {
   };
 
   return (
-    <Fade bottom>
+    <Slide bottom cascade>
       <Card className="card">
         <Card.Body>
           <Card.Title>
@@ -111,7 +111,7 @@ function CardComponent(props) {
           )}
         </Card.Footer>
       </Card>
-    </Fade>
+    </Slide>
   );
 }
 export default CardComponent;

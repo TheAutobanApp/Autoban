@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { AutoContext } from '../AutoContext';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import {
   Dropdown,
   DropdownDivider,
   Input,
+  Search,
 } from 'semantic-ui-react';
 
 export default function LabelMenu(props) {
@@ -17,7 +18,39 @@ export default function LabelMenu(props) {
     offsetTop: 0,
     offsetLeft: 0,
     addLabel: '',
+    open: false,
+    available: []
   });
+
+  
+  const [labels, setLabels] = useState([]);
+  const [availLabels, setAvailLabels] = useState([]);
+
+  useEffect(() => {
+    // get task label ids
+    const foundIndex = context[6].findIndex(
+      (task) => task._id === props.id,
+    );
+    let cardLabels = context[6][foundIndex].labels;
+    const taskLabels = [];
+    // create a copy of project labels from context and find matching ids from task
+    const projLabels = Array.from(context[12].projectLabels);
+    cardLabels.forEach((label) => {
+      if (label !== null) {
+        let foundIndex = projLabels.findIndex(
+          (item) => item.id_label === label,
+        );
+        const newLabel = projLabels[foundIndex];
+        if (newLabel) {
+          taskLabels.push(newLabel);
+          projLabels.splice(foundIndex, 1);
+        }
+      }
+    });
+    setLabels(taskLabels);
+    setAvailLabels(projLabels);
+    setMenu({...menu, available: projLabels})
+  }, [context[12].projectLabels, context[6]]);
 
   // move label to card's label state and remove from available label state
   const handleAddLabel = (i) => {
@@ -62,6 +95,37 @@ export default function LabelMenu(props) {
           circular
           basic
           className="clickable"
+          onClick={(e) => {
+            console.log(e)
+            // manually set positioning in DOM using offset of parents and element
+            // allows us to position the dropdown exactly where we want
+            if (!props.modal) {
+              const targ = ReactDOM.findDOMNode(target.current);
+              console.log(window.innerHeight)
+              console.log(window.innerHeight - targ.getBoundingClientRect().bottom);
+              if ((window.innerHeight - targ.getBoundingClientRect().bottom) > 120) {
+                setMenu({
+                  ...menu,
+                  open: !menu.open,
+                  offsetTop:
+                    targ.getBoundingClientRect().top + 20,
+                  offsetLeft:
+                    targ.getBoundingClientRect().left
+                });
+              } else {
+                setMenu({
+                  ...menu,
+                  open: !menu.open,
+                  offsetTop:
+                    targ.getBoundingClientRect().top - 200,
+                  offsetLeft:
+                    targ.getBoundingClientRect().left
+                });
+              }
+              
+            }
+            
+          }}
         >
           <Icon name="add" />
           Label
@@ -71,24 +135,9 @@ export default function LabelMenu(props) {
       labeled
       id={`add${props.id}`}
       onClose={() => {
-        setMenu({ ...menu, addLabel: '' });
+        setMenu({ ...menu, open: !menu.open, addLabel: '', available: availLabels });
       }}
-      onClick={(e) => {
-        // manually set positioning in DOM using offset of parents and element
-        // allows us to position the dropdown exactly where we want
-        if (!props.modal) {
-          const targ = ReactDOM.findDOMNode(target.current);
-          setMenu({
-            offsetTop:
-              targ.parentElement.offsetTop +
-              targ.parentElement.parentElement.offsetTop +
-              80,
-            offsetLeft:
-              targ.offsetLeft +
-              targ.parentElement.parentElement.offsetLeft,
-          });
-        }
-      }}
+      
     >
       <Dropdown.Menu
         style={
@@ -106,12 +155,13 @@ export default function LabelMenu(props) {
         {/* input for adding a label */}
         <Input
           maxLength={16}
+          autoFocus
           scrolling
           size="mini"
           className="search"
-          search
+          placeholder="Search or create"
           value={menu.addLabel}
-          options={props.labels[2].map((option) => {
+          options={menu.available.map((option) => {
             return {
               key: option.label_name,
               text: option.label_name,
@@ -131,12 +181,19 @@ export default function LabelMenu(props) {
               e.stopPropagation();
             }
           }}
-          onChange={(e) =>
-            setMenu({ ...menu, addLabel: e.target.value })
-          }
+          onChange={(e) => {
+            console.log(menu.available)
+            setMenu({
+              ...menu,
+              addLabel: e.target.value,
+              available: props.labels[2].filter(
+                (item) => item.label_name.toLowerCase().includes(e.target.value.toLowerCase()),
+              ),
+            });
+          }}
         />
         <Dropdown.Divider />
-        <Dropdown.Menu scrolling>
+        <Dropdown.Menu scrolling style={{ maxHeight: 115 }}>
           {/* if input has more than 1 character, show the add label item */}
           {menu.addLabel && menu.addLabel.length > 1 && (
             <>
@@ -151,9 +208,10 @@ export default function LabelMenu(props) {
               <DropdownDivider />
             </>
           )}
-          {props.labels[2].map((option, i) => {
+          {menu.available.map((option, i) => {
             return (
               <Dropdown.Item
+              size="tiny"
                 key={option.label_name}
                 text={option.label_name}
                 value={option.label_name}
