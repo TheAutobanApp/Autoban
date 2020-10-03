@@ -69,7 +69,7 @@ export default function InviteSearchModal(props) {
         {selectedUser.selected ? (
           <List className="invite-list">
             <List.Item className="invite-item">
-              <Image avatar src={selectedUser.avatar} />
+              <Image avatar src={selectedUser.avatar ? selectedUser.avatar : '/default.png'} />
               <List.Content>
                 <List.Header>{selectedUser.name}</List.Header>
                 <List.Description>
@@ -108,7 +108,7 @@ export default function InviteSearchModal(props) {
                 id: user.id_user,
                 title: `${user.first_name} ${user.last_name}`,
                 description: user.username,
-                image: user.avatar,
+                image: user.avatar ? user.avatar : '/default.png',
               };
             })}
             onSearchChange={(e) => {
