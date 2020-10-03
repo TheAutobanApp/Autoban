@@ -108,7 +108,7 @@ export default function LabelMenu(props) {
                   ...menu,
                   open: !menu.open,
                   offsetTop:
-                    targ.getBoundingClientRect().top + 20,
+                    targ.getBoundingClientRect().top + 10,
                   offsetLeft:
                     targ.getBoundingClientRect().left
                 });
@@ -195,7 +195,7 @@ export default function LabelMenu(props) {
         <Dropdown.Divider />
         <Dropdown.Menu scrolling style={{ maxHeight: 115 }}>
           {/* if input has more than 1 character, show the add label item */}
-          {menu.addLabel && menu.addLabel.length > 1 && (
+          {(menu.addLabel && menu.addLabel.length > 1 || menu.available.length === 0) && (
             <>
               <Dropdown.Item onClick={handleCreateLabel}>
                 <div className="flex-row">
@@ -211,7 +211,7 @@ export default function LabelMenu(props) {
           {menu.available.map((option, i) => {
             return (
               <Dropdown.Item
-              size="tiny"
+              style={{height: 20, display: 'flex', alignItems: 'center'}}
                 key={option.label_name}
                 text={option.label_name}
                 value={option.label_name}

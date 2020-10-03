@@ -265,7 +265,7 @@ label {
 
 .card-container {
   padding: 8px 6px;
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: scroll;
 }
 
