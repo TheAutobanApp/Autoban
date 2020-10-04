@@ -16,6 +16,8 @@ import InviteSearchModal from './components/modals/InviteSearchModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 import socketIOClient from 'socket.io-client';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const socket = socketIOClient();
 
@@ -219,6 +221,8 @@ function App() {
         ) : view.type === 'home' ? (
           <Homeview />
         ) : (
+          
+      <DndProvider backend={HTML5Backend}>
           <ProjectView>
             {/* map through columns array and render each column with the title */}
             {columns.map((item, i) => {
@@ -248,6 +252,7 @@ function App() {
             })}
             <AddColumn columns={columns} setcolumns={setColumns} />
           </ProjectView>
+          </DndProvider>
         )}
         <OptionsDrawer />
       </div>

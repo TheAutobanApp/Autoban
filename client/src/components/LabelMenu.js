@@ -22,8 +22,6 @@ export default function LabelMenu(props) {
     available: []
   });
 
-  
-  const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
 
   useEffect(() => {
@@ -31,25 +29,27 @@ export default function LabelMenu(props) {
     const foundIndex = context[6].findIndex(
       (task) => task._id === props.id,
     );
-    let cardLabels = context[6][foundIndex].labels;
-    const taskLabels = [];
     // create a copy of project labels from context and find matching ids from task
     const projLabels = Array.from(context[12].projectLabels);
-    cardLabels.forEach((label) => {
-      if (label !== null) {
-        let foundIndex = projLabels.findIndex(
-          (item) => item.id_label === label,
-        );
-        const newLabel = projLabels[foundIndex];
-        if (newLabel) {
-          taskLabels.push(newLabel);
-          projLabels.splice(foundIndex, 1);
+    if (foundIndex !== -1) {
+      let cardLabels = context[6][foundIndex].labels;
+      const taskLabels = [];
+      cardLabels.forEach((label) => {
+        if (label !== null) {
+          let foundIndex = projLabels.findIndex(
+            (item) => item.id_label === label,
+          );
+          const newLabel = projLabels[foundIndex];
+          if (newLabel) {
+            taskLabels.push(newLabel);
+            projLabels.splice(foundIndex, 1);
+          }
         }
-      }
-    });
-    setLabels(taskLabels);
+      });
+    }
     setAvailLabels(projLabels);
     setMenu({...menu, available: projLabels})
+
   }, [context[12].projectLabels, context[6]]);
 
   // move label to card's label state and remove from available label state

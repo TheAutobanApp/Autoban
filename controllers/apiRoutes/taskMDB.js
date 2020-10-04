@@ -21,6 +21,9 @@ router.get('/:_id', function ({params}, res) {
 router.post('/create', ({ body, io }, res) => {
   db.create(body)
     .then((dbTask) => {
+      db.find({id_column: body.id_column}).then(newTasks => {
+        console.log(newTasks);
+      })
       io.sockets.emit(`newTask${body.id_project}`, dbTask);
       res.json(dbTask);
     })

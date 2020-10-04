@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
 import { ItemTypes } from './utils/Constants'
-import { useDrop } from 'react-dnd'
+import { useDrop, useDrag } from 'react-dnd'
 
 export default function Column(props) {
   let numOfCards = React.Children.toArray(props.children).length;
@@ -18,6 +18,12 @@ export default function Column(props) {
       isOver: !!monitor.isOver(),
     }),
   })
+  const [{isDragging}, drag] = useDrag({
+    item: { type: ItemTypes.COLUMN },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  })
 
   const context = useContext(AutoContext);
 
@@ -28,7 +34,7 @@ export default function Column(props) {
   return (
     <>
       {/* column div */}
-      <div className="column">
+      <div className="column" ref={drag}>
         {/* header div */}
         <div className="column-header">
           {/* title and number of cards */}

@@ -1,14 +1,21 @@
 import React from 'react';
 import Fade from 'react-reveal/Fade';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { ItemTypes } from './utils/Constants'
+import { useDrop, useDrag } from 'react-dnd'
 
 export default function ProjectView(props) {
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemTypes.COLUMN,
+    drop: () => {
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  })
+
   return (
     <Fade duration={2000}>
-      <DndProvider backend={HTML5Backend}>
-        <div className="project-view">{props.children}</div>
-      </DndProvider>
+        <div className="project-view" ref={drop}>{props.children}</div>
     </Fade>
   );
 }
