@@ -80,7 +80,7 @@ function CardComponent(props) {
   };
 
   return (
-    <Slide bottom cascade>
+    <Slide top cascade>
       <Card className="card" ref={drag}>
         <Card.Body>
           <Card.Title>

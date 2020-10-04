@@ -24,7 +24,7 @@ export default function TaskModal(props) {
     id_user: context[8].id_user,
     id_project: context[10].project,
     id_column: null,
-    column_place: 0,
+    column_place: context[6] && context[6].filter(i => i.id_column === context[4].column).length,
     task_title: '',
     task_description: '',
     start_date: null,
@@ -123,7 +123,9 @@ export default function TaskModal(props) {
     axios
       .post(`/api/mdb/create/`, task)
       .then((res) => {
-        context[7](context[6].concat(res.data));
+        const newTasks = Array.from(context[6])
+        // newTasks.unshift(res.data)
+        // context[7](newTasks);
         setTask({
           ...task,
           task_title: '',

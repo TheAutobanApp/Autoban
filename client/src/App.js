@@ -234,7 +234,9 @@ function App() {
                 >
                   {/* inside each column, map through the cards and render each one that matches the column index */}
                   {tasks !== null &&
-                    tasks.map(
+                    tasks.sort(function(a, b) {
+                      return a.column_place - b.column_place;
+                    }).map(
                       (card) =>
                         card.id_column === item.id_column && (
                           <CardComponent
@@ -245,7 +247,7 @@ function App() {
                             key={card._id}
                             createdBy={card.created_by}
                           />
-                        ),
+                        )
                     )}
                 </Column>
               );

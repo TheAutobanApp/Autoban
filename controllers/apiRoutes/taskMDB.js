@@ -4,7 +4,7 @@ var db = require('../../models/TaskMDB.js');
 // find all project tasks
 router.get('/all/:id_project', function ({params}, res) {
   if (params.id_project) {
-    db.find(params).then((allTasks) => {
+    db.find(params).sort({column_place: -1}).then((allTasks) => {
       res.json(allTasks);
     });
   }
@@ -21,9 +21,6 @@ router.get('/:_id', function ({params}, res) {
 router.post('/create', ({ body, io }, res) => {
   db.create(body)
     .then((dbTask) => {
-      db.find({id_column: body.id_column}).then(newTasks => {
-        console.log(newTasks);
-      })
       io.sockets.emit(`newTask${body.id_project}`, dbTask);
       res.json(dbTask);
     })
