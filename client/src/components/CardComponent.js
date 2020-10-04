@@ -7,11 +7,20 @@ import Slide from 'react-reveal/Slide';
 import DropMenu from './DropMenu';
 import LabelMenu from './LabelMenu';
 import { AutoContext } from '../AutoContext';
+import { useDrag } from 'react-dnd'
+import { ItemTypes } from './utils/Constants'
 
 function CardComponent(props) {
   const context = useContext(AutoContext);
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
+
+  const [{isDragging}, drag] = useDrag({
+    item: { type: ItemTypes.TASK },
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  })
 
   // on mount and when project label context is updated,
   // find which labels are on the task and fill the available labels and task labels accordingly
@@ -40,6 +49,13 @@ function CardComponent(props) {
     setAvailLabels(projLabels);
   }, [context[12].projectLabels, context[6]]);
 
+  useEffect(() => {
+    if (isDragging) {
+      context[11]({...context[10], drag: props.id})
+      console.log('dragging', props.id);
+    }
+  }, [isDragging])
+
   // move added card label to available state and remove from it's label state
   const handleLabelDelete = (i) => {
     // create copies of state arrays
@@ -65,7 +81,7 @@ function CardComponent(props) {
 
   return (
     <Slide bottom cascade>
-      <Card className="card">
+      <Card className="card" ref={drag}>
         <Card.Body>
           <Card.Title>
             {props.title}

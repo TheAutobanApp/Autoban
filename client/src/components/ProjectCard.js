@@ -7,7 +7,7 @@ export default function ProjectCard(props) {
   const context = useContext(AutoContext);
 
   const handleProjectSelect = () => {
-    context[11]({ type: 'project', project: props.id });
+    context[11]({...context[10], type: 'project', project: props.id });
     context[9]({ ...context[8], team: null });
   };
 

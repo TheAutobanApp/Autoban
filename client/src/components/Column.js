@@ -2,9 +2,22 @@ import React, { useContext } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
+import { ItemTypes } from './utils/Constants'
+import { useDrop } from 'react-dnd'
 
 export default function Column(props) {
   let numOfCards = React.Children.toArray(props.children).length;
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemTypes.TASK,
+    drop: () => {
+      const newTasks = Array.from(context[6]);
+      newTasks[newTasks.findIndex(item => item._id === context[10].drag)].id_column = props.id;
+      context[7](newTasks);
+    },
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+    }),
+  })
 
   const context = useContext(AutoContext);
 
@@ -36,7 +49,7 @@ export default function Column(props) {
           </div>
         </div>
         {/* cards div */}
-        <div className="card-container">
+        <div className="card-container" ref={drop}>
           <div className="overlay"></div>
           {props.children}
         </div>

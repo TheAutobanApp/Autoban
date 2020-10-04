@@ -62,6 +62,7 @@ function App() {
   const [view, setView] = useState({
     type: 'home',
     project: null,
+    drag: ""
   });
 
   const [modal, setModal] = useState({
