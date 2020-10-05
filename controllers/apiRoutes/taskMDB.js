@@ -52,7 +52,7 @@ router.put('/drop/:new_column', ({ body, io, params }, res) => {
     console.log(index);
     db.findByIdAndUpdate(
       task._id,
-      { column_place: body.length - index - 1, id_column: params.new_column },
+      { column_place: task.column_place, id_column: params.new_column },
       { new: true },
     )
       .then((dbTask) => {

@@ -25,6 +25,7 @@ function CardComponent({
   columnIndex,
 }) {
   const context = useContext(AutoContext);
+  const [visible, setVisible] = useState(true)
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
   const [{ isDragging }, drag] = useDrag({
@@ -91,6 +92,9 @@ function CardComponent({
         startColumn: columnIndex,
       });
       console.log('dragging', id);
+      setVisible(false);
+    } else {
+      setTimeout(() => {setVisible(true)}, 500)
     }
   }, [isDragging]);
 
@@ -123,9 +127,9 @@ function CardComponent({
   // drag(drop(ref));
 
   return (
-    // <Slide top cascade>
+    // <Slide left>
     <Card
-      className={isDragging ? 'card card-drag' : 'card'}
+      className={!visible ? 'card card-drag' : 'card'}
       ref={(node) => drag(drop(node))}
     >
       <Card.Body>

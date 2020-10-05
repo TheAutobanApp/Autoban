@@ -142,6 +142,7 @@ export default function TaskModal(props) {
       .put(`/api/mdb/edit/${context[4].card}`, {
         task_title: task.task_title,
         task_description: task.task_description,
+        labels: task.labels
       })
       .then((res) => context[7](res.data));
   };
@@ -217,6 +218,7 @@ export default function TaskModal(props) {
             <LabelMenu
               modal={true}
               id={context[4].card}
+              task={[task, setTask]}
               labels={[
                 labels,
                 setLabels,

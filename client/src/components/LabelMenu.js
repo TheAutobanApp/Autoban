@@ -66,13 +66,20 @@ export default function LabelMenu(props) {
     // push added label into task label array and remove from available array
     labelsCopy.push(newLabel);
     availCopy.splice(foundIndex, 1);
-    axios.put(
-      `/api/mdb/?_id=${props.id}&id_project=${context[10].project}`,
-      { labels: labelsCopy.map((item) => item.id_label) },
-    );
-    // update state with new copies
-    props.labels[1](labelsCopy);
-    props.labels[3](availCopy);
+    if (!props.modal) {
+      axios.put(
+        `/api/mdb/?_id=${props.id}&id_project=${context[10].project}`,
+        { labels: labelsCopy.map((item) => item.id_label) },
+      );
+      // update state with new copies
+      props.labels[1](labelsCopy);
+      props.labels[3](availCopy);
+    } else {
+      props.task[1]({...props.task[0], labels: labelsCopy.map(label => label.id_label)})
+      props.labels[1](labelsCopy);
+      props.labels[3](availCopy);
+    }
+    
   };
 
   const handleCreateLabel = () => {
