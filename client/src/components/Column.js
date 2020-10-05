@@ -1,31 +1,97 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import axios from 'axios';
 import DropMenu from './DropMenu';
 import { AutoContext } from '../AutoContext';
-import { ItemTypes } from './utils/Constants'
-import { useDrop, useDrag } from 'react-dnd'
+import Card from './CardComponent';
+import { ItemTypes } from './utils/Constants';
+import { useDrop, useDrag } from 'react-dnd';
 
 export default function Column(props) {
+  const context = useContext(AutoContext);
+  const ref = useRef(null);
   let numOfCards = React.Children.toArray(props.children).length;
   const [{ isOver }, drop] = useDrop({
     accept: ItemTypes.TASK,
     drop: () => {
-      const newTasks = Array.from(context[6]);
-      newTasks[newTasks.findIndex(item => item._id === context[10].drag)].id_column = props.id;
-      context[7](newTasks);
+      // const newTasks = Array.from(context[6]);
+      // const moveTask = newTasks.filter(
+      //   (task) => task._id === context[10].drag,
+      // )[0];
+      // const updateIndex = newTasks.filter(
+      //   (task) => task.id_column === props.id,
+      // );
+      // // console.log(props.id, context[10].startColumn)
+      // if (props.id !== context[10].startColumn) {
+      //   console.log('different column')
+      //   if (updateIndex.length > 0) {
+      //     updateIndex.forEach((task, index) => {
+      //       if (task.column_place > context[10].dropIndex) {
+      //         task.column_place += 1;
+      //       }
+      //     });
+      //     moveTask.id_column = props.id;
+      //     moveTask.column_place = context[10].dropIndex + 1;
+      //   } else {
+      //     moveTask.id_column = props.id;
+      //     moveTask.column_place = 0;
+      //   }
+        
+        
+      // } else {
+      //   console.log('same column')
+      //   console.log(context[10].dropIndex)
+      //   updateIndex.forEach(task => {
+      //     if (task.column_place >= context[10].dropIndex) {
+
+      //     } else {
+
+      //     }
+      //   })
+      //   if(updateIndex.filter(task => task.column_place === context[10].dropIndex)[0]) {
+      //     updateIndex.filter(task => task.column_place === context[10].dropIndex)[0] += 1
+      //   }; 
+      //   // console.log(updateIndex.filter(task => task.column_place === context[10].dropIndex)[0]);
+      //   moveTask.column_place = context[10].dropIndex;
+      // }
+
+      // console.log(newTasks);
+      const newColumns = Array.from(context[2])
+      const moveTask =
+        newColumns[context[10].startColumn].tasks[
+          context[10].startIndex
+        ];
+      if (props.id !== context[10].startColumn) {
+      newColumns[context[10].startColumn].tasks.splice(
+        context[10].startIndex,
+        1,
+      );
+      moveTask.id_column = props.id;
+      newColumns[props.index].tasks.splice(
+        context[10].dropIndex,
+        0,
+        moveTask,
+      );
+      newColumns[props.index].tasks.forEach((task, index) => {
+        task.column_place = newColumns[props.index].tasks.length - index - 1;
+      })
+      axios.put(
+        `/api/mdb/drop/${props.id}`,
+        newColumns[props.index].tasks,
+      );
+      }
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
-  })
-  const [{isDragging}, drag] = useDrag({
+  });
+
+  const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.COLUMN },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  })
-
-  const context = useContext(AutoContext);
+  });
 
   const showModal = () => {
     context[5]({ ...context[4], show: true, column: props.id });
@@ -57,7 +123,28 @@ export default function Column(props) {
         {/* cards div */}
         <div className="card-container" ref={drop}>
           <div className="overlay"></div>
-          {props.children}
+          {/* inside each column, map through the cards and render each one that matches the column index */}
+          {props.tasks !== null &&
+            props.tasks
+              .sort(function (a, b) {
+                return b.column_place - a.column_place;
+              })
+              .map(
+                (card, index) =>
+                  card.id_column === props.id && (
+                    <Card
+                      ref={ref}
+                      column={props.id}
+                      id={card._id}
+                      columnIndex={props.index}
+                      index={index}
+                      title={card.task_title}
+                      description={card.task_description}
+                      key={card._id}
+                      createdBy={card.created_by}
+                    />
+                  ),
+              )}
         </div>
       </div>
     </>
