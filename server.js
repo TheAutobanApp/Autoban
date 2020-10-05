@@ -3,6 +3,7 @@ const routes = require('./controllers');
 const app = express();
 const PORT = process.env.PORT || 3001;
 var db = require('./models');
+require('./mongodb.js');
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));

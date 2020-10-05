@@ -95,13 +95,13 @@ function App() {
         setColumns(data);
       });
       // get tasks for project
-      axios.get(`/api/task/get/all/${view.project}`).then((tasks) => {
+      axios.get(`/api/mdb/all/${view.project}`).then((tasks) => {
         setTasks(tasks.data);
       });
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
         axios
-          .get(`/api/task/get/all/${view.project}`)
+          .get(`/api/mdb/all/${view.project}`)
           .then((tasks) => {
             setTasks(tasks.data);
           });
@@ -233,10 +233,11 @@ function App() {
                       (card) =>
                         card.id_column === item.id_column && (
                           <CardComponent
-                            id={card.id_task}
+                            column={item.id_column}
+                            id={card._id}
                             title={card.task_title}
                             description={card.task_description}
-                            key={card.id_task}
+                            key={card._id}
                             createdBy={card.created_by}
                           />
                         ),

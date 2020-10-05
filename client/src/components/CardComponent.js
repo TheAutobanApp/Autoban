@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card } from 'react-bootstrap';
 import { Icon, Label } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
-import Fade from 'react-reveal/Fade';
+import Slide from 'react-reveal/Slide';
 import DropMenu from './DropMenu';
 import LabelMenu from './LabelMenu';
 import { AutoContext } from '../AutoContext';
@@ -17,13 +17,10 @@ function CardComponent(props) {
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    // axios.get(`/api/task/?task_id=${props.id}`).then((res) => {
-    // });
     const foundIndex = context[6].findIndex(
-      (task) => task.id_task === props.id,
+      (task) => task._id === props.id,
     );
-    const task = context[6][foundIndex];
-    let cardLabels = [task.id_label1, task.id_label2, task.id_label3];
+    let cardLabels = context[6][foundIndex].labels;
     const taskLabels = [];
     // create a copy of project labels from context and find matching ids from task
     const projLabels = Array.from(context[12].projectLabels);
@@ -57,21 +54,22 @@ function CardComponent(props) {
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
     // send id_label to be removed from task
-    axios.put(`/api/task/label/remove/?id_task=${props.id}`, {
-      id_label: deleteLabel.id_label,
-    });
+    console.log('pretest')
+    axios.put(`/api/mdb/?_id=${props.id}&id_project=${context[10].project}`, {
+      labels: labelsCopy.map((item) => item.id_label),
+    }).then((result) => {console.log(result, 'sent')});
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
   };
 
   return (
-    <Fade bottom>
+    <Slide bottom cascade>
       <Card className="card">
         <Card.Body>
           <Card.Title>
             {props.title}
-            <DropMenu option="card" id={props.id} />
+            <DropMenu option="card" id={props.id} column={props.column} />
           </Card.Title>
           <Card.Text>
             <ReactMarkdown source={props.description} />
@@ -100,7 +98,7 @@ function CardComponent(props) {
             );
           })}
           {/* only allow 3 labels by rendering add button when task label array length is less than 3*/}
-          {labels.length < 3 && (
+          {labels.length < 5 && (
             <LabelMenu
               id={props.id}
               labels={[
@@ -113,7 +111,7 @@ function CardComponent(props) {
           )}
         </Card.Footer>
       </Card>
-    </Fade>
+    </Slide>
   );
 }
 export default CardComponent;

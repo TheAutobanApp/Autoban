@@ -136,6 +136,10 @@ label {
   margin: 0 !important;
 }
 
+.ui.dropdown.dropdown .menu>.input {
+  margin: .54285714rem .48571429rem!important;
+}
+
 /* .ui.dropdown .menu {
     cursor: auto;
     position: absolute;
@@ -226,6 +230,7 @@ label {
   padding-top: 5px;
   border-radius: 5px;
   box-shadow: 1px 1px 5px grey;
+  max-height: 100%;
 }
 
 .column-header {
@@ -260,7 +265,7 @@ label {
 
 .card-container {
   padding: 8px 6px;
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: scroll;
 }
 

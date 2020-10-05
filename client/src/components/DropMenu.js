@@ -17,8 +17,8 @@ function DropMenu(props) {
     if (c !== 'column') {
       console.log('test')
       axios
-      .delete(`/api/task/cdelete/${context[10].project}`, {
-        data: { id_column: props.id },
+      .delete(`/api/mdb/cdelete`, {
+        data: { id_column: props.id, id_project: context[10].project },
       })
       .then((response) => {
         context[7](response.data);
@@ -41,8 +41,8 @@ function DropMenu(props) {
   const handleDeleteCard = () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       axios
-        .delete(`/api/task/delete/${context[10].project}`, {
-          data: { id_task: props.id },
+        .delete(`/api/mdb/delete/`, {
+          data: { _id: props.id, id_project: context[10].project },
         })
         .then((response) => {
           context[7](response.data);
@@ -50,12 +50,14 @@ function DropMenu(props) {
     }
   };
 
-  const editCard = () => {
+  const editCard = (e) => {
+    console.log(e.id)
     context[5]({
       ...context[4],
       show: true,
       edit: 1,
       card: props.id,
+      column: props.column
     });
   };
 
