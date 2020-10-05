@@ -204,6 +204,7 @@ export default function Login() {
             <Form.Field>
               <label>Username</label>
               <input
+                autoFocus
                 minLength={2}
                 maxLength={16}
                 placeholder="Username"

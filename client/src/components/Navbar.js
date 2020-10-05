@@ -17,7 +17,16 @@ function Navbar() {
     context[3]([]);
     context[7]([]);
     context[13]({ ...context[12], projectLabels: [] });
+    context[1]({...context[0], open: false});
   };
+
+  const handleSettingsClick = () => {
+    context[1]({
+      ...context[0],
+      open: !context[0].open,
+      type: 'settings',
+    });
+  }
 
   return (
     <div className="navbar">
@@ -50,13 +59,8 @@ function Navbar() {
       {context[10].project !== null && (
         <div
           className="clickable navoptions"
-          onClick={() => {
-            context[1]({
-              ...context[0],
-              open: !context[0].open,
-              type: 'settings',
-            });
-          }}
+          id="settings"
+          onClick={handleSettingsClick}
         >
           <FiSettings size={20} style={{ margin: '10px' }} />
         </div>

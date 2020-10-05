@@ -228,7 +228,7 @@ router.post('/invite', (req, res) => {
 // update user info
 router.put('/description', function (req, res) {
   // update team description
-  if (req.body.newdescription) {
+  if (typeof req.body.newdescription === 'string') {
     db.Team.findOne({
       where: {
         id_team: req.body.tmid,
@@ -250,7 +250,7 @@ router.put('/description', function (req, res) {
         console.log(err);
         res.status(401).json(err);
       });
-  }
+  } else res.status(401);
 });
 
 router.put('/name', function (req, res) {

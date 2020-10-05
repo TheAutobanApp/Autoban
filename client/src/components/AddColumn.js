@@ -53,6 +53,7 @@ export default function AddColumn(props) {
       ) : (
         <div className="flex-row column add-column addform">
           <Input
+            autoFocus
             action={{ icon: 'add', onClick: addColumn }}
             placeholder="Column Name..."
             onKeyDown={handleKeyPress}
