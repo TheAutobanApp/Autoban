@@ -42,7 +42,7 @@ export default function TaskModal(props) {
   // if user is editing task in modal search for the task that they are editing else create new task
   useEffect(() => {
     if (context[4].edit) {
-      context[6].filter((tsk, index) => {
+      context[2][context[2].findIndex(i => i.id_column === context[4].column)].tasks.filter((tsk, index) => {
         if (tsk._id === context[4].card) {
           setTask({
             ...task,
@@ -101,13 +101,6 @@ export default function TaskModal(props) {
     const deleteLabel = labelsCopy[foundIndex];
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
-    // send id_label to be removed from task
-    axios.put(
-      `/api/mdb/?_id=${task._id}&id_project=${context[10].project}`,
-      {
-        labels: labelsCopy.map((item) => item.id_label),
-      },
-    );
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
@@ -214,7 +207,7 @@ export default function TaskModal(props) {
             );
           })}
           {/* only allow 3 labels by rendering add button when task label array length is less than 3*/}
-          {labels.length < 5 && (
+          {(labels.length < 5 && task.id_column) && (
             <LabelMenu
               modal={true}
               id={context[4].card}

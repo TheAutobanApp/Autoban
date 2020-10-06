@@ -27,7 +27,6 @@ router.post('/create', ({ body, io }, res) => {
       res.json(dbTask);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).json(err);
     });
 });
@@ -36,7 +35,6 @@ router.post('/create', ({ body, io }, res) => {
 router.put('/edit/:_id', ({ body, params, io }, res) => {
   db.findByIdAndUpdate(params._id, body, { new: true })
     .then((dbTask) => {
-      console.log(dbTask);
       db.find({ id_project: dbTask.id_project }).then((tasks) => {
         res.json(tasks);
         io.sockets.emit(`taskUpdate${dbTask.id_project}`, tasks);
@@ -47,9 +45,7 @@ router.put('/edit/:_id', ({ body, params, io }, res) => {
 
 // update a task spot after drag
 router.put('/drop/:new_column', ({ body, io, params }, res) => {
-  console.log(body);
   body.forEach(async (task, index) => {
-    console.log(index);
     db.findByIdAndUpdate(
       task._id,
       { column_place: task.column_place, id_column: params.new_column },
@@ -61,7 +57,6 @@ router.put('/drop/:new_column', ({ body, io, params }, res) => {
           db.find({ id_project: body[0].id_project })
             .sort({ column_place: -1 })
             .then((tasks) => {
-              console.log(tasks);
               res.json(tasks);
               io.sockets.emit(
                 `taskUpdate${body[0].id_project}`,
@@ -78,7 +73,6 @@ router.put('/drop/:new_column', ({ body, io, params }, res) => {
 
 // add/remove id_label to a task
 router.put('/', function ({ body, query, io }, res) {
-  console.log(body, query);
   db.findByIdAndUpdate(query._id, body, { new: true })
     .then((task) => {
       io.sockets.emit(`newTask${query.id_project}`, task);
@@ -90,7 +84,6 @@ router.put('/', function ({ body, query, io }, res) {
 });
 
 router.delete('/delete', ({ body, query, io }, res) => {
-  console.log(body);
   if (body.id_project && body._id) {
     db.findOneAndDelete({
       id_project: body.id_project,
@@ -116,7 +109,6 @@ router.delete('/cdelete', function ({ body, query, io }, res) {
       id_column: body.id_column,
     })
       .then((task) => {
-        console.log(task);
         db.find({ id_project: body.id_project }).then((tasks) => {
           res.json(tasks);
           io.sockets.emit(`newTask${body.id_project}`, tasks);

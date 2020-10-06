@@ -23,7 +23,7 @@ function DropMenu(props) {
 
   const handleDeleteColumn = () => {
     // if tasks are in column, confirm with user
-    if (context[6].filter((task) => task.id_column === props.id).length > 0) {
+    if (context[2].filter((column) => column.id_column === props.id)[0].tasks.length > 0) {
       if (window.confirm('This will delete all tasks in this column. Are you sure?')) {
         cascadeDelete();
       }
