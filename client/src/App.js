@@ -131,7 +131,6 @@ function App() {
           (task) => task.id_column === column.id_column,
         );
       });
-      console.log(newColumns)
       setColumns(newColumns);
     });
     return () => socket.removeListener(`taskUpdate${view.project}`);

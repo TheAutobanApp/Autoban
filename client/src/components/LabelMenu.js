@@ -103,13 +103,10 @@ export default function LabelMenu(props) {
           basic
           className="clickable"
           onClick={(e) => {
-            console.log(e)
             // manually set positioning in DOM using offset of parents and element
             // allows us to position the dropdown exactly where we want
             if (!props.modal) {
               const targ = ReactDOM.findDOMNode(target.current);
-              console.log(window.innerHeight)
-              console.log(window.innerHeight - targ.getBoundingClientRect().bottom);
               if ((window.innerHeight - targ.getBoundingClientRect().bottom) > 120) {
                 setMenu({
                   ...menu,
@@ -189,7 +186,6 @@ export default function LabelMenu(props) {
             }
           }}
           onChange={(e) => {
-            console.log(menu.available)
             setMenu({
               ...menu,
               addLabel: e.target.value,

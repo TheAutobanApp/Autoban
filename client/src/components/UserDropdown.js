@@ -56,12 +56,12 @@ export default function UserDropdown() {
             ),
             disabled: true,
           },
-          {
-            key: 'account',
-            text: 'Account',
-            icon: 'user',
-            onClick: handleAccount,
-          },
+          // {
+          //   key: 'account',
+          //   text: 'Account',
+          //   icon: 'user',
+          //   onClick: handleAccount,
+          // },
           {
             key: 'invites',
             text: `Invites (${context[8].invites.length})`,

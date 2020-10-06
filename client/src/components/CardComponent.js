@@ -25,7 +25,7 @@ function CardComponent({
   columnIndex,
 }) {
   const context = useContext(AutoContext);
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(true);
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
   const [{ isDragging }, drag] = useDrag({
@@ -33,13 +33,6 @@ function CardComponent({
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-    end: (dropResult, monitor) => {
-      // const { id: droppedId, originalIndex } = monitor.getItem();
-      // const didDrop = monitor.didDrop();
-      // if (!didDrop) {
-      //   moveCard(droppedId, originalIndex, index, columnIndex);
-      // }
-    },
   });
 
   const [, drop] = useDrop({
@@ -50,8 +43,6 @@ function CardComponent({
         if (context[10].dropIndex !== index) {
           context[11]({ ...context[10], dropIndex: index });
         }
-        // const { index: overIndex } = findCard(id, index, columnIndex);
-        // moveCard(draggedId, overIndex, index, columnIndex);
       }
     },
   });
@@ -60,11 +51,8 @@ function CardComponent({
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    const tasks = context[2][columnIndex].tasks
-    const foundIndex = tasks.findIndex(
-      (task) => task._id === id,
-    );
-    console.log(foundIndex, id, tasks)
+    const tasks = context[2][columnIndex].tasks;
+    const foundIndex = tasks.findIndex((task) => task._id === id);
     if (foundIndex !== -1) {
       let cardLabels = tasks[foundIndex].labels;
       const taskLabels = [];
@@ -85,7 +73,6 @@ function CardComponent({
       setLabels(taskLabels);
       setAvailLabels(projLabels);
     }
-    
   }, [context[12].projectLabels, context[2]]);
 
   useEffect(() => {
@@ -96,10 +83,11 @@ function CardComponent({
         startIndex: index,
         startColumn: columnIndex,
       });
-      console.log('dragging', id);
       setVisible(false);
     } else {
-      setTimeout(() => {setVisible(true)}, 500)
+      setTimeout(() => {
+        setVisible(true);
+      }, 500);
     }
   }, [isDragging]);
 
@@ -117,7 +105,6 @@ function CardComponent({
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
     // send id_label to be removed from task
-    console.log('pretest');
     axios
       .put(`/api/mdb/?_id=${id}&id_project=${context[10].project}`, {
         labels: labelsCopy.map((item) => item.id_label),

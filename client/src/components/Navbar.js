@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
 import { RiMenu4Line } from 'react-icons/ri';
 import { FiSettings } from 'react-icons/fi';
-import { MdTimeline } from 'react-icons/md';
-import { GoProject } from 'react-icons/go';
-import { Checkbox, Button, Image } from 'semantic-ui-react';
+import { Button, Image } from 'semantic-ui-react';
 import TeamDropdown from './TeamDropdown';
 import UserDropdown from './UserDropdown';
-// import TeamDropItem from './TeamDropItem';
 import { AutoContext } from '../AutoContext';
 
 function Navbar() {
@@ -66,7 +63,6 @@ function Navbar() {
         </div>
       )}
     </div>
-    // </div>
   );
 }
 

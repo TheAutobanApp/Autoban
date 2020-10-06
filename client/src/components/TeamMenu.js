@@ -14,7 +14,6 @@ export default function TeamMenu() {
   });
 
   const handleItemClick = (e, { id, name }) => {
-    console.log(id);
     setTeam({ ...team, activeItem: id });
     if (e.target.id) {
       context[9]({

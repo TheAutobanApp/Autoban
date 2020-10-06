@@ -12,16 +12,12 @@ function DropMenu(props) {
     .delete(`/api/columns/?proj=${context[10].project}`, {
       data: { id_column: props.id },
     })
-    // .then((res) => context[3](res.data));
     // delete tasks in column from db
     if (c !== 'column') {
       axios
       .delete(`/api/mdb/cdelete`, {
         data: { id_column: props.id, id_project: context[10].project },
       })
-      .then((response) => {
-        // context[7](response.data);
-      });
     }
   }
 
@@ -43,10 +39,6 @@ function DropMenu(props) {
         .delete(`/api/mdb/delete/`, {
           data: { _id: props.id, id_project: context[10].project },
         })
-        .then((response) => {
-          console.log(response)
-          context[7](response.data);
-        });
     }
   };
 

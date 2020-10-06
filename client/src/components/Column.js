@@ -13,47 +13,6 @@ export default function Column(props) {
   const [{ isOver }, drop] = useDrop({
     accept: ItemTypes.TASK,
     drop: () => {
-      // const newTasks = Array.from(context[6]);
-      // const moveTask = newTasks.filter(
-      //   (task) => task._id === context[10].drag,
-      // )[0];
-      // const updateIndex = newTasks.filter(
-      //   (task) => task.id_column === props.id,
-      // );
-      // // console.log(props.id, context[10].startColumn)
-      // if (props.id !== context[10].startColumn) {
-      //   console.log('different column')
-      //   if (updateIndex.length > 0) {
-      //     updateIndex.forEach((task, index) => {
-      //       if (task.column_place > context[10].dropIndex) {
-      //         task.column_place += 1;
-      //       }
-      //     });
-      //     moveTask.id_column = props.id;
-      //     moveTask.column_place = context[10].dropIndex + 1;
-      //   } else {
-      //     moveTask.id_column = props.id;
-      //     moveTask.column_place = 0;
-      //   }
-
-      // } else {
-      //   console.log('same column')
-      //   console.log(context[10].dropIndex)
-      //   updateIndex.forEach(task => {
-      //     if (task.column_place >= context[10].dropIndex) {
-
-      //     } else {
-
-      //     }
-      //   })
-      //   if(updateIndex.filter(task => task.column_place === context[10].dropIndex)[0]) {
-      //     updateIndex.filter(task => task.column_place === context[10].dropIndex)[0] += 1
-      //   };
-      //   // console.log(updateIndex.filter(task => task.column_place === context[10].dropIndex)[0]);
-      //   moveTask.column_place = context[10].dropIndex;
-      // }
-
-      // console.log(newTasks);
       // copy of columns from context
       const newColumns = Array.from(context[2]);
       const startColumn = newColumns[context[10].startColumn];

@@ -44,10 +44,8 @@ export default function TeamView(props) {
     description: '',
   });
 
-  const [collabs, setCollabs] = useState({
-    active: [],
-    pending: [],
-  });
+  const [collabs, setCollabs] = useState([]);
+  const [pending, setPending] = useState([]);
 
   const [name, setName] = useState({
     setting: false,
@@ -67,8 +65,7 @@ export default function TeamView(props) {
             color: teamInfo.team_color,
           });
         });
-
-      // get accepted users
+      // get accepted & pending users
       axios
         .get(
           `/api/team/acceptedusers/?id_team=${context[8].team.id_team}`,
@@ -79,23 +76,29 @@ export default function TeamView(props) {
               `/api/team/pendingusers/?id_team=${context[8].team.id_team}`,
             )
             .then((res) => {
-              setCollabs({
-                ...collabs,
-                active: response.data,
-                pending: res.data,
-              });
+              setCollabs(response.data);
+              setPending(res.data);
             });
         });
-      // get pending users
     }
     return () => {
       setTeam(initialTeamState);
-      setCollabs({
-        active: [],
-        pending: [],
-      });
+      setCollabs([]);
+      setPending([]);
     };
   }, [context[8].team]);
+
+  useEffect(() => {
+    if (context[8].team !== null && context[4].showSearch === false) {
+      axios
+        .get(
+          `/api/team/pendingusers/?id_team=${context[8].team.id_team}`,
+        )
+        .then((res) => {
+          setPending(res.data);
+        });
+    }
+  }, [context[4].showSearch]);
 
   const updateTeam = (value, type) => {
     if (type === 'description') {
@@ -240,7 +243,7 @@ export default function TeamView(props) {
           </Menu.Item>
         </Fade>
       )}
-      {collabs.active.length > 0 && (
+      {collabs.length > 0 && (
         <Fade cascade>
           <Menu.Item>
             <Menu.Header>Collaborators</Menu.Header>
@@ -252,7 +255,7 @@ export default function TeamView(props) {
                   padding: '5px 15px',
                 }}
               >
-                {collabs.active.map((collab, index) => {
+                {collabs.map((collab, index) => {
                   return (
                     <>
                       {collab.avatar === null ? (
@@ -295,7 +298,7 @@ export default function TeamView(props) {
         </Fade>
       )}
 
-      {collabs.pending.length > 0 && (
+      {pending.length > 0 && (
         <Fade cascade>
           <Menu.Item>
             <Menu.Header>Pending</Menu.Header>
@@ -307,7 +310,7 @@ export default function TeamView(props) {
                   padding: '5px 15px',
                 }}
               >
-                {collabs.pending.map((collab, index) => {
+                {pending.map((collab, index) => {
                   return (
                     <>
                       {collab.avatar === null ? (

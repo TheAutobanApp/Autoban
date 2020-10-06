@@ -22,7 +22,6 @@ export default function OptionsDrawer(props) {
   };
 
   const closeClick = (e) => {
-    // console.log(e.path);
     if (
       !e.path.some(
         (el) =>
