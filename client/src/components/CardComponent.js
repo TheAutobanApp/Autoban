@@ -60,28 +60,33 @@ function CardComponent({
   // find which labels are on the task and fill the available labels and task labels accordingly
   useEffect(() => {
     // get task label ids
-    const foundIndex = context[6].findIndex(
+    const tasks = context[2][columnIndex].tasks
+    const foundIndex = tasks.findIndex(
       (task) => task._id === id,
     );
-    let cardLabels = context[6][foundIndex].labels;
-    const taskLabels = [];
-    // create a copy of project labels from context and find matching ids from task
-    const projLabels = Array.from(context[12].projectLabels);
-    cardLabels.forEach((label) => {
-      if (label !== null) {
-        let foundIndex = projLabels.findIndex(
-          (item) => item.id_label === label,
-        );
-        const newLabel = projLabels[foundIndex];
-        if (newLabel) {
-          taskLabels.push(newLabel);
-          projLabels.splice(foundIndex, 1);
+    console.log(foundIndex, id, tasks)
+    if (foundIndex !== -1) {
+      let cardLabels = tasks[foundIndex].labels;
+      const taskLabels = [];
+      // create a copy of project labels from context and find matching ids from task
+      const projLabels = Array.from(context[12].projectLabels);
+      cardLabels.forEach((label) => {
+        if (label !== null) {
+          let foundIndex = projLabels.findIndex(
+            (item) => item.id_label === label,
+          );
+          const newLabel = projLabels[foundIndex];
+          if (newLabel) {
+            taskLabels.push(newLabel);
+            projLabels.splice(foundIndex, 1);
+          }
         }
-      }
-    });
-    setLabels(taskLabels);
-    setAvailLabels(projLabels);
-  }, [context[12].projectLabels, context[6]]);
+      });
+      setLabels(taskLabels);
+      setAvailLabels(projLabels);
+    }
+    
+  }, [context[12].projectLabels, context[2]]);
 
   useEffect(() => {
     if (isDragging) {
