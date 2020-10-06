@@ -12,23 +12,18 @@ function DropMenu(props) {
     .delete(`/api/columns/?proj=${context[10].project}`, {
       data: { id_column: props.id },
     })
-    .then((res) => context[3](res.data));
     // delete tasks in column from db
     if (c !== 'column') {
-      console.log('test')
       axios
       .delete(`/api/mdb/cdelete`, {
         data: { id_column: props.id, id_project: context[10].project },
       })
-      .then((response) => {
-        context[7](response.data);
-      });
     }
   }
 
   const handleDeleteColumn = () => {
     // if tasks are in column, confirm with user
-    if (context[6].filter((task) => task.id_column === props.id).length > 0) {
+    if (context[2].filter((column) => column.id_column === props.id)[0].tasks.length > 0) {
       if (window.confirm('This will delete all tasks in this column. Are you sure?')) {
         cascadeDelete();
       }
@@ -44,9 +39,6 @@ function DropMenu(props) {
         .delete(`/api/mdb/delete/`, {
           data: { _id: props.id, id_project: context[10].project },
         })
-        .then((response) => {
-          context[7](response.data);
-        });
     }
   };
 

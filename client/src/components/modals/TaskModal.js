@@ -24,7 +24,10 @@ export default function TaskModal(props) {
     id_user: context[8].id_user,
     id_project: context[10].project,
     id_column: null,
-    column_place: 0,
+    column_place:
+      context[2] &&
+      context[2].filter((i) => i.id_column === context[4].column)[0]
+        .tasks.length,
     task_title: '',
     task_description: '',
     start_date: null,
@@ -32,21 +35,22 @@ export default function TaskModal(props) {
     complete: false,
     created_by: context[8].username,
     labels: [],
-    _id: context[4].card
+    _id: context[4].card,
   });
   const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
   // if user is editing task in modal search for the task that they are editing else create new task
   useEffect(() => {
     if (context[4].edit) {
-      context[6].filter((tsk, index) => {
+      context[2][context[2].findIndex(i => i.id_column === context[4].column)].tasks.filter((tsk, index) => {
         if (tsk._id === context[4].card) {
           setTask({
             ...task,
             task_title: tsk.task_title,
             task_description: tsk.task_description,
             labels: [tsk.labels],
-            id_column: context[4].column
+            id_column: context[4].column,
+            column_place: tsk.column_place,
           });
         }
       });
@@ -59,29 +63,27 @@ export default function TaskModal(props) {
   useEffect(() => {
     // get task label ids
     if (context[4].card) {
-      axios
-        .get(`/api/mdb/${context[4].card}`)
-        .then((res) => {
-          const task = res.data;
-          let cardLabels = task.labels;
-          const taskLabels = [];
-          // create a copy of project labels from context and find matching ids from task
-          const projLabels = Array.from(context[12].projectLabels);
-          cardLabels.forEach((label) => {
-            if (label !== null) {
-              let foundIndex = projLabels.findIndex(
-                (item) => item.id_label === label,
-              );
-              const newLabel = projLabels[foundIndex];
-              if (newLabel) {
-                taskLabels.push(newLabel);
-                projLabels.splice(foundIndex, 1);
-              }
+      axios.get(`/api/mdb/${context[4].card}`).then((res) => {
+        const task = res.data;
+        let cardLabels = task.labels;
+        const taskLabels = [];
+        // create a copy of project labels from context and find matching ids from task
+        const projLabels = Array.from(context[12].projectLabels);
+        cardLabels.forEach((label) => {
+          if (label !== null) {
+            let foundIndex = projLabels.findIndex(
+              (item) => item.id_label === label,
+            );
+            const newLabel = projLabels[foundIndex];
+            if (newLabel) {
+              taskLabels.push(newLabel);
+              projLabels.splice(foundIndex, 1);
             }
-          });
-          setLabels(taskLabels);
-          setAvailLabels(projLabels);
+          }
         });
+        setLabels(taskLabels);
+        setAvailLabels(projLabels);
+      });
     } else {
       setAvailLabels(context[12].projectLabels);
     }
@@ -99,10 +101,6 @@ export default function TaskModal(props) {
     const deleteLabel = labelsCopy[foundIndex];
     availCopy.push(deleteLabel);
     labelsCopy.splice(foundIndex, 1);
-    // send id_label to be removed from task
-    axios.put(`/api/mdb/?_id=${task._id}&id_project=${context[10].project}`, {
-      labels: labelsCopy.map((item) => item.id_label),
-    });
     // update state with new copies
     setLabels(labelsCopy);
     setAvailLabels(availCopy);
@@ -119,28 +117,26 @@ export default function TaskModal(props) {
   };
 
   const postTask = () => {
-    axios
-      .post(`/api/mdb/create/`, task)
-      .then((res) => {
-        context[7](context[6].concat(res.data));
-        setTask({
-          ...task,
-          task_title: '',
-          task_description: '',
-          id_column: null,
-        });
+    axios.post(`/api/mdb/create/`, task).then((res) => {
+      // const newTasks = Array.from(context[6])
+      // newTasks.unshift(res.data)
+      // context[7](newTasks);
+      setTask({
+        ...task,
+        task_title: '',
+        task_description: '',
+        id_column: null,
       });
+    });
   };
 
   const editTask = () => {
     axios
-      .put(
-        `/api/mdb/edit/${context[4].card}`,
-        {
-          task_title: task.task_title,
-          task_description: task.task_description,
-        },
-      )
+      .put(`/api/mdb/edit/${context[4].card}`, {
+        task_title: task.task_title,
+        task_description: task.task_description,
+        labels: task.labels
+      })
       .then((res) => context[7](res.data));
   };
 
@@ -211,10 +207,11 @@ export default function TaskModal(props) {
             );
           })}
           {/* only allow 3 labels by rendering add button when task label array length is less than 3*/}
-          {labels.length < 5 && (
+          {(labels.length < 5 && task.id_column) && (
             <LabelMenu
               modal={true}
               id={context[4].card}
+              task={[task, setTask]}
               labels={[
                 labels,
                 setLabels,

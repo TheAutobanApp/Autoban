@@ -16,6 +16,8 @@ import InviteSearchModal from './components/modals/InviteSearchModal';
 import { AutoProvider } from './AutoContext';
 import './styles/style.css';
 import socketIOClient from 'socket.io-client';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const socket = socketIOClient();
 
@@ -62,6 +64,7 @@ function App() {
   const [view, setView] = useState({
     type: 'home',
     project: null,
+    drag: '',
   });
 
   const [modal, setModal] = useState({
@@ -76,36 +79,40 @@ function App() {
     labelName: '',
   });
 
+  const updateProject = () => {
+    axios.get(`/api/columns/?proj=${view.project}`).then((res) => {
+      axios.get(`/api/mdb/all/${view.project}`).then((tasks) => {
+        setTasks(tasks.data);
+        res.data.forEach((column) => {
+          column.tasks = tasks.data.filter(
+            (task) => task.id_column === column.id_column,
+          );
+        });
+        setColumns(res.data);
+      });
+    });
+  }
+
   useEffect(() => {
     if (user.signedIn && view.type === 'project') {
       // get columns for project
-      axios.get(`/api/columns/?proj=${view.project}`).then((res) => {
-        setColumns(res.data);
-      });
+      
+      updateProject();
       // listen for column updates, on update refresh column state
       socket.on(`newColumn${view.project}`, (data) => {
-        axios
-          .get(`/api/columns/?proj=${view.project}`)
-          .then((res) => {
-            setColumns(res.data);
-          });
+        updateProject();
       });
       // listen for a column delete, set column state to new columns
       socket.on(`columnDelete${view.project}`, (data) => {
-        setColumns(data);
+        updateProject();
       });
       // get tasks for project
-      axios.get(`/api/mdb/all/${view.project}`).then((tasks) => {
-        setTasks(tasks.data);
-      });
+
       // listen for task updates, on update refresh task state
       socket.on(`newTask${view.project}`, (data) => {
-        axios
-          .get(`/api/mdb/all/${view.project}`)
-          .then((tasks) => {
-            setTasks(tasks.data);
-          });
+        updateProject();
       });
+      
       // get labels for project
       // adjust to collect labels using function in label state
       labels.getLabels(view.project);
@@ -115,6 +122,19 @@ function App() {
       });
     }
   }, [view.type]);
+
+  useEffect(() => {
+    socket.on(`taskUpdate${view.project}`, (data) => {
+      const newColumns = Array.from(columns)
+      newColumns.forEach((column) => {
+        column.tasks = data.filter(
+          (task) => task.id_column === column.id_column,
+        );
+      });
+      setColumns(newColumns);
+    });
+    return () => socket.removeListener(`taskUpdate${view.project}`);
+  }, [columns])
 
   const getTeamsProjects = (id_user) => {
     if (user.id_user) {
@@ -218,35 +238,23 @@ function App() {
         ) : view.type === 'home' ? (
           <Homeview />
         ) : (
-          <ProjectView>
-            {/* map through columns array and render each column with the title */}
-            {columns.map((item, i) => {
-              return (
-                <Column
-                  title={item.column_name}
-                  key={i}
-                  id={item.id_column}
-                >
-                  {/* inside each column, map through the cards and render each one that matches the column index */}
-                  {tasks !== null &&
-                    tasks.map(
-                      (card) =>
-                        card.id_column === item.id_column && (
-                          <CardComponent
-                            column={item.id_column}
-                            id={card._id}
-                            title={card.task_title}
-                            description={card.task_description}
-                            key={card._id}
-                            createdBy={card.created_by}
-                          />
-                        ),
-                    )}
-                </Column>
-              );
-            })}
-            <AddColumn columns={columns} setcolumns={setColumns} />
-          </ProjectView>
+          <DndProvider backend={HTML5Backend}>
+            <ProjectView>
+              {/* map through columns array and render each column with the title */}
+              {columns.map((item, i) => {
+                return (
+                  <Column
+                    title={item.column_name}
+                    key={i}
+                    index={i}
+                    id={item.id_column}
+                    tasks={item.tasks}
+                  />
+                );
+              })}
+              <AddColumn columns={columns} setcolumns={setColumns} />
+            </ProjectView>
+          </DndProvider>
         )}
         <OptionsDrawer />
       </div>

@@ -37,7 +37,6 @@ export default function InviteSearchModal(props) {
           `/api/user/search/?search=${searchTxt}&id_team=${context[8].team.id_team}`,
         )
         .then((response) => {
-          console.log(response.data);
           setUsers(response.data);
         });
     }
@@ -51,8 +50,6 @@ export default function InviteSearchModal(props) {
         team: context[8].team.id_team,
       })
       .then((response) => {
-        console.log(response.data);
-
         hideModal();
       });
   };

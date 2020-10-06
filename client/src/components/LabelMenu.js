@@ -22,8 +22,6 @@ export default function LabelMenu(props) {
     available: []
   });
 
-  
-  const [labels, setLabels] = useState([]);
   const [availLabels, setAvailLabels] = useState([]);
 
   useEffect(() => {
@@ -31,25 +29,27 @@ export default function LabelMenu(props) {
     const foundIndex = context[6].findIndex(
       (task) => task._id === props.id,
     );
-    let cardLabels = context[6][foundIndex].labels;
-    const taskLabels = [];
     // create a copy of project labels from context and find matching ids from task
     const projLabels = Array.from(context[12].projectLabels);
-    cardLabels.forEach((label) => {
-      if (label !== null) {
-        let foundIndex = projLabels.findIndex(
-          (item) => item.id_label === label,
-        );
-        const newLabel = projLabels[foundIndex];
-        if (newLabel) {
-          taskLabels.push(newLabel);
-          projLabels.splice(foundIndex, 1);
+    if (foundIndex !== -1) {
+      let cardLabels = context[6][foundIndex].labels;
+      const taskLabels = [];
+      cardLabels.forEach((label) => {
+        if (label !== null) {
+          let foundIndex = projLabels.findIndex(
+            (item) => item.id_label === label,
+          );
+          const newLabel = projLabels[foundIndex];
+          if (newLabel) {
+            taskLabels.push(newLabel);
+            projLabels.splice(foundIndex, 1);
+          }
         }
-      }
-    });
-    setLabels(taskLabels);
+      });
+    }
     setAvailLabels(projLabels);
     setMenu({...menu, available: projLabels})
+
   }, [context[12].projectLabels, context[6]]);
 
   // move label to card's label state and remove from available label state
@@ -66,13 +66,20 @@ export default function LabelMenu(props) {
     // push added label into task label array and remove from available array
     labelsCopy.push(newLabel);
     availCopy.splice(foundIndex, 1);
-    axios.put(
-      `/api/mdb/?_id=${props.id}&id_project=${context[10].project}`,
-      { labels: labelsCopy.map((item) => item.id_label) },
-    );
-    // update state with new copies
-    props.labels[1](labelsCopy);
-    props.labels[3](availCopy);
+    if (!props.modal) {
+      axios.put(
+        `/api/mdb/?_id=${props.id}&id_project=${context[10].project}`,
+        { labels: labelsCopy.map((item) => item.id_label) },
+      );
+      // update state with new copies
+      props.labels[1](labelsCopy);
+      props.labels[3](availCopy);
+    } else {
+      props.task[1]({...props.task[0], labels: labelsCopy.map(label => label.id_label)})
+      props.labels[1](labelsCopy);
+      props.labels[3](availCopy);
+    }
+    
   };
 
   const handleCreateLabel = () => {
@@ -96,13 +103,10 @@ export default function LabelMenu(props) {
           basic
           className="clickable"
           onClick={(e) => {
-            console.log(e)
             // manually set positioning in DOM using offset of parents and element
             // allows us to position the dropdown exactly where we want
             if (!props.modal) {
               const targ = ReactDOM.findDOMNode(target.current);
-              console.log(window.innerHeight)
-              console.log(window.innerHeight - targ.getBoundingClientRect().bottom);
               if ((window.innerHeight - targ.getBoundingClientRect().bottom) > 120) {
                 setMenu({
                   ...menu,
@@ -182,7 +186,6 @@ export default function LabelMenu(props) {
             }
           }}
           onChange={(e) => {
-            console.log(menu.available)
             setMenu({
               ...menu,
               addLabel: e.target.value,

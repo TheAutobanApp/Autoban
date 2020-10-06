@@ -168,7 +168,6 @@ export default function SettingsDrawerView(props) {
             rows={5}
             autoFocus
             onBlur={(e) => {
-              console.log('test');
               updateProject(e.target.value.trim(), 'description');
             }}
             value={project.newDescription}

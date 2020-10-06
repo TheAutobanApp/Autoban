@@ -7,7 +7,6 @@ import { AutoContext } from '../AutoContext';
 function TeamDropdown(props) {
   const context = useContext(AutoContext);
   const handleTeamSelect = (e, {value}) => {
-    console.log(value)
     if (value) {
       context[9]({ ...context[8], team: value });
       context[11]({ ...context[10], type: 'home' });

@@ -18,15 +18,14 @@ export default function AddColumn(props) {
         column_name: add.name,
         column_description: '',
       })
-      .then((res) => console.log(res.data));
     // update context
-    context[3](() => {
-      const newColumns = context[2].concat({
-        column_name: add.name,
-        id_place: context[2].length,
-      });
-      return newColumns;
-    });
+    // context[3](() => {
+    //   const newColumns = Array.from(context[2]).concat({
+    //     column_name: add.name,
+    //     id_place: context[2].length,
+    //   });
+    //   return newColumns;
+    // });
     // reset local add state
     setAdd({ ...add, show: !add.show, name: '' });
   };

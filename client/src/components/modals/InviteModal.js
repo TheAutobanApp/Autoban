@@ -39,7 +39,6 @@ export default function InviteModal(props) {
         id_user: context[8].id_user,
       })
       .then((res) => {
-        console.log('success', res);
         removeInvite(id);
       });
   };
@@ -50,7 +49,6 @@ export default function InviteModal(props) {
         `/api/team/invite/?id=${id}&id_user=${context[8].id_user}`,
       )
       .then((res) => {
-        console.log('success', res);
         removeInvite(id);
       });
   };
