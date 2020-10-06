@@ -1,6 +1,7 @@
 # Autoban
 
-View the deployed application <a href= "https://autobanprod.herokuapp.com/"> here!</a>
+View the deployed application <a href= "https://autobanprod.herokuapp.com/"> here!</a> 
+
 View the PowerPoint for the second sprint <a href= "https://docs.google.com/presentation/d/1zmsPdy9xXE9pTHdgdTNd9nq7dBo96hZLRUCZ8OtMB5g/edit?usp=sharing"> here!</a>
 
 
