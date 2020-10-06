@@ -29,7 +29,6 @@ An app that:
 - Semantic UI
 - Express
 - MongoDB
-- Electron
 
 ## Sprint 1
 
@@ -42,13 +41,19 @@ An app that:
 
 ## Sprint 2
 
-- Implementing "drag and drop" option for tasks, columns, and labels using ReactDnD
-- Moving some data to NoSQL database (MongoDB)
+- Bug fixes
+- User avatar addition
+- Personal team creation on user creation
+- Edit team name and description in the team information sidebar
+- Search for users and add them to your team
+- Accept or reject team invites
+- Edit project name and description
+- Implementing "drag and drop" option for tasks using ReactDnD
+- Moved tasks to NoSQL database (MongoDB)
+- Allow deletion of tasks and columns (cascading)
+- Search for labels to add to a task 
 - Use Test-Driven Development (TDD) for new features
-- React routes for homepage and specific projects
-- Wrap App in Electron build for use on desktop
-- Allow deletion for team, projects, and tasks (cascading)
-- Add user to team functionality
+
 
 ## Documentation
 
