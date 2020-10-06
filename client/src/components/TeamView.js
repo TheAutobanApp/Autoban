@@ -269,7 +269,7 @@ export default function TeamView(props) {
                             <Image
                               className="avatars"
                               avatar
-                              src="/default.png"
+                              src={process.env.PUBLIC_URL + "/default.png"}
                             />
                           }
                         />
@@ -323,7 +323,7 @@ export default function TeamView(props) {
                             <Image
                               className="avatars"
                               avatar
-                              src="/default.png"
+                              src={process.env.PUBLIC_URL + "/default.png"}
                             />
                           }
                         />
