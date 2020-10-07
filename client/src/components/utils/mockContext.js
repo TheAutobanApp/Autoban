@@ -7,7 +7,7 @@ export const initialUserState = {
     firstName: 'Testy',
     lastName: 'Tester',
     email: 'test@gmail.com',
-    team: null,
+    team: { id_team: 1, team: 'test'},
     id_user: '1',
     avatar: '',
     teams: [],
