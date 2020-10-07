@@ -55,6 +55,26 @@ export default function InviteSearchModal(props) {
       });
   };
 
+  const searchChange = (e) => {
+    setSearch(e.target.value);
+    searchUser(e.target.value);
+  };
+
+  const resultSelect = (e, { result }) =>
+    setSelectedUser({
+      ...selectedUser,
+      selected: true,
+      id_user: result.id,
+      username: result.description,
+      name: result.title,
+      avatar: result.image,
+    });
+
+  const cancelSelect = () => {
+    setSearch('');
+    setSelectedUser(initialState);
+  };
+
   return (
     <Rodal
       visible={context[4].showSearch}
@@ -82,13 +102,10 @@ export default function InviteSearchModal(props) {
                 </List.Description>
               </List.Content>
               <Icon
-                className="invite-buttons"
+                className="invite-buttons clickable"
                 name="x"
                 color="grey"
-                onClick={() => {
-                  setSearch('');
-                  setSelectedUser(initialState);
-                }}
+                onClick={cancelSelect}
               />
             </List.Item>
           </List>
@@ -98,16 +115,7 @@ export default function InviteSearchModal(props) {
             fluid
             placeholder="Search"
             value={search}
-            onResultSelect={(e, data) =>
-              setSelectedUser({
-                ...selectedUser,
-                selected: true,
-                id_user: data.result.id,
-                username: data.result.description,
-                name: data.result.title,
-                avatar: data.result.image,
-              })
-            }
+            onResultSelect={resultSelect}
             results={users.map((user) => {
               return {
                 id: user.id_user,
@@ -116,17 +124,12 @@ export default function InviteSearchModal(props) {
                 image: user.avatar ? user.avatar : defAvatar,
               };
             })}
-            onSearchChange={(e) => {
-              setSearch(e.target.value);
-              searchUser(e.target.value);
-            }}
+            onSearchChange={searchChange}
           />
         )}
         <ModalButton
           style={{ width: '90%', marginTop: 10 }}
-          onclick={() => {
-            sendInvite();
-          }}
+          onclick={sendInvite}
           disabled={!selectedUser.selected}
         >
           {selectedUser.selected
