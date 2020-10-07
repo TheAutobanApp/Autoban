@@ -13,15 +13,15 @@ export default function ColumnDrawerView(props) {
     // post column to database
     axios
       .put(`/api/columns/?proj=${context[10].project}`, {
-        id_place: context[0].edit,
+        id_column: context[0].edit,
         column_name: name,
       })
       .then((res) => {
         // create copy of context, then splice the edited column with new one
-        const columnsCopy = Array.from(context[2]);
-        columnsCopy.splice(context[0].edit, 1, res.data);
-        // update context
-        context[3](columnsCopy);
+        // const columnsCopy = Array.from(context[2]);
+        // columnsCopy.splice(context[0].edit, 1, res.data);
+        // // update context
+        // context[3](columnsCopy);
       });
     // reset local name state
     setName('');

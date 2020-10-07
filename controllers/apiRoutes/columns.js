@@ -80,7 +80,7 @@ router.put('/', function (req, res) {
       db.Columns.findOne({
         where: {
           id_project: req.query.proj,
-          id_place: req.body.id_place,
+          id_column: req.body.id_column,
         },
       })
         .then((column) => {

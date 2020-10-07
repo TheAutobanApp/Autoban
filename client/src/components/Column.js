@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import axios from 'axios';
 import DropMenu from './DropMenu';
@@ -6,10 +6,15 @@ import { AutoContext } from '../AutoContext';
 import Card from './CardComponent';
 import { ItemTypes } from './utils/Constants';
 import { useDrop, useDrag } from 'react-dnd';
+import { Input } from 'semantic-ui-react';
 
 export default function Column(props) {
   const context = useContext(AutoContext);
   let numOfCards = React.Children.toArray(props.children).length;
+  const [edit, setEdit] = useState({
+    show: false,
+    text: props.title,
+  });
   const [{ isOver }, drop] = useDrop({
     accept: ItemTypes.TASK,
     drop: () => {
@@ -47,7 +52,9 @@ export default function Column(props) {
       // update old column changes in db
       if (props.index !== context[10].startColumn) {
         axios.put(
-          `/api/mdb/drop/${newColumns[context[10].startColumn].id_column}`,
+          `/api/mdb/drop/${
+            newColumns[context[10].startColumn].id_column
+          }`,
           newColumns[context[10].startColumn].tasks,
         );
       }
@@ -68,6 +75,32 @@ export default function Column(props) {
     context[5]({ ...context[4], show: true, column: props.id });
   };
 
+  const editColumn = (e, type) => {
+    if (e.type === 'change') {
+      setEdit({ ...edit, text: e.target.value });
+    } else if (e.type === 'click') {
+      setEdit({ ...edit, show: true });
+    }
+  };
+
+  const updateColumn = (e) => {
+    if (e.key === 'Enter' || e.type === 'blur') {
+      if (edit.text.length > 0 && edit.text !== props.title) {
+        console.log('worked');
+        axios
+          .put(`/api/columns/?proj=${context[10].project}`, {
+            id_column: props.id,
+            column_name: edit.text,
+          })
+          .then(() => {
+            setEdit({ ...edit, show: false });
+          });
+      } else {
+        setEdit({ text: props.title, show: false });
+      }
+    }
+  };
+
   return (
     <>
       {/* column div */}
@@ -77,7 +110,32 @@ export default function Column(props) {
           {/* title and number of cards */}
           <div className="flex-row">
             <span className="card-counter">{numOfCards}</span>
-            <h3 style={{ margin: '3px 0' }}>{props.title}</h3>
+            {!edit.show ? (
+              <h3 style={{ margin: '3px 0' }} onClick={editColumn}>
+                {props.title}
+              </h3>
+            ) : (
+              <div style={{ display: 'flex' }}>
+                <Input
+                  maxLength={50}
+                  autoFocus
+                  error={edit.text.length < 1}
+                  defaultValue={props.title}
+                  value={edit.text}
+                  onBlur={updateColumn}
+                  size="mini"
+                  placeholder={edit.text}
+                  style={{
+                    width: 125,
+                    height: 29,
+                    fontSize: 15,
+                    marginLeft: 2,
+                  }}
+                  onChange={editColumn}
+                  onKeyDown={updateColumn}
+                />
+              </div>
+            )}
           </div>
           {/* add card and options */}
           <div className="flex-row">
@@ -88,7 +146,11 @@ export default function Column(props) {
               }}
               style={{ margin: '0 5px' }}
             />
-            <DropMenu option="column" id={props.id} />
+            <DropMenu
+              option="column"
+              id={props.id}
+              editcolumn={editColumn}
+            />
           </div>
         </div>
         {/* cards div */}

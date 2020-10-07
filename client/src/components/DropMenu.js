@@ -63,14 +63,7 @@ function DropMenu(props) {
         >
           <Dropdown.Menu className="dropdown-menu">
             <Dropdown.Item
-              onClick={() => {
-                context[1]({
-                  ...context[0],
-                  open: true,
-                  type: 'column',
-                  edit: props.id,
-                });
-              }}
+              onClick={props.editcolumn}
             >
               Edit Column
             </Dropdown.Item>
