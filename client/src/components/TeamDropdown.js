@@ -6,12 +6,15 @@ import { AutoContext } from '../AutoContext';
 
 function TeamDropdown(props) {
   const context = useContext(AutoContext);
-  const handleTeamSelect = (e, {value}) => {
+  const handleTeamSelect = (e, { value }) => {
     if (value) {
-      context[9]({ ...context[8], team: value });
+      context[9]({
+        ...context[8],
+        team: { id_team: value.id_team, team_name: value.team_name },
+      });
       context[11]({ ...context[10], type: 'home' });
     } else context[9]({ ...context[8], team: null });
-  }
+  };
   return (
     <Dropdown
       trigger={<Button icon="users" inverted compact basic />}
@@ -24,7 +27,14 @@ function TeamDropdown(props) {
         {/* {props.items.map((item, i) => (
         ))} */}
         {context[8].teams.map((team, index) => {
-          return <Dropdown.Item key={index} text={team.team_name} value={team.id_team} onClick={handleTeamSelect}/>;
+          return (
+            <Dropdown.Item
+              key={index}
+              text={team.team_name}
+              value={team}
+              onClick={handleTeamSelect}
+            />
+          );
         })}
         {/* <TeamDropItem team="Autoban" />
             <TeamDropItem team="PubIO" />

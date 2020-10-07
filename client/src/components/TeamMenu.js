@@ -90,7 +90,7 @@ export default function TeamMenu() {
             key={index}
             id={tm.id_team}
             name={tm.team_name}
-            active={team.activeItem === tm.id_team}
+            active={context[8].team && context[8].team.id_team === tm.id_team}
             onClick={handleItemClick}
           >
             {tm.team_name}
