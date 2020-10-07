@@ -5,6 +5,7 @@ import 'rodal/lib/rodal.css';
 import { List, Icon, Image, Search } from 'semantic-ui-react';
 import ModalButton from '../ModalButton';
 import axios from 'axios';
+import defAvatar from '../../default.PNG';
 
 export default function InviteSearchModal(props) {
   const context = useContext(AutoContext);
@@ -66,7 +67,14 @@ export default function InviteSearchModal(props) {
         {selectedUser.selected ? (
           <List className="invite-list">
             <List.Item className="invite-item">
-              <Image avatar src={selectedUser.avatar ? selectedUser.avatar : process.env.PUBLIC_URL + "/default.png"} />
+              <Image
+                avatar
+                src={
+                  selectedUser.avatar
+                    ? selectedUser.avatar
+                    : defAvatar
+                }
+              />
               <List.Content>
                 <List.Header>{selectedUser.name}</List.Header>
                 <List.Description>
@@ -105,7 +113,7 @@ export default function InviteSearchModal(props) {
                 id: user.id_user,
                 title: `${user.first_name} ${user.last_name}`,
                 description: user.username,
-                image: user.avatar ? user.avatar : process.env.PUBLIC_URL + "/default.png",
+                image: user.avatar ? user.avatar : defAvatar,
               };
             })}
             onSearchChange={(e) => {
