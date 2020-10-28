@@ -482,6 +482,10 @@ code {
     top: 80%;
 }
 
+.ui.search>.results .result .image {
+  width: fit-content!important;
+}
+
 /* task modal */
 
 .space-between {

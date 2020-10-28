@@ -48,7 +48,7 @@ export default function TaskModal(props) {
             ...task,
             task_title: tsk.task_title,
             task_description: tsk.task_description,
-            labels: [tsk.labels],
+            labels: tsk.labels,
             id_column: context[4].column,
             column_place: tsk.column_place,
           });

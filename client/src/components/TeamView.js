@@ -13,14 +13,10 @@ import {
 import axios from 'axios';
 import ModalButton from './ModalButton';
 import Fade from 'react-reveal/Fade';
+import defAvatar from '../default.PNG';
 
 export default function TeamView(props) {
   const context = useContext(AutoContext);
-
-  const collabStyle = {
-    // margin: 8,
-    // display: 'flex',
-  };
 
   const menu = {
     marginLeft: 5,
@@ -224,11 +220,6 @@ export default function TeamView(props) {
                   onBlur={(e) => {
                     updateTeam(e.target.value.trim(), 'description');
                   }}
-                  // onKeyDown={(e) => {
-                  //   if (e.key === 'Enter') {
-                  //     updateTeam(e.target.value.trim(), 'description');
-                  //   }
-                  // }}
                   style={{ fontStyle: 'italic' }}
                   placeholder="Add a description"
                   onChange={(e) => {
@@ -269,7 +260,7 @@ export default function TeamView(props) {
                             <Image
                               className="avatars"
                               avatar
-                              src="/default.png"
+                              src={defAvatar}
                             />
                           }
                         />
@@ -323,7 +314,7 @@ export default function TeamView(props) {
                             <Image
                               className="avatars"
                               avatar
-                              src="/default.png"
+                              src={defAvatar}
                             />
                           }
                         />
@@ -365,21 +356,6 @@ export default function TeamView(props) {
         {' '}
         Add a collaborator
       </ModalButton>
-      {/* <Icon
-        style={{
-          position: 'absolute',
-          bottom: 3,
-          right: 3,
-          cursor: 'pointer',
-          opacity: 0.7,
-        }}
-        name="user plus"
-        color="grey"
-        size="big"
-        onClick={() =>
-          context[5]({ ...context[4], showSearch: true })
-        }
-      /> */}
     </Menu>
   );
 }

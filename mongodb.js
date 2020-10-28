@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 if (process.env.NODE_ENV === 'production') {
-  const connection = `mongodb+srv://autoban:${process.env.MONGODB}@autoban.ulrka.mongodb.net/autoban?retryWrites=true&w=majority`;
+  const connection = `mongodb+srv://autoban:${process.env.MONGODB}@autoban.ulrka.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
   mongoose
     .connect(connection, {
       useNewUrlParser: true,
